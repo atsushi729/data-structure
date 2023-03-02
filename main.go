@@ -5,8 +5,17 @@ import (
 )
 
 func main() {
-	var a []int
-    fmt.Scan(&a)
+	var list []string
+	fmt.Scan(&list)
 
-    fmt.Println(a)
+	m := make(map[string]struct{})
+    newList := make([]string, 0)
+
+    for _, element := range list {
+        
+        if _, ok := m[element]; !ok {
+            m[element] = struct{}{}
+            newList = append(newList, element)
+        }
+    }
 }
