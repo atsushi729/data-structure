@@ -1,3 +1,5 @@
+package
+
 func containsDuplicate(nums []int) bool {
 	nums_map := map[int]int{}
 	for _, n := range nums {
