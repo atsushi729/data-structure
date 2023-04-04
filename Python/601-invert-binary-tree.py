@@ -6,7 +6,7 @@ def invertTree(root: list):
 
     while root:
         target = math.floor(math.log2(len(root) + 1))
-        target_array = math.floor(root[-target, -1])
+        target_array = root[-1, - target]
         revers_array = reversed(target_array)
         tmp.insert(0, revers_array)
         del root[-target, -1]
