@@ -4,3 +4,13 @@ class Solution:
             return True
         else:
             return False
+
+
+## another solution
+def containsDuplicate(nums):
+    seen = set()
+    for num in nums:
+        if num in seen:
+            return True
+        seen.add(num)
+    return False
