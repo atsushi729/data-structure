@@ -4,19 +4,16 @@ class Solution:
             return 0
 
         sorted_nums = sorted(nums)
-        current = sorted_nums[0] - 1
-        sequence = []
-        ans = []
-        for num in sorted_nums:
-            if current + 1 == num:
-                ans.append(num)
-                current = num
-            else:
-                sequence.append(len(ans))
-                current = num
-                ans = []
-        sequence.append(len(ans))
-        return max(sequence)
+        ans = 1  # initialize answer to 1, as a sequence of length 1 always exists
+        current_streak = 1
+        for i in range(1, len(sorted_nums)):
+            if sorted_nums[i] != sorted_nums[i - 1]:
+                if sorted_nums[i] == sorted_nums[i - 1] + 1:
+                    current_streak += 1
+                else:
+                    ans = max(ans, current_streak)
+                    current_streak = 1
+        return max(ans, current_streak)
 
 
 if __name__ == '__main__':
