@@ -8,3 +8,8 @@ class Solution:
             num //= 10
 
         return reversed_num
+
+
+if __name__ == '__main__':
+    sol = Solution()
+    print(sol.reverseNumber(1234))
