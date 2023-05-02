@@ -8,6 +8,6 @@ class Solution:
             if curSum > target:
                 r -= 1
             elif curSum < target:
-                l += l
+                l += 1
             else:
                 return [l + 1, r + 1]
