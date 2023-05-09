@@ -15,9 +15,30 @@ def isPalindrome(s: str) -> bool:
         return False
 
 
-target = input()
+# Another solution
+def isPalindrome1(s: str) -> bool:
+    if not s:
+        return False
+
+    reversedText = ""
+    for c in s:
+        if c.isalnum():
+            reversedText += c.lower()
+    return reversedText == reversedText[::-1]
+
+
+def isPalindrome2(self, s: str) -> bool:
+    s = s.lower()
+    s = ''.join([c for c in s if c.isalnum()])
+
+    return s == s[::-1]
+
+
+target = "A man, a plan, a canal: Panama"
 
 if isPalindrome(target):
     print('OK')
 else:
     print('NG')
+
+print(isPalindrome1(target))
