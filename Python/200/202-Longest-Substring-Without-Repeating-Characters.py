@@ -3,24 +3,18 @@ class Solution:
         if not s:
             return 0
 
-        baseCharacter = "abcdefghijklmnopqrstuvwxyz"
-        counter = 1
-        tmp = 1
-        increment = 1
+        seen = {}
+        start = 0
+        longest = 0
 
-        for i, word in enumerate(s):
-            position = s.index(word)
-            if i + increment < len(s):
-                while s[i + increment] == baseCharacter[position + increment]:
-                    tmp += 1
-                    increment += 1
-                    if i + increment >= len(s):
-                        break
+        for i, c in enumerate(s):
+            if c in seen and seen[c] >= start:
+                start = seen[c] + 1
+            else:
+                longest = max(longest, i - start + 1)
+            seen[c] = i
 
-                counter = max(counter, tmp)
-                tmp = increment = 1
-
-        return counter
+        return longest
 
 
 if __name__ == "__main__":
