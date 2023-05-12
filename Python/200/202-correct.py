@@ -11,3 +11,9 @@ class Solution:
             charSet.add(s[r])
             res = max(res, r - l + 1)
         return res
+
+
+if __name__ == '__main__':
+    s = Solution()
+    ans = s.lengthOfLongestSubstring("abcabcbb")
+    print(ans)
