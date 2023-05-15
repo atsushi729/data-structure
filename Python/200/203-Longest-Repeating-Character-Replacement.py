@@ -26,6 +26,29 @@ class Solution:
 
         return series
 
+    ## Another solution
+    def characterReplacement2(self, s: str, k: int) -> int:
+        freq = [0] * 26  # frequency count for each character
+        max_freq = 0  # maximum frequency seen so far
+        start = 0  # start of the window
+        max_len = 0  # length of the longest substring seen so far
+
+        for end in range(len(s)):
+            # update frequency count for the current character
+            freq[ord(s[end]) - ord('A')] += 1
+            # update maximum frequency seen so far
+            max_freq = max(max_freq, freq[ord(s[end]) - ord('A')])
+
+            # check if we can increase the size of the window
+            while end - start + 1 - max_freq > k:
+                freq[ord(s[start]) - ord('A')] -= 1
+                start += 1
+
+            # update the maximum length seen so far
+            max_len = max(max_len, end - start + 1)
+
+        return max_len
+
 
 if __name__ == "__main__":
     s = Solution()
