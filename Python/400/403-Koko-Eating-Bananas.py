@@ -3,13 +3,19 @@ import math
 
 class Solution:
     def minEatingSpeed(self, piles: list[int], h: int) -> int:
-        times = h - len(piles)
+        left = 1  # Minimum possible eating speed
+        right = max(piles)  # Maximum possible eating speed
 
-        for i in range(times):
-            currentMax = max(piles)
-            maxPosition = piles.index(currentMax)
-            piles[maxPosition] = math.ceil(currentMax / 2)
-        return max(piles)
+        while left < right:
+            mid = left + (right - left) // 2
+            total_hours = sum(math.ceil(pile / mid) for pile in piles)
+
+            if total_hours > h:
+                left = mid + 1
+            else:
+                right = mid
+
+        return left
 
 
 if __name__ == "__main__":
