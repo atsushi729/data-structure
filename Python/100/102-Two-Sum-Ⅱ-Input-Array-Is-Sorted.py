@@ -1,3 +1,6 @@
+from typing import List, Optional
+
+
 class Solution:
     def twoSum(self, numbers: list[int], target: int) -> list[int]:
         ans = []
@@ -8,7 +11,19 @@ class Solution:
                     ans = [i + 1, j + 1]
                     return ans
 
+    ## Another solution
+    def pairSum(self, numbers: List[int], target: int) -> Optional[List[int]]:
+        hashMap = {}
+
+        for i, num in enumerate(numbers):
+
+            diff = target - num
+
+            if diff in hashMap:
+                return [hashMap[diff], i]
+            hashMap[num] = i
+
 
 if __name__ == "__main__":
     s = Solution()
-    print(s.twoSum([2, 7, 11, 15], 9))
+    print(s.pairSum([2, 7, 11, 15], 9))
