@@ -45,7 +45,36 @@ class Recursive:
 
 
 # Time Complexity: O(log n)
+# if __name__ == "__main__":
+#     s = Recursive()
+#     numbers = [2, 3, 4, 10, 40]
+#     print(s.recursive_binary_search(numbers, 0, len(numbers), 40))
+
+"""
+Insert binary tree
+"""
+
+
+class Node(object):
+    def __init__(self, value: int) -> None:
+        self.value = value
+        self.left = None
+        self.right = None
+
+
+def insert(node: Node, value: int) -> Node:
+    if node is None:
+        return Node(value)
+
+    if value < node.value:
+        node.left = insert(node.left, value)
+    else:
+        node.right = insert(node.right, value)
+    return node
+
+
 if __name__ == "__main__":
-    s = Recursive()
-    numbers = [2, 3, 4, 10, 40]
-    print(s.recursive_binary_search(numbers, 0, len(numbers), 40))
+    root = None
+    root = insert(root, 3)
+    root = insert(root, 8)
+    root = insert(root, 1)
