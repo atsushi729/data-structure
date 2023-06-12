@@ -73,8 +73,36 @@ def insert(node: Node, value: int) -> Node:
     return node
 
 
+def minValue(node: Node) -> Node:
+    current = node
+    while current.left is not None:
+        current = current.left
+    return current
+
+
+def remove(node: Node, value: int) -> Node:
+    if node is None:
+        return node
+
+    if value < node.value:
+        node.left = remove(node.left, value)
+    elif value > node.value:
+        node.right = remove(node.right, value)
+    else:
+        if node.left is None:
+            return node.right
+        elif node.rigth is None:
+            return node.left
+
+        tmp = minValue(node.right)
+        node.value = tmp.value
+        node.right = remove(node.right, tmp.value)
+    return node
+
+
 if __name__ == "__main__":
     root = None
     root = insert(root, 3)
     root = insert(root, 8)
     root = insert(root, 1)
+    root = remove(root, 1)
