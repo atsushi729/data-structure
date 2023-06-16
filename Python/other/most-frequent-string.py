@@ -1,5 +1,6 @@
 import operator
 from typing import Tuple
+from collections import Counter
 
 
 class Solution:
@@ -18,7 +19,7 @@ class Solution:
 
         return max_object, max(counter.values())
 
-    def count_string_new(self, text: str) -> tuple[str, int]:
+    def count_string_version1(self, text: str) -> tuple[str, int]:
         text = text.lower()
         container = []
         for word in text:
@@ -27,8 +28,19 @@ class Solution:
 
         return max(container, key=operator.itemgetter(1))
 
+    def count_string_version2(self, text: str) -> Tuple[str, int]:
+        text = text.lower()
+        counter = Counter()
+
+        for word in text:
+            if not word.isspace():
+                counter[word] += 1
+
+        max_key = max(counter, key=counter.get)
+        return max_key, counter[max_key]
+
 
 if __name__ == "__main__":
     solution = Solution()
     text = "this is my dream"
-    print(solution.count_string_new(text))
+    print(solution.count_string_version2(text))
