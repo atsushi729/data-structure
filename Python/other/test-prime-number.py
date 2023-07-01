@@ -1,6 +1,6 @@
 import unittest
 
-from prime-number import is_prime
+import is_prime
 class PrimeTest(unittest.TestCase):
 
     def test_is_prime_ok(self):
