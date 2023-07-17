@@ -13,28 +13,22 @@ class Solution:
     def isHappy(self, n: int) -> bool:
         if n == 1:
             return True
-
         is_not_happy = True
-        num_list = self.get_num_list(n)
 
         while is_not_happy:
-            current_num = 0
-            for num in num_list:
-                tmp = num ** 2
-                current_num += tmp
-
-            if current_num == 1:
+            num = self.get_num(n)
+            if num == 1:
+                is_not_happy = False
                 return True
+            n = num
 
-            num_list = self.get_num_list(current_num)
+    def get_num(self, num: int) -> int:
+        calculated_num = 0
 
-    def get_num_list(self, num: int) -> list[int]:
-        num_list = []
-        while num / 10 > 0:
-            digit = num % 10
-            num_list.append(digit)
+        while num:
+            calculated_num += (num % 10) ** 2
             num //= 10
-        return num_list
+        return calculated_num
 
 
 if __name__ == "__main__":
