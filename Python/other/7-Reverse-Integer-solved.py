@@ -7,7 +7,7 @@ class Solution:
         # Integer.MIN_VALUE = -2147483648 (end with -8 )
 
         MIN = -2147483648  # -2^31,
-        MAX = 2147483647  #  2^31 - 1
+        MAX = 2147483647  # 2^31 - 1
 
         res = 0
         while x:
@@ -21,3 +21,9 @@ class Solution:
             res = (res * 10) + digit
 
         return res
+
+
+if __name__ == "__main__":
+    s = Solution()
+    x = 195
+    print(s.reverse(x))
