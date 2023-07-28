@@ -12,6 +12,18 @@ class Solution:
         return True
 
 
+class SolutionV2:
+    def canConstruct(self, ransomNote: str, magazine: str) -> bool:
+        ransomNote = list(ransomNote)
+        magazine = list(magazine)
+        for char in ransomNote:
+            if char in magazine:
+                magazine.remove(char)
+            else:
+                return False
+        return True
+
+
 if __name__ == "__main__":
     s = Solution()
     ransomNote = "aa"
