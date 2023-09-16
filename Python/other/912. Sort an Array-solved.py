@@ -32,6 +32,16 @@ class Solution:
         return mergeSort(nums, 0, len(nums) - 1)
 
 
+class Solution:
+    def sortArray(self, nums: list[int]) -> list[int]:  # Example: [3,3,1,8,6,5,5,5,5]
+
+        ctr = Counter(nums)
+
+        return list(chain(*([i] * ctr[i]
+                            for i in range(min(ctr),
+                                           max(ctr) + 1) if i in ctr)))
+
+
 if __name__ == "__main__":
     s = Solution()
     nums = [5, 2, 3, 1]
