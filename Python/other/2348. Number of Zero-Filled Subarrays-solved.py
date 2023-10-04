@@ -22,6 +22,26 @@ class Solution:
                 temp = 0
         return res
 
+class Solution:
+    def zeroFilledSubarray(self, nums: list[int]) -> int:
+        zeroes = 0
+        result = 0
+        sums = [0] * (len(nums) + 1)
+
+        for i in range(1, len(nums) + 1):
+            sums[i] = sums[i-1] + i
+
+        for n in nums:
+            if n == 0:
+                zeroes += 1
+            elif zeroes > 0:
+                result += sums[zeroes]
+                zeroes = 0
+
+        if zeroes > 0:
+            result += sums[zeroes]
+
+        return result
 
 if __name__ == "__main__":
     s = Solution()
