@@ -11,6 +11,17 @@ class Solution:
             res += count
         return res
 
+    def zeroFilledSubarrayV2(self, nums: list[int]) -> int:
+        res = 0
+        temp = 0
+        for i in nums:
+            if i == 0:
+                temp+=1
+                res+=temp
+            else:
+                temp = 0
+        return res
+
 
 if __name__ == "__main__":
     s = Solution()
