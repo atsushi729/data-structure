@@ -25,4 +25,22 @@ def containsDuplicate(nums):
     return False
 
 
+# There are two main issues with this approach:
+# 1. Loss of Order:
+#    - Converting a list to a set and back to a list does not preserve the original order.
+#    - As a result, comparing the original list `nums` with the processed list `unique_nums` may
+#      fail to detect duplicates because their orders might differ.
+
+# 2. Inefficiency:
+#    - Although the inefficiency is not the primary issue, converting the list to a set and then back to a list
+#      introduces unnecessary overhead. The conversion operations themselves take additional time and memory,
+#      especially for large lists.
+def containsDuplicate(nums) -> bool:
+    unique_nums = list(set(nums))
+
+    if nums == unique_nums:
+        return False
+    return True
+
+
 print(containsDuplicate([1, 2, 3]))
