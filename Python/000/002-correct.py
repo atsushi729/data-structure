@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         if len(s) != len(t):
@@ -25,6 +26,15 @@ class Solution:
 
         # Count characters in both strings and compare
         return Counter(s) == Counter(t)
+
+    def isAnagramV4(self, s: str, t: str) -> bool:
+        # If the lengths are not equal, they can't be anagrams
+        if len(s) != len(t):
+            return False
+
+        # Count characters in both strings and compare
+        countS, countT = Counter(s), Counter(t)
+        return all(countS[key] == countT[key] for key in countS)
 
 
 if __name__ == "__main__":
