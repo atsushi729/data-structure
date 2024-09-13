@@ -1,6 +1,6 @@
-# import operator
-# from typing import Tuple
-# from collections import Counter
+import operator
+from typing import Tuple
+from collections import Counter
 
 
 class Solution:
@@ -9,7 +9,6 @@ class Solution:
         counter = {}
 
         for s in text:
-
             if s in counter.keys():
                 counter[s] += 1
             else:
@@ -19,7 +18,7 @@ class Solution:
 
         return max_object, max(counter.values())
 
-    def count_string_version1(self, text: str) -> tuple[str, int]:
+    def count_string_version1(self, text: str) -> Tuple[str, int]:
         text = text.lower()
         container = []
         for word in text:
