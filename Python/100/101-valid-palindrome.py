@@ -9,10 +9,7 @@ def isPalindrome(s: str) -> bool:
 
     s_reverse = s_list[::-1]
 
-    if s_list == s_reverse:
-        return True
-    else:
-        return False
+    return s_list == s_reverse
 
 
 # Another solution
