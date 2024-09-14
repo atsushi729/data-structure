@@ -34,11 +34,16 @@ def isPalindrome2(self, s: str) -> bool:
     return s == s[::-1]
 
 
+"""
+this function takes a string as input and returns True if the string is a palindrome and False otherwise.
+"""
+
+
+def isPalindrome3(self, s: str) -> bool:
+    alphanumerical_characters = [i.lower() for i in s if i.isalnum()]
+    return alphanumerical_characters == alphanumerical_characters[::-1]
+
+
 target = "A man, a plan, a canal: Panama"
 
-if isPalindrome(target):
-    print('OK')
-else:
-    print('NG')
-
-print(isPalindrome1(target))
+print(isPalindrome(target))  # True
