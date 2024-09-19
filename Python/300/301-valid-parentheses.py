@@ -20,6 +20,7 @@ def isValid(paren) -> bool:
 paren = list(input())
 print(isValid(paren))
 
+
 # different version
 def is_valid(s):
     stack = []
