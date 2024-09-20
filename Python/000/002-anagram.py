@@ -1,3 +1,6 @@
+import unittest
+
+
 class Solution:
     def isAnagram(self, s: str, t: str) -> bool:
         s_list = sorted(list(s))
@@ -30,6 +33,15 @@ class Solution:
                 return False
 
         return True
+
+
+class TestIsAnagram(unittest.TestCase):
+    def test_isAnagram(self):
+        self.assertEqual(Solution().isAnagram("anagram", "nagaram"), True)
+        self.assertEqual(Solution().isAnagram("rat", "car"), False)
+        self.assertEqual(Solution().isAnagram("a", "ab"), False)
+        self.assertEqual(Solution().isAnagram("ab", "a"), False)
+        self.assertEqueal(Solution().isAnagram("abcabc", "abcabc"), True)
 
 
 if __name__ == '__main__':
