@@ -2,17 +2,24 @@ from typing import List
 
 
 class Solution:
-    def binary_search(self, numbers: List[int], target: int) -> int:
-        left, right = 0, len(numbers) - 1
-        while left <= right:
-            mid = (left + right) // 2
+    def binary_search(self, nums: List[int], target: int) -> int:
+        # Initialize position value
+        left = 0
+        right = len(nums) - 1 # To avoid index error, substract 1 from original length.
 
-            if numbers[mid] == target:
+        while left <= right:
+            # Get middle number. Make sure mid is not float value
+            mid = (left + right) // 2
+            # If match with target and mid value, then return mid value.
+            if nums[mid] == target:
                 return mid
-            elif numbers[mid] < target:
-                left += mid + 1
+            # If target is larger than mid value, then left value will asign with mid + 1 value.
+            elif nums[mid] < target:
+                left = mid + 1
+            # If target is smaller than mid value, then right value will asign with mid - 1 value.
             else:
                 right = mid - 1
+        # If target value does not exist in nums, then return -1.
         return -1
 
 
