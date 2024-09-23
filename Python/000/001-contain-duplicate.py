@@ -1,6 +1,6 @@
 import unittest
 
-
+#################### Solution ####################
 class Solution:
     def contains_duplicate(self, nums: list[int]) -> bool:
         if len(nums) != len(set(nums)):
@@ -49,11 +49,7 @@ def model_contains_duplicate(nums: [int]) -> bool:
     return False
 
 
-"""
-Test cases
-"""
-
-
+#################### Test Case ####################
 class TestContainsDuplicate(unittest.TestCase):
     def test_contains_duplicate_v1(self):
         self.assertEqual(contains_duplicate_v1([1, 2, 3, 4, 4]), True)
