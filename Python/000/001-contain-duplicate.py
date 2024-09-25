@@ -2,7 +2,7 @@ import unittest
 
 
 #################### Solution ####################
-def contains_duplicate(self, nums: list[int]) -> bool:
+def contains_duplicate(nums: list[int]) -> bool:
     if len(nums) != len(set(nums)):
         return True
     else:

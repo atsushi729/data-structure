@@ -1,7 +1,8 @@
 import unittest
 
 
-def two_sum(nums: list[int], target: int) -> list[int]:
+#################### Solution ####################
+def two_sum(nums: [int], target: int) -> list[int]:
     prevMap = {}  # val -> index
 
     for i, n in enumerate(nums):
@@ -26,7 +27,3 @@ class TestTowSum(unittest.TestCase):
 
     def test_two_sum(self):
         self.assertEqual(two_sum([1, 2, 5, 6, 3], 9), [3, 4])
-
-
-if __name__ == '__main__':
-    unittest.main()
