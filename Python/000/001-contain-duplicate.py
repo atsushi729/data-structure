@@ -1,17 +1,15 @@
 import unittest
 
+
 #################### Solution ####################
-class Solution:
-    def contains_duplicate(self, nums: list[int]) -> bool:
-        if len(nums) != len(set(nums)):
-            return True
-        else:
-            return False
+def contains_duplicate(self, nums: list[int]) -> bool:
+    if len(nums) != len(set(nums)):
+        return True
+    else:
+        return False
 
 
-"""Another solution"""
-
-
+# Another solution
 def contains_duplicate_v1(nums):
     seen = set()
     for num in nums:
@@ -21,9 +19,7 @@ def contains_duplicate_v1(nums):
     return False
 
 
-"""Another solution"""
-
-
+# Another solution
 def contains_duplicate_v2(nums):
     sortedNum = sorted(nums)
     for i in range(len(sortedNum) - 1):
