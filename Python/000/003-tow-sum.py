@@ -1,19 +1,32 @@
-class Solution:
-    def twoSum(self, nums: list[int], target: int) -> list[int]:
-        prevMap = {}  # val -> index
+import unittest
 
-        for i, n in enumerate(nums):
-            diff = target - n
-            if diff in prevMap:
-                return [prevMap[diff], i]
-            prevMap[n] = i
 
-    ## Another solution
-    class Solution:
-        def twoSum(self, nums: list[int], target: int) -> list[int]:
-            for i in range(len(nums)):
-                rest = target - nums[i]
-                for j in range(i + 1, len(nums)):
-                    if nums[j] == rest:
-                        output = [i, j]
-            return output
+def two_sum(nums: list[int], target: int) -> list[int]:
+    prevMap = {}  # val -> index
+
+    for i, n in enumerate(nums):
+        diff = target - n
+        if diff in prevMap:
+            return [prevMap[diff], i]
+        prevMap[n] = i
+
+    return []
+
+
+#################### Test Case ####################
+class TestTowSum(unittest.TestCase):
+    def test_two_sum(self):
+        self.assertEqual(two_sum([2, 7, 11, 15], 9), [0, 1])
+
+    def test_two_sum_v1(self):
+        self.assertEqual(two_sum([3, 2, 4], 6), [1, 2])
+
+    def test_two_sum_v2(self):
+        self.assertEqual(two_sum([3, 3], 6), [0, 1])
+
+    def test_two_sum(self):
+        self.assertEqual(two_sum([1, 2, 5, 6, 3], 9), [3, 4])
+
+
+if __name__ == '__main__':
+    unittest.main()
