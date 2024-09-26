@@ -1,4 +1,4 @@
-def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+def group_anagrams(self, strs: [str]) -> [[str]]:
     # if strs is empty, then return empty array
     if not strs[0]:
         return [[""]]
@@ -10,11 +10,11 @@ def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
     # check anagram group
     ans = []
     for i in range(len(strs)):
-        if self.isAnagram(strs[0], strs[i]):
+        if self.is_anagram(strs[0], strs[i]):
             return [["ok"]]
 
 
-def isAnagram(self, s: str, t: str) -> bool:
+def is_anagram(self, s: str, t: str) -> bool:
     if len(s) != len(t):
         return False
 
