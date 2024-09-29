@@ -1,5 +1,8 @@
+import unittest
+
+
 #################### Solution ####################
-def productExceptSelf(nums: [int]) -> [int]:
+def productExceptSelf(nums: list[int]) -> list[int]:
     result = []
 
     for i in range(len(nums)):
@@ -14,3 +17,24 @@ def productExceptSelf(nums: [int]) -> [int]:
         result.append(product)
 
     return result
+
+
+def model_productExceptSelf(nums: list[int]) -> list[int]:
+    n = len(nums)
+    answer = [1] * n
+
+    for i in range(1, n):
+        answer[i] = answer[i - 1] * nums[i - 1]
+
+    right_product = 1
+    for i in range(n - 1, -1, -1):
+        answer[i] *= right_product
+        right_product *= nums[i]
+
+    return answer
+
+
+################### Test case ####################
+class TestProductExceptSelf(unittest.TestCase):
+    def assertTupleEqual(self):
+        self.assertEqual(productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
