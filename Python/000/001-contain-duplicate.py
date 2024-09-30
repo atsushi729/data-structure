@@ -28,6 +28,11 @@ def contains_duplicate_v2(nums):
     return False
 
 
+# Another solution (Shorter version)
+def contains_duplicate_v3(nums):
+    return len(nums) != len(set(nums))
+
+
 """
 Why do I use a hash map instead of an array? 
 The reason is that the time complexity of a hash map is always O(1), making it more efficient compared to an array. 
