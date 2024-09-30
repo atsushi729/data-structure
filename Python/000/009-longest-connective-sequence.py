@@ -1,4 +1,8 @@
-def longestConsecutive(self, nums: list[int]) -> int:
+import unittest
+
+
+#################### Solution ####################
+def longest_consecutive(nums: list[int]) -> int:
     if not nums:
         return 0
 
@@ -28,3 +32,9 @@ def model_longest_consecutive(nums: [int]) -> int:
             longest = max(length, longest)
 
     return longest
+
+
+#################### Test Case ####################
+class TestLongestConsecutive(unittest.TestCase):
+    def test_longest_consecutive(self):
+        self.assertEqual(longest_consecutive([100, 4, 200, 1, 3, 2]), 4)
