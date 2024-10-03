@@ -1,4 +1,4 @@
-def topKFrequent(self, nums: [int], k: int) -> [int]:
+def topKFrequent(nums: [int], k: int) -> [int]:
     if not nums or not k:
         return 0
 
