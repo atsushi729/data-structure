@@ -1,3 +1,7 @@
+#################### Solution ####################
+import unittest
+
+
 def is_valid_sudoku(board: list[list[str]]) -> bool:
     # Check rows
     for i in range(9):
@@ -27,14 +31,34 @@ def is_valid_sudoku(board: list[list[str]]) -> bool:
     return True
 
 
-board = [["1", "2", ".", ".", "3", ".", ".", ".", "."],
-         ["4", ".", ".", "5", ".", ".", ".", ".", "."],
-         [".", "9", "8", ".", ".", ".", ".", ".", "3"],
-         ["5", ".", ".", ".", "6", ".", ".", ".", "4"],
-         [".", ".", ".", "8", ".", "3", ".", ".", "5"],
-         ["7", ".", ".", ".", "2", ".", ".", ".", "6"],
-         [".", ".", ".", ".", ".", ".", "2", ".", "."],
-         [".", ".", ".", "4", "1", "9", ".", ".", "8"],
-         [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
+def is_valid_sudoku_model(board: list[list[str]]) -> bool:
+    # 各行、列、サブボックスのセットを初期化
+    rows = [set() for _ in range(9)]
+    cols = [set() for _ in range(9)]
+    squares = [set() for _ in range(9)]  # サブボックスは0〜8のインデックス
 
-print(is_valid_sudoku(board))
+    for r in range(9):
+        for c in range(9):
+            num = board[r][c]
+            if num == ".":
+                continue  # 空のセルはスキップ
+
+            # サブボックスのインデックスを計算
+            square_index = (r // 3) * 3 + (c // 3)
+
+            # 行、列、サブボックスでの重複をチェック
+            if (
+                    num in rows[r]
+                    or num in cols[c]
+                    or num in squares[square_index]
+            ):
+                # 重複が見つかった場合は無効
+                return False
+
+            # 重複がなければ、それぞれのセットに追加
+            rows[r].add(num)
+            cols[c].add(num)
+            squares[square_index].add(num)
+
+    # 全てのチェックをパスした場合は有効
+    return True
