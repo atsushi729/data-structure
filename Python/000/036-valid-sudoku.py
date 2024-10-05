@@ -1,4 +1,4 @@
-def isValidSudoku(board: list[list[str]]) -> bool:
+def is_valid_sudoku(board: list[list[str]]) -> bool:
     # Check rows
     for i in range(9):
         filtered_row = [x for x in board[i] if x != '.']
@@ -37,4 +37,4 @@ board = [["1", "2", ".", ".", "3", ".", ".", ".", "."],
          [".", ".", ".", "4", "1", "9", ".", ".", "8"],
          [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
 
-print(isValidSudoku(board))
+print(is_valid_sudoku(board))
