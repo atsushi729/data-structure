@@ -1,3 +1,7 @@
+#################### Solution ####################
+import unittest
+
+
 def product_except_self(nums: [int]) -> [int]:
     if not nums:
         return []
@@ -32,3 +36,12 @@ def model_product_except_self(nums: [int]) -> [int]:
         right_product *= nums[i]
 
     return ans
+
+
+#################### Test Case ####################
+class TestProductExceptSelf(unittest.TestCase):
+    def test_product_except_self(self):
+        self.assertEqual(product_except_self([1, 2, 3, 4]), [24, 12, 8, 6])
+
+    def test_model_product_except_self(self):
+        self.assertEqual(model_product_except_self([1, 2, 3, 4]), [24, 12, 8, 6])
