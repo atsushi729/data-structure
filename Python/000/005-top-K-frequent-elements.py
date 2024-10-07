@@ -2,7 +2,7 @@ import unittest
 
 
 #################### Solution ####################
-def top_k_frequent(nums: [int], k: int) -> [int]:
+def top_k_frequent_v1(nums: [int], k: int) -> [int]:
     if not nums or not k:
         return 0
 
@@ -20,6 +20,22 @@ def top_k_frequent(nums: [int], k: int) -> [int]:
     sorted_dict = dict(sorted(calc.items(), key=lambda x: x[1], reverse=True))
 
     return list(sorted_dict.keys())[:k]
+
+
+def top_k_frequent_v2(nums: [int], k: int) -> [int]:
+    counter = {}
+
+    # Count each number {1 : 1, 2 : 2, 3 : 3}
+    for num in nums:
+        if num in counter:
+            counter[num] += 1
+        else:
+            counter[num] = 1
+
+    # Sorted based on value. [(3, 3), (2, 2), (1, 1)]
+    sorted_counter = sorted(counter.items(), key=lambda x: x[1], reverse=True)
+
+    return [item[0] for item in sorted_counter[:k]]
 
 
 def model_top_k_frequent(nums: [int], k: int) -> [int]:
@@ -43,7 +59,10 @@ def model_top_k_frequent(nums: [int], k: int) -> [int]:
 #################### Test Case ####################
 class TestTopKFrequent(unittest.TestCase):
     def test_topKFrequent(self):
-        self.assertEqual(top_k_frequent([1, 1, 1, 2, 2, 3], 2), [1, 2])
+        self.assertEqual(top_k_frequent_v1([1, 1, 1, 2, 2, 3], 2), [1, 2])
+
+    def test_topKFrequent_v2(self):
+        self.assertEqual(top_k_frequent_v2([1, 1, 1, 2, 2, 3], 2), [1, 2])
 
     def test_model_topKFrequent(self):
         self.assertEqual(model_top_k_frequent([1, 1, 1, 2, 2, 3], 2), [1, 2])
