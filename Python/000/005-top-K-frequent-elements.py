@@ -1,4 +1,8 @@
-def topKFrequent(nums: [int], k: int) -> [int]:
+import unittest
+
+
+#################### Solution ####################
+def top_k_frequent(nums: [int], k: int) -> [int]:
     if not nums or not k:
         return 0
 
@@ -18,7 +22,7 @@ def topKFrequent(nums: [int], k: int) -> [int]:
     return list(sorted_dict.keys())[:k]
 
 
-def model_topKFrequent(nums: [int], k: int) -> [int]:
+def model_top_k_frequent(nums: [int], k: int) -> [int]:
     count = {}
     freq = [[] for i in range(len(nums) + 1)]
 
@@ -34,3 +38,12 @@ def model_topKFrequent(nums: [int], k: int) -> [int]:
             if len(res) == k:
                 return res
     return res
+
+
+#################### Test Case ####################
+class TestTopKFrequent(unittest.TestCase):
+    def test_topKFrequent(self):
+        self.assertEqual(top_k_frequent([1, 1, 1, 2, 2, 3], 2), [1, 2])
+
+    def test_model_topKFrequent(self):
+        self.assertEqual(model_top_k_frequent([1, 1, 1, 2, 2, 3], 2), [1, 2])
