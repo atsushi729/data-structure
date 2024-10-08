@@ -38,6 +38,15 @@ def top_k_frequent_v2(nums: [int], k: int) -> [int]:
     return [item[0] for item in sorted_counter[:k]]
 
 
+def top_k_frequent_v3(nums: [int], k: int) -> [int]:
+    counter = {}
+
+    for num in nums:
+        counter[num] = counter.get(num, 0) + 1
+
+    return [item[0] for item in sorted(counter.items(), key=lambda x: x[1], reverse=True)[:k]]
+
+
 def model_top_k_frequent(nums: [int], k: int) -> [int]:
     count = {}
     freq = [[] for i in range(len(nums) + 1)]
@@ -58,11 +67,14 @@ def model_top_k_frequent(nums: [int], k: int) -> [int]:
 
 #################### Test Case ####################
 class TestTopKFrequent(unittest.TestCase):
-    def test_topKFrequent(self):
+    def test_topKFrequent_v1(self):
         self.assertEqual(top_k_frequent_v1([1, 1, 1, 2, 2, 3], 2), [1, 2])
 
     def test_topKFrequent_v2(self):
         self.assertEqual(top_k_frequent_v2([1, 1, 1, 2, 2, 3], 2), [1, 2])
+
+    def test_topKFrequent_v3(self):
+        self.assertEqual(top_k_frequent_v3([1, 1, 1, 2, 2, 3], 2), [1, 2])
 
     def test_model_topKFrequent(self):
         self.assertEqual(model_top_k_frequent([1, 1, 1, 2, 2, 3], 2), [1, 2])
