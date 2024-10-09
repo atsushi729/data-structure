@@ -1,7 +1,7 @@
-#################### Solution ####################
 import unittest
 
 
+#################### Solution ####################
 def product_except_self(nums: [int]) -> [int]:
     if not nums:
         return []
