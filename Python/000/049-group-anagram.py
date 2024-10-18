@@ -14,6 +14,17 @@ def group_anagram(strs):
     return list(anagrams.values())
 
 
+def group_anagram_v2(strs: list[str]) -> list[list[str]]:
+    anagrams = {}
+    for s in strs:
+        key = tuple(sorted(s))
+        if key in anagrams:
+            anagrams[key].append(s)
+        else:
+            anagrams[key] = [s]
+    return list(anagrams.values())
+
+
 # Another solution
 def model_group_anagram(strs: list[str]) -> list[list[str]]:
     ans = collections.defaultdict(list)
@@ -37,3 +48,8 @@ class TestGroupAnagram(unittest.TestCase):
         self.assertEqual(model_group_anagram(["eat", "tea", "tan", "ate", "nat", "bat"]), [['eat', 'tea', 'ate'],
                                                                                            ['tan', 'nat'],
                                                                                            ['bat']])
+
+    def test_group_anagram_v2(self):
+        self.assertEqual(
+            group_anagram_v2(["eat", "tea", "tan", "ate", "nat", "bat"]), [['eat', 'tea', 'ate'], ['tan', 'nat'],
+                                                                           ['bat']])
