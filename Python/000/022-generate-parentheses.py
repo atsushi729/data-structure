@@ -45,3 +45,7 @@ class TestGenerateParenthesis(unittest.TestCase):
     def test_generate_parenthesis(self):
         self.assertEqual(generate_parenthesis(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
         self.assertEqual(generate_parenthesis(1), ["()"])
+
+    def test_model_generate_parentheses(self):
+        self.assertEqual(model_generate_parentheses(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
+        self.assertEqual(model_generate_parentheses(1), ["()"])
