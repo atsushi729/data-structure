@@ -24,6 +24,22 @@ def generate_parenthesis(n: int) -> list:
     return result
 
 
+def model_generate_parentheses(n: int) -> list:
+    def backtrack(s, left, right):
+        if len(s) == 2 * n:
+            result.append(s)
+            return
+
+        if left < n:
+            backtrack(s + '(', left + 1, right)
+        if right < left:
+            backtrack(s + ')', left, right + 1)
+
+    result = []
+    backtrack('', 0, 0)
+    return result
+
+
 #################### Test Case ####################
 class TestGenerateParenthesis(unittest.TestCase):
     def test_generate_parenthesis(self):
