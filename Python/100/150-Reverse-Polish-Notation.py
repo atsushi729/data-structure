@@ -1,6 +1,7 @@
 import unittest
 
 
+#################### Solution ####################
 def eval_rpn(tokens: list[str]) -> int:
     stack = []
     operators = {'+', '-', '*', '/'}
@@ -44,6 +45,7 @@ def model_eval_rpn(tokens: list[str]) -> int:
     return stack[0]
 
 
+#################### Test Case ####################
 class TestEvalRPN(unittest.TestCase):
     def test_eval_rpn(self):
         self.assertEqual(eval_rpn(["2", "1", "+", "3", "*"]), 9)
