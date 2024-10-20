@@ -48,11 +48,13 @@ class LRUcache:
 
 
 if __name__ == "__main__":
+    message = "LRU cache current state: {state}"
     cache = LRUcache(2)
     cache.put(1, 1)
     cache.put(2, 2)
     cache.display()
-    print(cache.get(1))
+    current_state = cache.get(1)
+    print(message.format(state=current_state))
     cache.display()
     cache.put(3, 3)
     cache.display()
