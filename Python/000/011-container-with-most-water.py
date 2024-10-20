@@ -1,7 +1,7 @@
-#################### Solution ####################
 import unittest
 
 
+#################### Solution ####################
 def max_area(heights: list[int]) -> int:
     max_amount = 0
     left, right = 0, len(heights) - 1
