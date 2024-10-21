@@ -10,6 +10,8 @@ def is_anagram(s: str, t: str) -> bool:
         return True
     else:
         return False
+    # or simply return s_list == t_list
+    # for readability, I used if-else statement.
 
 
 # Another solution
@@ -38,9 +40,16 @@ def is_anagram2(y, t):
 
 #################### Test Case ####################
 class TestIsAnagram(unittest.TestCase):
-    def test_isAnagram(self):
+    def test_is_anagram(self):
         self.assertEqual(is_anagram("anagram", "nagaram"), True)
         self.assertEqual(is_anagram("rat", "car"), False)
         self.assertEqual(is_anagram("a", "ab"), False)
         self.assertEqual(is_anagram("ab", "a"), False)
         self.assertEqueal(is_anagram("abcabc", "abcabc"), True)
+
+    def test_is_anagram2(self):
+        self.assertEqual(is_anagram2("anagram", "nagaram"), True)
+        self.assertEqual(is_anagram2("rat", "car"), False)
+        self.assertEqual(is_anagram2("a", "ab"), False)
+        self.assertEqual(is_anagram2("ab", "a"), False)
+        self.assertEqueal(is_anagram2("abcabc", "abcabc"), True)
