@@ -2,7 +2,7 @@ import unittest
 
 
 #################### Solution ####################
-def productExceptSelf(nums: list[int]) -> list[int]:
+def product_except_self(nums: list[int]) -> list[int]:
     result = []
 
     for i in range(len(nums)):
@@ -19,7 +19,7 @@ def productExceptSelf(nums: list[int]) -> list[int]:
     return result
 
 
-def model_productExceptSelf(nums: list[int]) -> list[int]:
+def model_product_except_self(nums: list[int]) -> list[int]:
     n = len(nums)
     answer = [1] * n
 
@@ -37,4 +37,4 @@ def model_productExceptSelf(nums: list[int]) -> list[int]:
 ################### Test case ####################
 class TestProductExceptSelf(unittest.TestCase):
     def assertTupleEqual(self):
-        self.assertEqual(productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
+        self.assertEqual(product_except_self([1, 2, 3, 4]), [24, 12, 8, 6])
