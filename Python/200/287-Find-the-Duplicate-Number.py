@@ -1,7 +1,13 @@
 import unittest
 
 
+#################### Solution ####################
 def find_duplicate(nums: list[int]) -> int:
+    """
+    Hash Set
+    Time Complexity: O(n)
+    Space Complexity: O(n)
+    """
     seen = set()
 
     for num in nums:
@@ -13,6 +19,11 @@ def find_duplicate(nums: list[int]) -> int:
 
 
 def find_duplicate_v2(nums: list[int]) -> int:
+    """
+    Floyd's Tortoise and Hare (Cycle Detection)
+    Time Complexity: O(n)
+    Space Complexity: O(1)
+    """
     slow = nums[0]
     fast = nums[0]
 
@@ -32,6 +43,7 @@ def find_duplicate_v2(nums: list[int]) -> int:
     return slow
 
 
+#################### Test Case ####################
 class TestFindDuplicate(unittest.TestCase):
     def test_find_duplicate(self):
         self.assertEqual(find_duplicate([1, 3, 4, 2, 2]), 2)
