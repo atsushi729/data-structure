@@ -1,4 +1,5 @@
 import types
+import unittest
 from typing import Optional
 
 
@@ -43,3 +44,64 @@ class Solution:
             head = head.next
         head.next = None
         return answer_node
+
+    def add_two_numbers_v2(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        carry = 0
+        dummy = ListNode()
+        current = dummy
+
+        while l1 or l2 or carry:
+            sum = carry
+
+            if l1:
+                sum += l1.val
+                l1 = l1.next
+
+            if l2:
+                sum += l2.val
+                l2 = l2.next
+
+            carry = sum // 10
+            current.next = ListNode(sum % 10)
+            current = current.next
+
+        return dummy.next
+
+
+#################### Test Case ####################
+class TestAddTwoNumbers(unittest.TestCase):
+    def test_add_two_numbers(self):
+        # Create a list: 2 -> 4 -> 3
+        l1 = ListNode(2)
+        l1.next = ListNode(4)
+        l1.next.next = ListNode(3)
+
+        # Create a list: 5 -> 6 -> 4
+        l2 = ListNode(5)
+        l2.next = ListNode(6)
+        l2.next.next = ListNode(4)
+
+        solution = Solution()
+        result = solution.add_two_numbers(l1, l2)
+
+        self.assertEqual(result.val, 7)
+        self.assertEqual(result.next.val, 0)
+        self.assertEqual(result.next.next.val, 8)
+
+    def test_add_two_numbers_v2(self):
+        # Create a list: 2 -> 4 -> 3
+        l1 = ListNode(2)
+        l1.next = ListNode(4)
+        l1.next.next = ListNode(3)
+
+        # Create a list: 5 -> 6 -> 4
+        l2 = ListNode(5)
+        l2.next = ListNode(6)
+        l2.next.next = ListNode(4)
+
+        solution = Solution()
+        result = solution.add_two_numbers_v2(l1, l2)
+
+        self.assertEqual(result.val, 7)
+        self.assertEqual(result.next.val, 0)
+        self.assertEqual(result.next.next.val, 8)
