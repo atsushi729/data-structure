@@ -32,14 +32,17 @@ def find_duplicate_v2(nums: list[int]) -> int:
     return slow
 
 
-# class TestFindDuplicate(unittest.TestCase):
-#     def test_find_duplicate(self):
-#         self.assertEqual(find_duplicate([1, 3, 4, 2, 2]), 2)
-#         self.assertEqual(find_duplicate([3, 1, 3, 4, 2]), 3)
-#         self.assertEqual(find_duplicate([1, 1]), 1)
-#         self.assertEqual(find_duplicate([1, 1, 2]), 1)
-#         self.assertEqual(find_duplicate([2, 2, 2, 2, 2]), 2)
+class TestFindDuplicate(unittest.TestCase):
+    def test_find_duplicate(self):
+        self.assertEqual(find_duplicate([1, 3, 4, 2, 2]), 2)
+        self.assertEqual(find_duplicate([3, 1, 3, 4, 2]), 3)
+        self.assertEqual(find_duplicate([1, 1]), 1)
+        self.assertEqual(find_duplicate([1, 1, 2]), 1)
+        self.assertEqual(find_duplicate([2, 2, 2, 2, 2]), 2)
 
-
-if __name__ == '__main__':
-    print(find_duplicate_v2([1,3,4,2,2]))
+    def test_find_duplicate_v2(self):
+        self.assertEqual(find_duplicate_v2([1, 3, 4, 2, 2]), 2)
+        self.assertEqual(find_duplicate_v2([3, 1, 3, 4, 2]), 3)
+        self.assertEqual(find_duplicate_v2([1, 1]), 1)
+        self.assertEqual(find_duplicate_v2([1, 1, 2]), 1)
+        self.assertEqual(find_duplicate_v2([2, 2, 2, 2, 2]), 2)
