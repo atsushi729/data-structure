@@ -2,7 +2,7 @@ import unittest
 from typing import Optional
 
 
-# Definition for singly-linked list.
+#################### Solution ####################
 class ListNode:
     def __init__(self, x):
         self.val = x
@@ -36,6 +36,7 @@ class Solution:
         return False
 
 
+#################### Test Case ####################
 class TestHasCycle(unittest.TestCase):
     def test_has_cycle(self):
         # Create a list: 1 -> 2 -> 3 -> 4
