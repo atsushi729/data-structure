@@ -2,6 +2,7 @@ import math
 import unittest
 
 
+#################### Solution ####################
 def gcd_of_strings(self, str1: str, str2: str) -> str:
     if str1 + str2 != str2 + str1:
         return ""
@@ -22,6 +23,7 @@ def gcd_of_strings_v2(str1: str, str2: str) -> str:
         return ""
 
 
+#################### Test Case ####################
 class TestGcdOfStrings(unittest.TestCase):
     def test_gcd_of_strings(self):
         self.assertEqual(gcd_of_strings(self, "ABCABC", "ABC"), "ABC")
