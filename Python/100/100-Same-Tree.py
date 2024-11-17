@@ -11,12 +11,12 @@ class TreeNode:
 
 
 class Solution:
-    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+    def is_same_tree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
         if not p and not q:
             return True
         if not p or not q or p.val != q.val:
             return False
-        return self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+        return self.is_same_tree(p.left, q.left) and self.is_same_tree(p.right, q.right)
 
 
 #################### Test Case ####################
@@ -24,12 +24,12 @@ class TestSolution(unittest.TestCase):
     def test_is_same_tree(self):
         p = TreeNode(1, TreeNode(2), TreeNode(3))
         q = TreeNode(1, TreeNode(2), TreeNode(3))
-        self.assertEqual(Solution().isSameTree(p, q), True)
+        self.assertEqual(Solution().is_same_tree(p, q), True)
 
         p = TreeNode(1, TreeNode(2))
         q = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().isSameTree(p, q), False)
+        self.assertEqual(Solution().is_same_tree(p, q), False)
 
         p = TreeNode(1, TreeNode(2), TreeNode(1))
         q = TreeNode(1, TreeNode(1), TreeNode(2))
-        self.assertEqual(Solution().isSameTree(p, q), False)
+        self.assertEqual(Solution().is_same_tree(p, q), False)
