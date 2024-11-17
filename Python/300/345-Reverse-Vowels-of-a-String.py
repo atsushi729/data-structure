@@ -26,9 +26,36 @@ def reverse_vowels(s: str) -> str:
     return "".join(s_list)
 
 
+def reverse_vowels_v2(s: str) -> str:
+    """
+    Time complexity: O(n)
+    Space complexity: O(n)
+    """
+    vowels = "aeiouAEIOU"
+    s_list = list(s)
+    left, right = 0, len(s) - 1
+
+    while left < right:
+        if s_list[left] not in vowels:
+            left += 1
+        elif s_list[right] not in vowels:
+            right -= 1
+        else:
+            s_list[left], s_list[right] = s_list[right], s_list[left]
+            left += 1
+            right -= 1
+
+    return "".join(s_list)
+
+
 #################### Test Case ####################
 class TestReverseVowels(unittest.TestCase):
     def test_reverse_vowels(self):
         self.assertEqual(reverse_vowels("hello"), "holle")
         self.assertEqual(reverse_vowels("leetcode"), "leotcede")
         self.assertEqual(reverse_vowels("aA"), "Aa")
+
+    def test_reverse_vowels_v2(self):
+        self.assertEqual(reverse_vowels_v2("hello"), "holle")
+        self.assertEqual(reverse_vowels_v2("leetcode"), "leotcede")
+        self.assertEqual(reverse_vowels_v2("aA"), "Aa")
