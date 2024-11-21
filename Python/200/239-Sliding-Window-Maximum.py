@@ -4,6 +4,10 @@ from collections import deque
 
 #################### Solution ####################
 def max_sliding_window(nums: list[int], k: int) -> list[int]:
+    """
+    Time complexity: O(n * k)
+    Space complexity: O(n - k + 1)
+    """
     answer = []
 
     for i in range(k - 1, len(nums)):
@@ -16,6 +20,10 @@ def max_sliding_window(nums: list[int], k: int) -> list[int]:
 
 
 def max_sliding_window_v2(nums: list[int], k: int) -> list[int]:
+    """
+    Time complexity: O(n)
+    Space complexity: O(n)
+    """
     output = []
     q = deque()
     l = r = 0
