@@ -21,8 +21,8 @@ def max_sliding_window(nums: list[int], k: int) -> list[int]:
 
 def max_sliding_window_v2(nums: list[int], k: int) -> list[int]:
     """
-    Time complexity: O(n)
-    Space complexity: O(n)
+    Time complexity: O(n)  : O(n - k + 1) Technically
+    Space complexity: O(k) : Window size
     """
     output = []
     q = deque()
