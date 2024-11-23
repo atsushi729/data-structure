@@ -3,6 +3,10 @@ import unittest
 
 #################### Solution ####################
 def find_min(nums: list[int]) -> int:
+    """
+    Time complexity: O(log n)
+    Space complexity: O(1)
+    """
     start, end = 0, len(nums) - 1
     curr_min = float("inf")
 
@@ -22,6 +26,10 @@ def find_min(nums: list[int]) -> int:
 
 
 def find_min_v2(nums: list[int]) -> int:
+    """
+    Time complexity: O(n)
+    Space complexity: O(1)
+    """
     return min(nums)
 
 

@@ -3,6 +3,10 @@ import unittest
 
 #################### Solution ####################
 def largest_rectangle_area(heights: list[int]) -> int:
+    """
+    Time complexity: O(n)
+    Space complexity: O(n)
+    """
     max_area = 0
     stack = []
 
