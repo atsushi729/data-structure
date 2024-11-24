@@ -1,6 +1,7 @@
 import unittest
 
 
+#################### Solution ####################
 def search(nums: list[int], target: int) -> int:
     """
     Time complexity: O(log n)
@@ -28,6 +29,7 @@ def search(nums: list[int], target: int) -> int:
     return -1
 
 
+#################### Test Case ####################
 class TestSearch(unittest.TestCase):
     def test_search(self):
         self.assertEqual(search([4, 5, 6, 7, 0, 1, 2], 0), 4)
