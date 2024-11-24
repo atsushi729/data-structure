@@ -1,8 +1,13 @@
 import unittest
 
 
+#################### Solution ####################
 class Solution:
     def increasing_triplet(self, nums: list[int]) -> bool:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
         first = second = float('inf')
 
         for num in nums:
