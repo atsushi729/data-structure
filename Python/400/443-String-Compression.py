@@ -38,3 +38,4 @@ class TestCompress(unittest.TestCase):
     def test_compress(self):
         self.assertEqual(Solution().compress(["a", "a", "b", "b", "c", "c", "c"]), 6)
         self.assertEqual(Solution().compress(["a", "b", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c", "c"]), 5)
+        self.assertEqual(Solution().compress(["a", "a", "b", "b", "c", "c", "c", "d", "d", "d"]), 8)
