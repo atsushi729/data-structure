@@ -1,6 +1,7 @@
 import unittest
 
 
+#################### Solution ####################
 class Solution:
     def compress(self, chars: list[str]) -> int:
         """
