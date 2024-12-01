@@ -24,6 +24,28 @@ class Solution:
 
         return dfs(root)[0]
 
+    def is_balanced_v2(self, root: Optional[TreeNode]) -> bool:
+        """
+        time complexity: O(n^2)
+        space complexity: O(n)
+        """
+        if not root:
+            return True
+
+        left = self.height(root.left)
+        right = self.height(root.right)
+
+        if abs(left - right) > 1:
+            return False
+
+        return self.is_balanced_v2(root.left) and self.is_balanced_v2(root.right)
+
+    def height(self, root):
+        if not root:
+            return 0
+
+        return 1 + max(self.height(root.left), self.height(root.right))
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -43,3 +65,20 @@ class TestSolution(unittest.TestCase):
         root.left.left.left = TreeNode(4)
         root.left.left.right = TreeNode(4)
         self.assertEqual(Solution().is_balanced(root), False)
+
+    def test_isBalancedV2(self):
+        root = TreeNode(3)
+        root.left = TreeNode(9)
+        root.right = TreeNode(20)
+        root.right.left = TreeNode(15)
+        root.right.right = TreeNode(7)
+        self.assertEqual(Solution().is_balanced_v2(root), True)
+
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.right = TreeNode(2)
+        root.left.left = TreeNode(3)
+        root.left.right = TreeNode(3)
+        root.left.left.left = TreeNode(4)
+        root.left.left.right = TreeNode(4)
+        self.assertEqual(Solution().is_balanced_v2(root), False)
