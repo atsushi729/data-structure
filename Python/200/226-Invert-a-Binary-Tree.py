@@ -12,6 +12,10 @@ class TreeNode:
 
 class Solution:
     def invert_tree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         # base case
         if not root:
             return None
@@ -24,6 +28,10 @@ class Solution:
         return root
 
     def invert_tree_v2(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         # base case
         if not root:
             return None
@@ -33,6 +41,10 @@ class Solution:
         return root
 
     def invert_binary_tree_bfs(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         if not root:
             return None
 
