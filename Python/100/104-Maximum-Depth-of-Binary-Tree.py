@@ -12,7 +12,7 @@ class TreeNode:
 
 
 class Solution:
-    def maxDepth(self, root: Optional[TreeNode]) -> int:
+    def max_depth(self, root: Optional[TreeNode]) -> int:
         q = deque()
         if root:
             q.append(root)
@@ -40,13 +40,13 @@ class Solution:
 class TestMaxDepth(unittest.TestCase):
     def test_max_depth(self):
         root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        self.assertEqual(Solution().maxDepth(root), 3)
+        self.assertEqual(Solution().max_depth(root), 3)
 
         root = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().maxDepth(root), 2)
+        self.assertEqual(Solution().max_depth(root), 2)
 
         root = None
-        self.assertEqual(Solution().maxDepth(root), 0)
+        self.assertEqual(Solution().max_depth(root), 0)
 
     def test_max_depth_v2(self):
         root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
