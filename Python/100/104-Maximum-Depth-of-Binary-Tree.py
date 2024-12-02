@@ -13,6 +13,10 @@ class TreeNode:
 
 class Solution:
     def max_depth(self, root: Optional[TreeNode]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         q = deque()
         if root:
             q.append(root)
@@ -31,6 +35,10 @@ class Solution:
         return level
 
     def max_depth_v2(self, root: Optional[TreeNode]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         if not root:
             return 0
 
