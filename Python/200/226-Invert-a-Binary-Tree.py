@@ -62,6 +62,28 @@ class Solution:
 
         return root
 
+    def invert_binary_tree_stack(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        if not root:
+            return None
+
+        stack = [root]
+
+        while stack:
+            node = stack.pop()
+            node.left, node.right = node.right, node.left
+
+            if node.left:
+                stack.append(node.left)
+
+            if node.right:
+                stack.append(node.right)
+
+        return root
+
 
 #################### Test Case ####################
 class TestInvertTree(unittest.TestCase):
@@ -116,6 +138,26 @@ class TestInvertTree(unittest.TestCase):
 
         solution = Solution()
         result = solution.invert_binary_tree_bfs(root)
+
+        self.assertEqual(result.val, 4)
+        self.assertEqual(result.left.val, 7)
+        self.assertEqual(result.right.val, 2)
+        self.assertEqual(result.left.left.val, 9)
+        self.assertEqual(result.left.right.val, 6)
+        self.assertEqual(result.right.left.val, 3)
+        self.assertEqual(result.right.right.val, 1)
+
+    def test_invert_binary_tree_stack(self):
+        root = TreeNode(4)
+        root.left = TreeNode(2)
+        root.right = TreeNode(7)
+        root.left.left = TreeNode(1)
+        root.left.right = TreeNode(3)
+        root.right.left = TreeNode(6)
+        root.right.right = TreeNode(9)
+
+        solution = Solution()
+        result = solution.invert_binary_tree_stack(root)
 
         self.assertEqual(result.val, 4)
         self.assertEqual(result.left.val, 7)
