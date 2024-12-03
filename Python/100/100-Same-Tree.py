@@ -13,6 +13,10 @@ class TreeNode:
 
 class Solution:
     def is_same_tree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         if not p and not q:
             return True
         if not p or not q or p.val != q.val:
@@ -20,6 +24,10 @@ class Solution:
         return self.is_same_tree(p.left, q.left) and self.is_same_tree(p.right, q.right)
 
     def is_same_tree_bfs(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         q1 = deque([p])
         q2 = deque([q])
 
