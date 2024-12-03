@@ -1,4 +1,5 @@
 import unittest
+from collections import deque
 from typing import Optional
 
 
@@ -19,22 +20,23 @@ class Solution:
         return self.is_same_tree(p.left, q.left) and self.is_same_tree(p.right, q.right)
 
     def is_same_tree_bfs(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
-        if not p and not q:
-            return True
-        if not p or not q or p.val != q.val:
-            return False
+        q1 = deque([p])
+        q2 = deque([q])
 
-        queue = [(p, q)]
+        while q1 and q2:
 
-        while queue:
-            node1, node2 = queue.pop(0)
-            if not node1 and not node2:
+            nodeP = q1.popleft()
+            nodeQ = q2.popleft()
+
+            if nodeP is None and nodeQ is None:
                 continue
-            if not node1 or not node2 or node1.val != node2.val:
+            if nodeP is None or nodeQ is None or nodeP.val != nodeQ.val:
                 return False
 
-            queue.append((node1.left, node2.left))
-            queue.append((node1.right, node2.right))
+            q1.append(nodeP.left)
+            q1.append(nodeP.right)
+            q2.append(nodeQ.left)
+            q2.append(nodeQ.right)
 
         return True
 
