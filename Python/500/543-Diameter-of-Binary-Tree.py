@@ -40,6 +40,22 @@ class Solution:
 
         return res
 
+    def diameter_of_binary_tree_v2(self, root: Optional[TreeNode]) -> int:
+        self.res = 0
+
+        def dfs(curr):
+            if not curr:
+                return 0
+
+            left = dfs(curr.left)
+            right = dfs(curr.right)
+
+            self.res = max(self.res, left + right)
+            return 1 + max(left, right)
+
+        dfs(root)
+        return self.res
+
 
 #################### Test Case ####################
 class TestDiameterOfBinaryTree(unittest.TestCase):
@@ -52,5 +68,17 @@ class TestDiameterOfBinaryTree(unittest.TestCase):
 
         solution = Solution()
         result = solution.diameter_of_binary_tree(root)
+
+        self.assertEqual(result, 3)
+
+    def test_diameter_of_binary_tree_v2(self):
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.right = TreeNode(3)
+        root.left.left = TreeNode(4)
+        root.left.right = TreeNode(5)
+
+        solution = Solution()
+        result = solution.diameter_of_binary_tree_v2(root)
 
         self.assertEqual(result, 3)
