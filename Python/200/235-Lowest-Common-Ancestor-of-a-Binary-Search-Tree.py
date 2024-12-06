@@ -2,6 +2,7 @@
 import unittest
 
 
+#################### Solution ####################
 class TreeNode:
     def __init__(self, x):
         self.val = x
@@ -21,6 +22,7 @@ class Solution:
         return root
 
 
+#################### Test Case ####################
 class TestSolution(unittest.TestCase):
     def test_lowest_common_ancestor(self):
         root = TreeNode(6)
