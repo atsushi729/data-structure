@@ -12,6 +12,10 @@ class TreeNode:
 
 class Solution:
     def lowest_common_ancestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        time complexity: O(h) where h is the height of the tree
+        space complexity: O(h)
+        """
         if not root or not p or not q:
             return None
 
@@ -22,6 +26,10 @@ class Solution:
         return root
 
     def lowest_common_ancestor_v2(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        """
+        time complexity: O(h) where h is the height of the tree
+        space complexity: O(1)
+        """
         while root:
             if p.val < root.val > q.val:
                 root = root.left
