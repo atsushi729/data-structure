@@ -4,6 +4,7 @@ from typing import Optional
 import unittest
 
 
+#################### Solution ####################
 class TreeNode:
     def __init__(self, val=0, left=None, right=None):
         self.val = val
@@ -45,6 +46,7 @@ class Solution:
         return 1 + max(self.max_depth_v2(root.left), self.max_depth_v2(root.right))
 
 
+#################### Test Case ####################
 class TestMaxDepth(unittest.TestCase):
     def test_max_depth(self):
         root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
