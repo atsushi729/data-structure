@@ -1,4 +1,5 @@
 import unittest
+import collections
 
 
 #################### Solution ####################
@@ -25,6 +26,24 @@ class Solution:
 
         return dfs(root, root.val)
 
+    def good_node_v2(self, root: TreeNode) -> int:
+        result = 0
+        queue = collections.deque([(root, root.val)])
+
+        while queue:
+            node, max_value = queue.popleft()
+            if not node:
+                continue
+
+            if node.val >= max_value:
+                result += 1
+                max_value = node.val
+
+            queue.append((node.left, max_value))
+            queue.append((node.right, max_value))
+
+        return result
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -37,3 +56,13 @@ class TestSolution(unittest.TestCase):
 
         root = TreeNode(1)
         self.assertEqual(Solution().good_nodes(root), 1)
+
+    def test_good_node_v2(self):
+        root = TreeNode(3, TreeNode(1, TreeNode(3)), TreeNode(4, TreeNode(1), TreeNode(5)))
+        self.assertEqual(Solution().good_node_v2(root), 4)
+
+        root = TreeNode(3, TreeNode(3, TreeNode(4), TreeNode(2)))
+        self.assertEqual(Solution().good_node_v2(root), 3)
+
+        root = TreeNode(1)
+        self.assertEqual(Solution().good_node_v2(root), 1)
