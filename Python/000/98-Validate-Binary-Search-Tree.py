@@ -1,3 +1,4 @@
+from collections import deque
 from typing import Optional
 import unittest
 
@@ -24,6 +25,25 @@ class Solution:
 
         return valid(root, float("-inf"), float("inf"))
 
+    def is_valid_bst2(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+
+        q = deque([(root, float("-inf"), float("inf"))])
+
+        while q:
+            node, left, right = q.popleft()
+
+            if not (left < node.val < right):
+                return False
+
+            if node.left:
+                q.append((node.left, left, node.val))
+            if node.right:
+                q.append((node.right, node.val, right))
+
+        return True
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -35,4 +55,14 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(Solution().is_valid_bst(root), False)
 
         root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
-        self.assertEqual(Solution().is_valid_bst(root), True)
+        self.assertEqual(Solution().is_valid_bst(root), False)
+
+    def test_is_valid_bst2(self):
+        root = TreeNode(2, TreeNode(1), TreeNode(3))
+        self.assertEqual(Solution().is_valid_bst2(root), True)
+
+        root = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
+        self.assertEqual(Solution().is_valid_bst2(root), False)
+
+        root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
+        self.assertEqual(Solution().is_valid_bst2(root), False)
