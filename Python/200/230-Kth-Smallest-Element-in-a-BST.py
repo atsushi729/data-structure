@@ -48,14 +48,14 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def test_kthSmallest(self):
+    def test_kth_smallest(self):
         root = TreeNode(3, TreeNode(1, None, TreeNode(2)), TreeNode(4))
         self.assertEqual(Solution().kth_smallest(root, 1), 1)
 
         root = TreeNode(5, TreeNode(3, TreeNode(2, TreeNode(1)), TreeNode(4)), TreeNode(6))
         self.assertEqual(Solution().kth_smallest(root, 3), 3)
 
-    def test_kthSmallest2(self):
+    def test_kth_smallest2(self):
         root = TreeNode(3, TreeNode(1, None, TreeNode(2)), TreeNode(4))
         self.assertEqual(Solution().kth_smallest2(root, 1), 1)
 
