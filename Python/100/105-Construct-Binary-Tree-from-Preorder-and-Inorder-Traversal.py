@@ -23,6 +23,26 @@ class Solution:
 
         return root
 
+    def build_tree_v2(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        indices = {val: i for i, val in enumerate(inorder)}
+        self.pre_idx = 0
+
+        def helper(left, right):
+            if left > right:
+                return None
+
+            root_val = preorder[self.pre_idx]
+            root = TreeNode(root_val)
+            self.pre_idx += 1
+
+            mid = indices[root_val]
+            root.left = helper(left, mid - 1)
+            root.right = helper(mid + 1, right)
+
+            return root
+
+        return helper(0, len(preorder) - 1)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -40,4 +60,11 @@ class TestSolution(unittest.TestCase):
         inorder = [9, 3, 15, 20, 7]
         expected_root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
         result_root = Solution().build_tree(preorder, inorder)
+        self.assertTrue(self.compareTrees(result_root, expected_root))
+
+    def test_buildTree_v2(self):
+        preorder = [3, 9, 20, 15, 7]
+        inorder = [9, 3, 15, 20, 7]
+        expected_root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
+        result_root = Solution().build_tree_v2(preorder, inorder)
         self.assertTrue(self.compareTrees(result_root, expected_root))
