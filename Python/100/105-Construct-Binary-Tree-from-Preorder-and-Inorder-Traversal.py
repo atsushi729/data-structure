@@ -12,6 +12,10 @@ class TreeNode:
 
 class Solution:
     def build_tree(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        Time Complexity: O(n)
+        Space Complexity: O(n)
+        """
         if not preorder or not inorder:
             return None
 
@@ -24,6 +28,10 @@ class Solution:
         return root
 
     def build_tree_v2(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        """
+        Time Complexity: O(n)
+        Space Complexity: O(n)
+        """
         indices = {val: i for i, val in enumerate(inorder)}
         self.pre_idx = 0
 
