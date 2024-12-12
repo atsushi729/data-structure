@@ -11,7 +11,7 @@ class TreeNode:
 
 
 class Solution:
-    def maxPathSum(self, root: Optional[TreeNode]) -> int:
+    def max_path_sum(self, root: Optional[TreeNode]) -> int:
         res = -float("inf")
 
         def dfs(node):
@@ -35,10 +35,10 @@ class TestSolution(unittest.TestCase):
         root = TreeNode(1)
         root.left = TreeNode(2)
         root.right = TreeNode(3)
-        self.assertEqual(Solution().maxPathSum(root), 6)
+        self.assertEqual(Solution().max_path_sum(root), 6)
         root = TreeNode(-10)
         root.left = TreeNode(9)
         root.right = TreeNode(20)
         root.right.left = TreeNode(15)
         root.right.right = TreeNode(7)
-        self.assertEqual(Solution().maxPathSum(root), 42)
+        self.assertEqual(Solution().max_path_sum(root), 42)
