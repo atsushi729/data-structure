@@ -28,6 +28,32 @@ class Solution:
         dfs(root)
         return res
 
+    def max_path_sum_v2(self, root: Optional[TreeNode]) -> int:
+        res = -float("inf")
+
+        def dfs(node):
+            nonlocal res
+            if not node:
+                return 0
+
+            left = self.get_max(node.left)
+            right = self.get_max(node.right)
+            res = max(res, root.val + left + right)
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return res
+
+    def get_max(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+
+        left = self.get_max(root.left)
+        right = self.get_max(root.right)
+        path = root.val + max(left, right)
+        return max(0, path)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
