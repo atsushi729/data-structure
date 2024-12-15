@@ -68,3 +68,15 @@ class TestSolution(unittest.TestCase):
         root.right.left = TreeNode(15)
         root.right.right = TreeNode(7)
         self.assertEqual(Solution().max_path_sum(root), 42)
+
+    def test_max_path_sum_v2(self):
+        root = TreeNode(1)
+        root.left = TreeNode(2)
+        root.right = TreeNode(3)
+        self.assertEqual(Solution().max_path_sum_v2(root), 6)
+        root = TreeNode(-10)
+        root.left = TreeNode(9)
+        root.right = TreeNode(20)
+        root.right.left = TreeNode(15)
+        root.right.right = TreeNode(7)
+        self.assertEqual(Solution().max_path_sum_v2(root), 42)
