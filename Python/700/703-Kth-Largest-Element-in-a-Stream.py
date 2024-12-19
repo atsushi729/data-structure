@@ -11,6 +11,10 @@ class KthLargest:
         self.nums = nums
 
     def add(self, val: int) -> int:
+        """
+        Time Complexity: O(nlogn)
+        Space Complexity: O(n)
+        """
         self.nums.append(val)
         self.nums.sort()
         return self.nums[len(self.nums) - self.k]
@@ -26,6 +30,10 @@ class KthLargestV2:
             heapq.heappop(self.minHeap)
 
     def add(self, val: int) -> int:
+        """
+        Time Complexity: O(logk)
+        Space Complexity: O(k)
+        """
         heapq.heappush(self.minHeap, val)
         if len(self.minHeap) > self.k:
             heapq.heappop(self.minHeap)
