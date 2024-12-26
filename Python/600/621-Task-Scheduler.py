@@ -3,6 +3,7 @@ from collections import Counter, deque
 from typing import List
 import unittest
 
+
 #################### Solution ####################
 class Solution:
     def least_interval(self, tasks: List[str], n: int) -> int:
@@ -30,8 +31,18 @@ class Solution:
 
         return current_time
 
+    def least_interval_v2(self, tasks: List[str], n: int) -> int:
+        task_counts = Counter(tasks)
+        max_count = max(task_counts.values())
+        max_count_tasks = sum(1 for count in task_counts.values() if count == max_count)
+
+        return max(len(tasks), (max_count - 1) * (n + 1) + max_count_tasks)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
     def test_least_interval(self):
         self.assertEqual(Solution().least_interval(["A", "A", "A", "B", "B", "B"], 2), 8)
+
+    def test_least_interval_v2(self):
+        self.assertEqual(Solution().least_interval_v2(["A", "A", "A", "B", "B", "B"], 2), 8)
