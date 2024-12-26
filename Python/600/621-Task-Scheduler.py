@@ -38,6 +38,20 @@ class Solution:
 
         return max(len(tasks), (max_count - 1) * (n + 1) + max_count_tasks)
 
+    def least_interval_v3(self, tasks: List[str], n: int) -> int:
+        count = [0] * 26
+
+        for task in tasks:
+            count[ord(task) - ord("A")] += 1
+
+        count.sort()
+        maxf = count[25]
+        idle = (maxf - 1) * n
+
+        for i in range(24, -1, -1):
+            idle -= min(maxf - 1, count[i])
+        return max(0, idle) + len(tasks)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -46,3 +60,6 @@ class TestSolution(unittest.TestCase):
 
     def test_least_interval_v2(self):
         self.assertEqual(Solution().least_interval_v2(["A", "A", "A", "B", "B", "B"], 2), 8)
+
+    def test_least_interval_v3(self):
+        self.assertEqual(Solution().least_interval_v3(["A", "A", "A", "B", "B", "B"], 2), 8)
