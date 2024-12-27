@@ -1,6 +1,7 @@
 import unittest
 from collections import defaultdict
 from typing import List
+import heapq
 
 
 class Twitter:
@@ -30,6 +31,43 @@ class Twitter:
         self.followMap[followerId].discard(followeeId)
 
 
+class TwitterV2:
+    def __init__(self):
+        self.count = 0
+        self.tweetMap = defaultdict(list)
+        self.followMap = defaultdict(set)
+
+    def postTweet(self, userId: int, tweetId: int) -> None:
+        self.tweetMap[userId].append([self.count, tweetId])
+        self.count -= 1
+
+    def getNewsFeed(self, userId: int) -> List[int]:
+        res = []
+        minHeap = []
+
+        self.followMap[userId].add(userId)
+        for followeeId in self.followMap[userId]:
+            if followeeId in self.tweetMap:
+                index = len(self.tweetMap[followeeId]) - 1
+                count, tweetId = self.tweetMap[followeeId][index]
+                heapq.heappush(minHeap, [count, tweetId, followeeId, index - 1])
+
+        while minHeap and len(res) < 10:
+            count, tweetId, followeeId, index = heapq.heappop(minHeap)
+            res.append(tweetId)
+            if index >= 0:
+                count, tweetId = self.tweetMap[followeeId][index]
+                heapq.heappush(minHeap, [count, tweetId, followeeId, index - 1])
+        return res
+
+    def follow(self, followerId: int, followeeId: int) -> None:
+        self.followMap[followerId].add(followeeId)
+
+    def unfollow(self, followerId: int, followeeId: int) -> None:
+        if followeeId in self.followMap[followerId]:
+            self.followMap[followerId].remove(followeeId)
+
+
 class TestTwitter(unittest.TestCase):
     def test_twitter(self):
         twitter = Twitter()
@@ -41,3 +79,12 @@ class TestTwitter(unittest.TestCase):
         twitter.unfollow(1, 2)
         self.assertEqual(twitter.getNewsFeed(1), [5])
 
+    def test_twitter_v2(self):
+        twitter = TwitterV2()
+        twitter.postTweet(1, 5)
+        self.assertEqual(twitter.getNewsFeed(1), [5])
+        twitter.follow(1, 2)
+        twitter.postTweet(2, 6)
+        self.assertEqual(twitter.getNewsFeed(1), [6, 5])
+        twitter.unfollow(1, 2)
+        self.assertEqual(twitter.getNewsFeed(1), [5])
