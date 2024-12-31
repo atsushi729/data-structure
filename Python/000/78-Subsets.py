@@ -21,6 +21,12 @@ class Solution:
         dfs(0)
         return res
 
+    def subsets_v2(self, nums: List[int]) -> List[List[int]]:
+        res = [[]]
+        for num in nums:
+            res += [curr + [num] for curr in res]
+        return res
+
 
 ##################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -29,3 +35,9 @@ class TestSolution(unittest.TestCase):
         self.assertListEqual(solution.subsets([1, 2, 3]), [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
         self.assertListEqual(solution.subsets([0]), [[0], []])
         self.assertListEqual(solution.subsets([]), [[]])
+
+    def test_subset_v2(self):
+        solution = Solution()
+        self.assertListEqual(solution.subsets_v2([1, 2, 3]), [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
+        self.assertListEqual(solution.subsets_v2([0]), [[], [0]])
+        self.assertListEqual(solution.subsets_v2([]), [[]])
