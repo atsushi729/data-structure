@@ -27,6 +27,18 @@ class Solution:
             res += [curr + [num] for curr in res]
         return res
 
+    def subset_v3(self, nums: List[int]) -> List[List[int]]:
+        n = len(nums)
+        res = []
+
+        for i in range(1 << n):
+            subset = []
+            for j in range(n):
+                if i & (1 << j):
+                    subset.append(nums[j])
+            res.append(subset)
+        return res
+
 
 ##################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -41,3 +53,9 @@ class TestSolution(unittest.TestCase):
         self.assertListEqual(solution.subsets_v2([1, 2, 3]), [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
         self.assertListEqual(solution.subsets_v2([0]), [[], [0]])
         self.assertListEqual(solution.subsets_v2([]), [[]])
+
+    def test_subset_v3(self):
+        solution = Solution()
+        self.assertListEqual(solution.subset_v3([1, 2, 3]), [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
+        self.assertListEqual(solution.subset_v3([0]), [[], [0]])
+        self.assertListEqual(solution.subset_v3([]), [[]])
