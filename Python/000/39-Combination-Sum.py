@@ -21,8 +21,29 @@ class Solution:
         dfs(0, [], 0)
         return res
 
+    def combination_sum_v2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+
+        def dfs(i, cur, total):
+            if total == target:
+                res.append(cur.copy())
+                return
+
+            for j in range(i, len(candidates)):
+                if total + candidates[j] <= target:
+                    cur.append(candidates[j])
+                    dfs(j, cur, total + candidates[j])
+                    cur.pop()
+
+        dfs(0, [], 0)
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def test_combination_sum(self):
         self.assertEqual(Solution().combination_sum([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
         self.assertEqual(Solution().combination_sum([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
+
+    def test_combination_sum_v2(self):
+        self.assertEqual(Solution().combination_sum_v2([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
+        self.assertEqual(Solution().combination_sum_v2([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
