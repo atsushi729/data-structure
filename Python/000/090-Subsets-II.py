@@ -45,6 +45,24 @@ class Solution:
         backtrack(0, [])
         return res
 
+    def subsets_with_dup_v3(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+
+        def backtrack(i, subset):
+            res.append(subset[::])
+
+            for j in range(i, len(nums)):
+                if j > i and nums[j] == nums[j - 1]:
+                    continue
+
+                subset.append(nums[j])
+                backtrack(j + 1, subset)
+                subset.pop()
+
+        backtrack(0, [])
+        return res
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -66,6 +84,20 @@ class TestSolution(unittest.TestCase):
         solution = Solution()
         self.assertListEqual(
             sorted(solution.subsets_with_dup_v2([1, 2, 2])),
+            sorted([
+                [2],
+                [1],
+                [1, 2, 2],
+                [2, 2],
+                [1, 2],
+                []
+            ])
+        )
+
+    def test_subsets_with_dup_v3(self):
+        solution = Solution()
+        self.assertListEqual(
+            sorted(solution.subsets_with_dup_v3([1, 2, 2])),
             sorted([
                 [2],
                 [1],
