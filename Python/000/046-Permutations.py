@@ -34,6 +34,18 @@ class Solution:
             self.backtrack(nums, index + 1)
             nums[index], nums[i] = nums[i], nums[index]
 
+    def permute_v3(self, nums: List[int]) -> List[List[int]]:
+        perms = [[]]
+        for num in nums:
+            new_perms = []
+            for p in perms:
+                for i in range(len(p) + 1):
+                    p_copy = p.copy()
+                    p_copy.insert(i, num)
+                    new_perms.append(p_copy)
+            perms = new_perms
+        return perms
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -86,5 +98,31 @@ class TestSolution(unittest.TestCase):
         )
         self.assertListEqual(
             sorted(solution.permute_v2([])),
+            sorted([[]])
+        )
+
+    def test_permute_v3(self):
+        solution = Solution()
+        self.assertListEqual(
+            sorted(solution.permute_v3([1, 2, 3])),
+            sorted([
+                [1, 2, 3],
+                [1, 3, 2],
+                [2, 1, 3],
+                [2, 3, 1],
+                [3, 1, 2],
+                [3, 2, 1]
+            ])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v3([0, 1])),
+            sorted([[0, 1], [1, 0]])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v3([1])),
+            sorted([[1]])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v3([])),
             sorted([[]])
         )
