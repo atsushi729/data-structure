@@ -7,13 +7,12 @@ class TrieNode:
         self.isEnd = False
 
 
-class TrieNodeV2:
-    def __init__(self):
-        self.children = [None] * 26
-        self.isEnd = False
-
-
 class Trie:
+    """
+    Time Complexity: O(m), where m is the key length.
+    Space Complexity: O(t) where t is the total number of characters.
+    """
+
     def __init__(self):
         self.root = TrieNode()
 
@@ -42,7 +41,18 @@ class Trie:
         return True
 
 
+class TrieNodeV2:
+    def __init__(self):
+        self.children = [None] * 26
+        self.isEnd = False
+
+
 class TrieV2:
+    """
+    Time Complexity: O(m), where m is the key length.
+    Space Complexity: O(t) where t is the total number of characters.
+    """
+
     def __init__(self):
         self.root = TrieNodeV2()
 
