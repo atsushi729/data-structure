@@ -14,10 +14,13 @@ def is_toeplitz_matrix(matrix: list[list[int]]) -> bool:
 
 
 def is_toeplitz_matrix_v2(matrix: list[list[int]]) -> bool:
-    rows, column_stack = len(matrix), len(matrix[0])
+    rows, cols = len(matrix), len(matrix[0])
+
+    if rows == 1 or cols == 1:
+        return True
 
     for i in range(rows - 1):
-        for j in range(column_stack - 1):
+        for j in range(cols - 1):
             if matrix[i][j] != matrix[i + 1][j + 1]:
                 return False
     return True
