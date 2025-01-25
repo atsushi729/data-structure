@@ -4,6 +4,10 @@ import unittest
 
 class Solution:
     def num_islands(self, grid: List[List[str]]) -> int:
+        """
+        Time complexity (m * n)
+        Space complexity (m * n)
+        """
         directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]  # Down, Up, Right, Left
         rows, cols = len(grid), len(grid[0])
         is_land = 0
