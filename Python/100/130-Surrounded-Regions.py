@@ -1,5 +1,6 @@
 from typing import List
 import unittest
+from collections import deque
 
 
 #################### Solution ####################
@@ -30,6 +31,38 @@ class Solution:
                 capture(0, c)
             if board[rows - 1][c] == "O":
                 capture(rows - 1, c)
+
+        for r in range(rows):
+            for c in range(cols):
+                if board[r][c] == "O":
+                    board[r][c] = "X"
+                elif board[r][c] == "T":
+                    board[r][c] = "O"
+
+    def solve_v2(self, board: List[List[str]]) -> None:
+        rows, cols = len(board), len(board[0])
+        directions = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+        def capture():
+            q = deque()
+
+            for r in range(rows):
+                for c in range(cols):
+                    if (r == 0 or r == rows - 1 or
+                            c == 0 or c == cols - 1 and
+                            board[r][c] == "O"):
+                        q.append((r, c))
+
+            while q:
+                r, c = q.popleft()
+                if board[r][c] == "O":
+                    board[r][c] = "T"
+                    for dr, dc in directions:
+                        nr, nc = r + dr, c + dc
+                        if 0 <= nr < rows and 0 <= nc < cols:
+                            q.append((nr, nc))
+
+        capture()
 
         for r in range(rows):
             for c in range(cols):
@@ -86,6 +119,61 @@ class TestSolution(unittest.TestCase):
             ["X", "O", "X", "X"]
         ]
         solution.solve(board)
+        self.assertListEqual(
+            board,
+            [
+                ["X", "O", "X", "X"],
+                ["X", "O", "O", "X"],
+                ["X", "X", "O", "X"],
+                ["X", "O", "X", "X"]
+            ]
+        )
+
+    def test_solve_v2(self):
+        solution = Solution()
+        board = [
+            ["X", "X", "X", "X"],
+            ["X", "O", "O", "X"],
+            ["X", "X", "O", "X"],
+            ["X", "O", "X", "X"]
+        ]
+        solution.solve_v2(board)
+        self.assertListEqual(
+            board,
+            [
+                ["X", "X", "X", "X"],
+                ["X", "X", "X", "X"],
+                ["X", "X", "X", "X"],
+                ["X", "O", "X", "X"]
+            ]
+        )
+        board = [
+            ["X"]
+        ]
+        solution.solve_v2(board)
+        self.assertListEqual(
+            board,
+            [
+                ["X"]
+            ]
+        )
+        board = [
+            ["O"]
+        ]
+        solution.solve_v2(board)
+        self.assertListEqual(
+            board,
+            [
+                ["O"]
+            ]
+        )
+        board = [
+            ["X", "O", "X", "X"],
+            ["X", "O", "O", "X"],
+            ["X", "X", "O", "X"],
+            ["X", "O", "X", "X"]
+        ]
+        solution.solve_v2(board)
         self.assertListEqual(
             board,
             [
