@@ -18,6 +18,24 @@ class Solution:
 
         return "".join(rows)
 
+    def convert_v2(self, s: str, numRows: int) -> str:
+        if numRows == 1 or numRows >= len(s):
+            return s
+
+        rows = ["" for _ in range(numRows)]
+        index = 0
+        step = 1
+
+        for char in s:
+            rows[index] += char
+            if index == 0:
+                step = 1
+            elif index == numRows - 1:
+                step = -1
+            index += step
+
+        return "".join(rows)
+
 
 ###################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -26,3 +44,11 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(solution.convert("PAYPALISHIRING", 3), "PAHNAPLSIIGYIR")
         self.assertEqual(solution.convert("PAYPALISHIRING", 4), "PINALSIGYAHRPI")
         self.assertEqual(solution.convert("A", 1), "A")
+
+    def test_convert_v2(self):
+        solution = Solution()
+        self.assertEqual(solution.convert_v2("PAYPALISHIRING", 3), "PAHNAPLSIIGYIR")
+        self.assertEqual(solution.convert_v2("PAYPALISHIRING", 4), "PINALSIGYAHRPI")
+        self.assertEqual(solution.convert_v2("A", 1), "A")
+        self.assertEqual(solution.convert_v2("A", 3), "A")
+        self.assertEqual(solution.convert_v2("AA", 3), "AA")
