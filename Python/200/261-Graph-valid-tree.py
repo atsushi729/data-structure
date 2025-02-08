@@ -4,7 +4,7 @@ import unittest
 
 #################### Solution ####################
 class Solution:
-    def validTree(self, n: int, edges: List[List[int]]) -> bool:
+    def valid_tree(self, n: int, edges: List[List[int]]) -> bool:
         if n - 1 != len(edges):
             return False
 
@@ -33,13 +33,13 @@ class Solution:
 class TestSolution(unittest.TestCase):
     def test_validTree(self):
         solution = Solution()
-        self.assertEqual(solution.validTree(5, [[0, 1], [0, 2], [0, 3], [1, 4]]), True)
-        self.assertEqual(solution.validTree(5, [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]]), False)
-        self.assertEqual(solution.validTree(5, [[0, 1], [1, 2], [3, 4]]), False)
-        self.assertEqual(solution.validTree(1, []), True)
-        self.assertEqual(solution.validTree(2, [[0, 1]]), True)
-        self.assertEqual(solution.validTree(2, []), False)
-        self.assertEqual(solution.validTree(3, [[0, 1], [1, 2]]), True)
-        self.assertEqual(solution.validTree(3, [[0, 1], [1, 2], [2, 0]]), False)
-        self.assertEqual(solution.validTree(4, [[0, 1], [1, 2], [2, 3]]), True)
-        self.assertEqual(solution.validTree(4, [[0, 1], [1, 2], [2, 3], [3, 0]]), False)
+        self.assertEqual(solution.valid_tree(5, [[0, 1], [0, 2], [0, 3], [1, 4]]), True)
+        self.assertEqual(solution.valid_tree(5, [[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]]), False)
+        self.assertEqual(solution.valid_tree(5, [[0, 1], [1, 2], [3, 4]]), False)
+        self.assertEqual(solution.valid_tree(1, []), True)
+        self.assertEqual(solution.valid_tree(2, [[0, 1]]), True)
+        self.assertEqual(solution.valid_tree(2, []), False)
+        self.assertEqual(solution.valid_tree(3, [[0, 1], [1, 2]]), True)
+        self.assertEqual(solution.valid_tree(3, [[0, 1], [1, 2], [2, 0]]), False)
+        self.assertEqual(solution.valid_tree(4, [[0, 1], [1, 2], [2, 3]]), True)
+        self.assertEqual(solution.valid_tree(4, [[0, 1], [1, 2], [2, 3], [3, 0]]), False)
