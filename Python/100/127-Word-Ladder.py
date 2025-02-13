@@ -1,6 +1,7 @@
 from typing import List
-from collections import deque
 import unittest
+from collections import deque
+from collections import defaultdict
 
 
 class Solution:
@@ -49,10 +50,48 @@ class Solution:
 
         return 0
 
+    def ladder_length_v2(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        if endWord not in wordList:
+            return 0
+
+        nei = defaultdict(list)
+        wordList.append(beginWord)
+
+        for word in wordList:
+            for j in range(len(word)):
+                pattern = word[:j] + "*" + word[j + 1:]
+                nei[pattern].append(word)
+
+        visit = set([beginWord])
+        q = deque([beginWord])
+        res = 1
+
+        while q:
+            for _ in range(len(q)):
+                word = q.popleft()
+                if word == endWord:
+                    return res
+                for j in range(len(word)):
+                    pattern = word[:j] + "*" + word[j + 1:]
+                    for neiWord in nei[pattern]:
+                        if neiWord not in visit:
+                            visit.add(neiWord)  # 追加するタイミングを調整
+                            q.append(neiWord)
+                    nei[pattern] = []  # 探索済みパターンをクリア
+            res += 1
+
+        return 0
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
     def test_ladder_length(self):
         self.assertEqual(Solution().ladder_length("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]), 5)
         self.assertEqual(Solution().ladder_length("hit", "cog", ["hot", "dot", "dog", "lot", "log"]), 0)
-        self.assertEqual(Solution().ladder_length("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog", "cot"]), 5)
+        self.assertEqual(Solution().ladder_length("cat", "sag", ["bat", "bag", "sag", "dag", "dot"]), 4)
+
+    def test_ladder_length_v2(self):
+        self.assertEqual(Solution().ladder_length_v2("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]), 5)
+        self.assertEqual(Solution().ladder_length_v2("hit", "cog", ["hot", "dot", "dog", "lot", "log"]), 0)
+        self.assertEqual(Solution().ladder_length_v2("cat", "sag", ["bat", "bag", "sag", "dag", "dot"]), 4),
+
