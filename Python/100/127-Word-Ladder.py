@@ -83,6 +83,35 @@ class Solution:
         return 0
 
 
+    def ladder_length_v3(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
+        if endWord not in wordList or beginWord == endWord:
+            return 0
+        m = len(wordList[0])
+        wordSet = set(wordList)
+        qb, qe = deque([beginWord]), deque([endWord])
+        fromBegin, fromEnd = {beginWord: 1}, {endWord: 1}
+
+        while qb and qe:
+            if len(qb) > len(qe):
+                qb, qe = qe, qb
+                fromBegin, fromEnd = fromEnd, fromBegin
+            for _ in range(len(qb)):
+                word = qb.popleft()
+                steps = fromBegin[word]
+                for i in range(m):
+                    for c in range(97, 123):
+                        if chr(c) == word[i]:
+                            continue
+                        nei = word[:i] + chr(c) + word[i + 1:]
+                        if nei not in wordSet:
+                            continue
+                        if nei in fromEnd:
+                            return steps + fromEnd[nei]
+                        if nei not in fromBegin:
+                            fromBegin[nei] = steps + 1
+                            qb.append(nei)
+        return 0
+
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
     def test_ladder_length(self):
@@ -95,3 +124,7 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(Solution().ladder_length_v2("hit", "cog", ["hot", "dot", "dog", "lot", "log"]), 0)
         self.assertEqual(Solution().ladder_length_v2("cat", "sag", ["bat", "bag", "sag", "dag", "dot"]), 4),
 
+    def test_ladder_length_v3(self):
+        self.assertEqual(Solution().ladder_length_v3("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"]), 5)
+        self.assertEqual(Solution().ladder_length_v3("hit", "cog", ["hot", "dot", "dog", "lot", "log"]), 0)
+        self.assertEqual(Solution().ladder_length_v3("cat", "sag", ["bat", "bag", "sag", "dag", "dot"]), 4)
