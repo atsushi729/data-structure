@@ -18,6 +18,17 @@ class Solution:
 
         return dfs(0)
 
+    def climb_stairs_v2(self, n: int) -> int:
+        if n <= 2:
+            return n
+
+        dp = [0] * (n + 1)
+        dp[1], dp[2] = 1, 2
+
+        for i in range(3, n + 1):
+            dp[i] = dp[i - 1] + dp[i - 2]
+        return dp[n]
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -32,3 +43,15 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(Solution().climb_stairs(9), 55)
         self.assertEqual(Solution().climb_stairs(10), 89)
         self.assertEqual(Solution().climb_stairs(45), 1836311903)
+
+    def test_climb_stairs_v2(self):
+        self.assertEqual(Solution().climb_stairs_v2(2), 2)
+        self.assertEqual(Solution().climb_stairs_v2(3), 3)
+        self.assertEqual(Solution().climb_stairs_v2(4), 5)
+        self.assertEqual(Solution().climb_stairs_v2(5), 8)
+        self.assertEqual(Solution().climb_stairs_v2(6), 13)
+        self.assertEqual(Solution().climb_stairs_v2(7), 21)
+        self.assertEqual(Solution().climb_stairs_v2(8), 34)
+        self.assertEqual(Solution().climb_stairs_v2(9), 55)
+        self.assertEqual(Solution().climb_stairs_v2(10), 89)
+        self.assertEqual(Solution().climb_stairs_v2(45), 1836311903)
