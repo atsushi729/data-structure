@@ -32,18 +32,19 @@ class Solution:
 
         return min(dfs(0), dfs(1))
 
-
     def min_cost_climbing_stairs_v3(self, cost: List[int]) -> int:
         """
         Time Complexity: O(n^2)
         Space Complexity: O(n)
         """
+
         def dfs(i):
             if i >= len(cost):
                 return 0
             return cost[i] + min(dfs(i + 1), dfs(i + 2))
 
         return min(dfs(0), dfs(1))
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
