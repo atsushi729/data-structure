@@ -13,11 +13,27 @@ class Solution:
             rob2 = temp
         return rob2
 
+    def rob_v2(self, nums: List[int]) -> int:
+        def dfs(i):
+            if i >= len(nums):
+                return 0
+            return nums[i] + max(dfs(i + 2), dfs(i + 3))
+
+        return dfs(0)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
     def test_rob(self):
-        solution = Solution()
-        self.assertEqual(solution.rob([1, 2, 3, 1]), 4)
-        self.assertEqual(solution.rob([2, 7, 9, 3, 1]), 12)
-        self.assertEqual(solution.rob([2, 1, 1, 2]), 4)
+        self.assertEqual(self.solution.rob([1, 2, 3, 1]), 4)
+        self.assertEqual(self.solution.rob([2, 7, 9, 3, 1]), 12)
+        self.assertEqual(self.solution.rob([2, 1, 1, 2]), 4)
+
+    def test_rob_v2(self):
+        self.assertEqual(self.solution.rob_v2([1, 2, 3, 1]), 4)
+        self.assertEqual(self.solution.rob_v2([2, 7, 9, 3, 1]), 12)
+        self.assertEqual(self.solution.rob_v2([2, 1, 1, 2]), 4)
