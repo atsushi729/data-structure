@@ -38,3 +38,6 @@ class TestSolution(unittest.TestCase):
     def test_longest_palindrome(self):
         self.assertEqual(self.solution.longest_palindrome('babad'), 'bab')
         self.assertEqual(self.solution.longest_palindrome('cbbd'), 'bb')
+        self.assertEqual(self.solution.longest_palindrome('c'), 'c')
+        self.assertEqual(self.solution.longest_palindrome('ccaaacc'), 'ccaaacc')
+        self.assertIsNot(self.solution.longest_palindrome('c'), 'a')
