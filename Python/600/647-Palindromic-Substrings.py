@@ -37,6 +37,22 @@ class Solution:
                     count += 1
         return count
 
+    def count_substrings_v3(self, s: str) -> int:
+        """
+        Time Complexity: O(n^3)
+        Space Complexity: O(1)
+        """
+        count = 0
+        for i in range(len(s)):
+            for j in range(i, len(s)):
+                l, r = i, j
+                while l < r and s[l] == s[r]:
+                    l += 1
+                    r -= 1
+                if l >= r:
+                    count += 1
+        return count
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -55,3 +71,9 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.count_substrings_v2('aaa'), 6)
         self.assertEqual(self.solution.count_substrings_v2('abccba'), 9)
         self.assertEqual(self.solution.count_substrings_v2('abccbaa'), 11)
+
+    def test_countSubstrings_v3(self):
+        self.assertEqual(self.solution.count_substrings_v3('abc'), 3)
+        self.assertEqual(self.solution.count_substrings_v3('aaa'), 6)
+        self.assertEqual(self.solution.count_substrings_v3('abccba'), 9)
+        self.assertEqual(self.solution.count_substrings_v3('abccbaa'), 11)
