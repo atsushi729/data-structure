@@ -1,6 +1,7 @@
 import unittest
 
 
+#################### Solution ####################
 class Solution:
     def longest_palindrome(self, s: str) -> str:
         """
@@ -48,6 +49,7 @@ class Solution:
         return s[res_index: res_index + res_len]
 
 
+#################### Test Case ####################
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
