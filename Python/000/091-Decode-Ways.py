@@ -40,6 +40,22 @@ class Solution:
 
         return dp[0]
 
+    def num_decodings_v3(self, s: str) -> int:
+        dp = dp2 = 0
+        dp1 = 1
+        for i in range(len(s) - 1, -1, -1):
+            if s[i] == "0":
+                dp = 0
+            else:
+                dp = dp1
+
+            if i + 1 < len(s) and (s[i] == "1" or
+                                   s[i] == "2" and s[i + 1] in "0123456"
+            ):
+                dp += dp2
+            dp, dp1, dp2 = 0, dp, dp1
+        return dp1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -61,3 +77,11 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.sol.num_decodings_v2("06"), 0)
         self.assertEqual(self.sol.num_decodings_v2("10"), 1)
         self.assertEqual(self.sol.num_decodings_v2("101"), 1)
+
+    def test_num_decodings_v3(self):
+        self.assertEqual(self.sol.num_decodings_v3("12"), 2)
+        self.assertEqual(self.sol.num_decodings_v3("226"), 3)
+        self.assertEqual(self.sol.num_decodings_v3("0"), 0)
+        self.assertEqual(self.sol.num_decodings_v3("06"), 0)
+        self.assertEqual(self.sol.num_decodings_v3("10"), 1)
+        self.assertEqual(self.sol.num_decodings_v3("101"), 1)
