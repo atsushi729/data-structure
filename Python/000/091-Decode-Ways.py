@@ -11,14 +11,13 @@ class Solution:
             if s[i] == "0":
                 return 0
 
+            # Decode it as a single digit
             res = dfs(i + 1)
 
-            if i + 1 < len(s) and (
-                    s[i] == "1" or s[i] == "2" and
-                    s[i + 1] in "0123456"
-            ):
-                res += dfs(i + 2)
-
+            # Decode it as a pair of digits
+            if i + 1 < len(s):
+                if s[i] == "1" or s[i] == "2" and s[i + 1] in "0123456":
+                    res += dfs(i + 2)
             dp[i] = res
             return res
 
