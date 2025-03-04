@@ -53,6 +53,32 @@ class Solution:
                     count += 1
         return count
 
+    def count_substrings_v4(self, s: str) -> int:
+        """
+        Time Complexity: O(n)
+        Space Complexity: O(n)
+        """
+
+        def manacher(s):
+            t = '#' + '#'.join(s) + '#'
+            n = len(t)
+            p = [0] * n
+            l, r = 0, 0
+            for i in range(n):
+                p[i] = min(r - i, p[l + (r - i)]) if i < r else 0
+                while (i + p[i] + 1 < n and i - p[i] - 1 >= 0
+                       and t[i + p[i] + 1] == t[i - p[i] - 1]):
+                    p[i] += 1
+                if i + p[i] > r:
+                    l, r = i - p[i], i + p[i]
+            return p
+
+        p = manacher(s)
+        res = 0
+        for i in p:
+            res += (i + 1) // 2
+        return res
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -77,3 +103,9 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.count_substrings_v3('aaa'), 6)
         self.assertEqual(self.solution.count_substrings_v3('abccba'), 9)
         self.assertEqual(self.solution.count_substrings_v3('abccbaa'), 11)
+
+    def test_countSubstrings_v4(self):
+        self.assertEqual(self.solution.count_substrings_v4('abc'), 3)
+        self.assertEqual(self.solution.count_substrings_v4('aaa'), 6)
+        self.assertEqual(self.solution.count_substrings_v4('abccba'), 9)
+        self.assertEqual(self.solution.count_substrings_v4('abccbaa'), 11)
