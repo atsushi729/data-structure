@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List
 import unittest
 
@@ -66,6 +67,34 @@ class Solution:
                     dp[a] = min(dp[a], 1 + dp[a - c])
         return dp[amount] if dp[amount] != amount + 1 else -1
 
+    def coin_change_v4(self, coins: List[int], amount: int) -> int:
+        """
+        Time Complexity: O(n*m)
+        Space Complexity: O(m)
+        """
+        if amount == 0:
+            return 0
+
+        q = deque([0])
+        seen = [False] * (amount + 1)
+        seen[0] = True
+        res = 0
+
+        while q:
+            res += 1
+            for _ in range(len(q)):
+                cur = q.popleft()
+                for coin in coins:
+                    nxt = cur + coin
+                    if nxt == amount:
+                        return res
+                    if nxt > amount or seen[nxt]:
+                        continue
+                    seen[nxt] = True
+                    q.append(nxt)
+
+        return -1
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -93,3 +122,10 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.sol.coin_change_v3([1], 0), 0)
         self.assertEqual(self.sol.coin_change_v3([1], 1), 1)
         self.assertEqual(self.sol.coin_change_v3([1], 2), 2)
+
+    def test_coin_change_v4(self):
+        self.assertEqual(self.sol.coin_change_v4([1, 2, 5], 11), 3)
+        self.assertEqual(self.sol.coin_change_v4([2], 3), -1)
+        self.assertEqual(self.sol.coin_change_v4([1], 0), 0)
+        self.assertEqual(self.sol.coin_change_v4([1], 1), 1)
+        self.assertEqual(self.sol.coin_change_v4([1], 2), 2)
