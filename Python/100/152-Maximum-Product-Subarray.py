@@ -53,6 +53,20 @@ class Solution:
 
         return res
 
+    def max_product_v3(self, nums: List[int]) -> int:
+        res = nums[0]
+        cur_max = nums[0]
+        cur_min = nums[0]
+
+        for i in range(1, len(nums)):
+            if nums[i] < 0:
+                cur_max, cur_min = cur_min, cur_max
+            cur_max = max(nums[i], cur_max * nums[i])
+            cur_min = min(nums[i], cur_min * nums[i])
+            res = max(res, cur_max)
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -72,3 +86,10 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.sol.max_product_v2([-2]), -2)
         self.assertEqual(self.sol.max_product_v2([0, 2]), 2)
         self.assertEqual(self.sol.max_product_v2([0, 2, 0]), 2)
+
+    def test_maxProduct_v3(self):
+        self.assertEqual(self.sol.max_product_v3([2, 3, -2, 4]), 6)
+        self.assertEqual(self.sol.max_product_v3([-2, 0, -1]), 0)
+        self.assertEqual(self.sol.max_product_v3([-2]), -2)
+        self.assertEqual(self.sol.max_product_v3([0, 2]), 2)
+        self.assertEqual(self.sol.max_product_v3([0, 2, 0]), 2)
