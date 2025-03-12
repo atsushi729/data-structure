@@ -67,6 +67,16 @@ class Solution:
 
         return res
 
+    def max_product_v4(self, nums: List[int]) -> int:
+        n, res = len(nums), nums[0]
+        prefix = suffix = 0
+
+        for i in range(n):
+            prefix = nums[i] * (prefix or 1)
+            suffix = nums[n - 1 - i] * (suffix or 1)
+            res = max(res, max(prefix, suffix))
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -93,3 +103,10 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.sol.max_product_v3([-2]), -2)
         self.assertEqual(self.sol.max_product_v3([0, 2]), 2)
         self.assertEqual(self.sol.max_product_v3([0, 2, 0]), 2)
+
+    def test_maxProduct_v4(self):
+        self.assertEqual(self.sol.max_product_v4([2, 3, -2, 4]), 6)
+        self.assertEqual(self.sol.max_product_v4([-2, 0, -1]), 0)
+        self.assertEqual(self.sol.max_product_v4([-2]), -2)
+        self.assertEqual(self.sol.max_product_v4([0, 2]), 2)
+        self.assertEqual(self.sol.max_product_v4([0, 2, 0]), 2)
