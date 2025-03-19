@@ -38,6 +38,15 @@ class Solution:
 
         return dfs(0, -1)
 
+    def lengthOfLIS_v3(self, nums: List[int]) -> int:
+        LIS = [1] * len(nums)
+
+        for i in range(len(nums) - 1, -1, -1):
+            for j in range(i + 1, len(nums)):
+                if nums[i] < nums[j]:
+                    LIS[i] = max(LIS[i], 1 + LIS[j])
+        return max(LIS)
+
 
 class TestSolution(unittest.TestCase):
 
@@ -54,3 +63,8 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.lengthOfLIS_v2([10, 9, 2, 5, 3, 7, 101, 18]), 4)
         self.assertEqual(self.solution.lengthOfLIS_v2([0, 1, 0, 3, 2, 3]), 4)
         self.assertEqual(self.solution.lengthOfLIS_v2([7, 7, 7, 7, 7, 7, 7]), 1)
+
+    def test_lengthOfLIS_v3(self):
+        self.assertEqual(self.solution.lengthOfLIS_v3([10, 9, 2, 5, 3, 7, 101, 18]), 4)
+        self.assertEqual(self.solution.lengthOfLIS_v3([0, 1, 0, 3, 2, 3]), 4)
+        self.assertEqual(self.solution.lengthOfLIS_v3([7, 7, 7, 7, 7, 7, 7]), 1)
