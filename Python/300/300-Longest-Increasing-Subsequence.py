@@ -1,5 +1,6 @@
 from typing import List
 import unittest
+from bisect import bisect_left
 
 
 class Solution:
@@ -47,6 +48,22 @@ class Solution:
                     LIS[i] = max(LIS[i], 1 + LIS[j])
         return max(LIS)
 
+    def lengthOfLIS_v4(self, nums: List[int]) -> int:
+        dp = []
+        dp.append(nums[0])
+
+        LIS = 1
+        for i in range(1, len(nums)):
+            if dp[-1] < nums[i]:
+                dp.append(nums[i])
+                LIS += 1
+                continue
+
+            idx = bisect_left(dp, nums[i])
+            dp[idx] = nums[i]
+
+        return LIS
+
 
 class TestSolution(unittest.TestCase):
 
@@ -68,3 +85,8 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.lengthOfLIS_v3([10, 9, 2, 5, 3, 7, 101, 18]), 4)
         self.assertEqual(self.solution.lengthOfLIS_v3([0, 1, 0, 3, 2, 3]), 4)
         self.assertEqual(self.solution.lengthOfLIS_v3([7, 7, 7, 7, 7, 7, 7]), 1)
+
+    def test_lengthOfLIS_v4(self):
+        self.assertEqual(self.solution.lengthOfLIS_v4([10, 9, 2, 5, 3, 7, 101, 18]), 4)
+        self.assertEqual(self.solution.lengthOfLIS_v4([0, 1, 0, 3, 2, 3]), 4)
+        self.assertEqual(self.solution.lengthOfLIS_v4([7, 7, 7, 7, 7, 7, 7]), 1)
