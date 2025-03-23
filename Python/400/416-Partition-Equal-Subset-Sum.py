@@ -38,6 +38,24 @@ class Solution:
 
         return dfs(0, target)
 
+    def can_partition_v3(self, nums: List[int]) -> bool:
+        if sum(nums) % 2:
+            return False
+
+        dp = set()
+        dp.add(0)
+        target = sum(nums) // 2
+
+        for i in range(len(nums) - 1, -1, -1):
+            nextDP = set()
+            for t in dp:
+                if (t + nums[i]) == target:
+                    return True
+                nextDP.add(t + nums[i])
+                nextDP.add(t)
+            dp = nextDP
+        return False
+
 
 class TestSolution(unittest.TestCase):
 
@@ -52,3 +70,7 @@ class TestSolution(unittest.TestCase):
     def test_can_partition_v2(self):
         self.assertTrue(self.solution.can_partition_v2([1, 5, 11, 5]))
         self.assertFalse(self.solution.can_partition_v2([1, 2, 3, 5]))
+
+    def test_can_partition_v3(self):
+        self.assertTrue(self.solution.can_partition_v3([1, 5, 11, 5]))
+        self.assertFalse(self.solution.can_partition_v3([1, 2, 3, 5]))
