@@ -56,6 +56,19 @@ class Solution:
             dp = nextDP
         return False
 
+    def can_partition_v4(self, nums: List[int]) -> bool:
+        total = sum(nums)
+        if total % 2 != 0:
+            return False
+
+        target = total // 2
+        dp = 1 << 0
+
+        for num in nums:
+            dp |= dp << num
+
+        return (dp & (1 << target)) != 0
+
 
 class TestSolution(unittest.TestCase):
 
@@ -74,3 +87,7 @@ class TestSolution(unittest.TestCase):
     def test_can_partition_v3(self):
         self.assertTrue(self.solution.can_partition_v3([1, 5, 11, 5]))
         self.assertFalse(self.solution.can_partition_v3([1, 2, 3, 5]))
+
+    def test_can_partition_v4(self):
+        self.assertTrue(self.solution.can_partition_v4([1, 5, 11, 5]))
+        self.assertFalse(self.solution.can_partition_v4([1, 2, 3, 5]))
