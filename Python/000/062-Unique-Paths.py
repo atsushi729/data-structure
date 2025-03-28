@@ -38,6 +38,16 @@ class Solution:
 
         return dp[0][0]
 
+    def uniquePaths_v4(self, m: int, n: int) -> int:
+        row = [1] * n
+
+        for i in range(m - 1):
+            newRow = [1] * n
+            for j in range(n - 2, -1, -1):
+                newRow[j] = newRow[j + 1] + row[j]
+            row = newRow
+        return row[0]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -79,3 +89,15 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.s.uniquePaths_v3(2, 2), 2)
         self.assertEqual(self.s.uniquePaths_v3(2, 3), 3)
         self.assertEqual(self.s.uniquePaths_v3(3, 1), 1)
+
+    def test_unique_paths_v4(self):
+        self.assertEqual(self.s.uniquePaths_v4(3, 7), 28)
+        self.assertEqual(self.s.uniquePaths_v4(3, 2), 3)
+        self.assertEqual(self.s.uniquePaths_v4(7, 3), 28)
+        self.assertEqual(self.s.uniquePaths_v4(3, 3), 6)
+        self.assertEqual(self.s.uniquePaths_v4(1, 1), 1)
+        self.assertEqual(self.s.uniquePaths_v4(1, 2), 1)
+        self.assertEqual(self.s.uniquePaths_v4(2, 1), 1)
+        self.assertEqual(self.s.uniquePaths_v4(2, 2), 2)
+        self.assertEqual(self.s.uniquePaths_v4(2, 3), 3)
+        self.assertEqual(self.s.uniquePaths_v4(3, 1), 1)
