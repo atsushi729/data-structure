@@ -47,11 +47,15 @@ def max_sliding_window_v2(nums: list[int], k: int) -> list[int]:
 #################### Test Case ####################
 class TestMaxSlidingWindow(unittest.TestCase):
     def test_max_sliding_window(self):
-        nums = [1, 3, -1, -3, 5, 3, 6, 7]
-        k = 3
-        self.assertEqual(max_sliding_window(nums, k), [3, 3, 5, 5, 6, 7])
+        self.assertListEqual(max_sliding_window([1, 3, -1, -3, 5, 3, 6, 7], 3), [3, 3, 5, 5, 6, 7])
+        self.assertListEqual(max_sliding_window([1], 1), [1])
+        self.assertListEqual(max_sliding_window([1, -1], 1), [1, -1])
+        self.assertListEqual(max_sliding_window([9, 11], 2), [11])
+        self.assertListEqual(max_sliding_window([4, -2], 2), [4])
 
     def test_max_sliding_window_v2(self):
-        nums = [1, 3, -1, -3, 5, 3, 6, 7]
-        k = 3
-        self.assertEqual(max_sliding_window_v2(nums, k), [3, 3, 5, 5, 6, 7])
+        self.assertListEqual(max_sliding_window_v2([1, 3, -1, -3, 5, 3, 6, 7], 3), [3, 3, 5, 5, 6, 7])
+        self.assertListEqual(max_sliding_window_v2([1], 1), [1])
+        self.assertListEqual(max_sliding_window_v2([1, -1], 1), [1, -1])
+        self.assertListEqual(max_sliding_window_v2([9, 11], 2), [11])
+        self.assertListEqual(max_sliding_window_v2([4, -2], 2), [4])
