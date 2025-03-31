@@ -28,6 +28,15 @@ def two_sum_v2(nums: [int], target: int) -> list[int]:
     return []
 
 
+def two_sum_v3(nums: [int], target: int) -> list[int]:
+    for i in range(len(nums)):
+        for j in range(i + 1, len(nums)):
+            if nums[i] + nums[j] == target:
+                return [i, j]
+
+    return []
+
+
 #################### Test Case ####################
 class TestTowSum(unittest.TestCase):
     def test_two_sum(self):
@@ -39,3 +48,8 @@ class TestTowSum(unittest.TestCase):
         self.assertEqual(two_sum_v2([2, 7, 11, 15], 9), [0, 1])
         self.assertEqual(two_sum_v2([2, 3, 4], 6), [0, 2])
         self.assertEqual(two_sum_v2([3, 3], 6), [0, 1])
+
+    def test_two_sum_v3(self):
+        self.assertEqual(two_sum_v3([2, 7, 11, 15], 9), [0, 1])
+        self.assertEqual(two_sum_v3([2, 3, 4], 6), [0, 2])
+        self.assertEqual(two_sum_v3([3, 3], 6), [0, 1])
