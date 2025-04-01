@@ -37,6 +37,25 @@ def two_sum_v3(nums: [int], target: int) -> list[int]:
     return []
 
 
+def two_sum_v4(nums: [int], target: int) -> list[int]:
+    A = []
+    for i, num in enumerate(nums):
+        A.append([num, i])
+
+    A.sort()
+    i, j = 0, len(nums) - 1
+    while i < j:
+        cur = A[i][0] + A[j][0]
+        if cur == target:
+            return [min(A[i][1], A[j][1]),
+                    max(A[i][1], A[j][1])]
+        elif cur < target:
+            i += 1
+        else:
+            j -= 1
+    return []
+
+
 #################### Test Case ####################
 class TestTowSum(unittest.TestCase):
     def test_two_sum(self):
@@ -53,3 +72,8 @@ class TestTowSum(unittest.TestCase):
         self.assertEqual(two_sum_v3([2, 7, 11, 15], 9), [0, 1])
         self.assertEqual(two_sum_v3([2, 3, 4], 6), [0, 2])
         self.assertEqual(two_sum_v3([3, 3], 6), [0, 1])
+
+    def test_two_sum_v4(self):
+        self.assertEqual(two_sum_v4([2, 7, 11, 15], 9), [0, 1])
+        self.assertEqual(two_sum_v4([2, 3, 4], 6), [0, 2])
+        self.assertEqual(two_sum_v4([3, 3], 6), [0, 1])
