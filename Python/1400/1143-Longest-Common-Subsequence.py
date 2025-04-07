@@ -59,6 +59,24 @@ class Solution:
 
         return prev[0]
 
+    def longest_common_subsequence_v5(self, text1: str, text2: str) -> int:
+        if len(text1) < len(text2):
+            text1, text2 = text2, text1
+
+        dp = [0] * (len(text2) + 1)
+
+        for i in range(len(text1) - 1, -1, -1):
+            prev = 0
+            for j in range(len(text2) - 1, -1, -1):
+                temp = dp[j]
+                if text1[i] == text2[j]:
+                    dp[j] = 1 + prev
+                else:
+                    dp[j] = max(dp[j], dp[j + 1])
+                prev = temp
+
+        return dp[0]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -92,3 +110,10 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.longest_common_subsequence_v4("abc", "def"), 0)
         self.assertEqual(self.solution.longest_common_subsequence_v4("", ""), 0)
         self.assertEqual(self.solution.longest_common_subsequence_v4("a", "a"), 1)
+
+    def test_longest_common_subsequence_v5(self):
+        self.assertEqual(self.solution.longest_common_subsequence_v5("abcde", "ace"), 3)
+        self.assertEqual(self.solution.longest_common_subsequence_v5("abc", "abc"), 3)
+        self.assertEqual(self.solution.longest_common_subsequence_v5("abc", "def"), 0)
+        self.assertEqual(self.solution.longest_common_subsequence_v5("", ""), 0)
+        self.assertEqual(self.solution.longest_common_subsequence_v5("a", "a"), 1)
