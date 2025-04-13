@@ -13,6 +13,23 @@ class Solution:
                 res = max(res, cur)
         return res
 
+    def max_sub_array_v2(self, nums: List[int]) -> int:
+        memo = [[None] * 2 for _ in range(len(nums) + 1)]
+
+        def dfs(i, flag):
+            if i == len(nums):
+                return 0 if flag else -1e6
+            if memo[i][flag] is not None:
+                return memo[i][flag]
+            if flag:
+                memo[i][flag] = max(0, nums[i] + dfs(i + 1, True))
+            else:
+                memo[i][flag] = max(dfs(i + 1, False),
+                                    nums[i] + dfs(i + 1, True))
+            return memo[i][flag]
+
+        return dfs(0, False)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -34,4 +51,10 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.solution.max_sub_array(nums)
+                self.assertEqual(result, expected)
+
+    def test_max_sub_array_v2(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.solution.max_sub_array_v2(nums)
                 self.assertEqual(result, expected)
