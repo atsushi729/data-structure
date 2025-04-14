@@ -30,6 +30,16 @@ class Solution:
 
         return dfs(0, False)
 
+    def max_sub_array_v3(self, nums: List[int]) -> int:
+        def dfs(i, flag):
+            if i == len(nums):
+                return 0 if flag else -1e6
+            if flag:
+                return max(0, nums[i] + dfs(i + 1, True))
+            return max(dfs(i + 1, False), nums[i] + dfs(i + 1, True))
+
+        return dfs(0, False)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -57,4 +67,10 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.solution.max_sub_array_v2(nums)
+                self.assertEqual(result, expected)
+
+    def test_max_sub_array_v3(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.solution.max_sub_array_v3(nums)
                 self.assertEqual(result, expected)
