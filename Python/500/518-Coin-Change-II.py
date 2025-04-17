@@ -20,6 +20,28 @@ class Solution:
 
         return dfs(0, amount)
 
+    def change_v2(self, amount: int, coins: List[int]) -> int:
+        coins.sort()
+        memo = [[-1] * (amount + 1) for _ in range(len(coins) + 1)]
+
+        def dfs(i, a):
+            if a == 0:
+                return 1
+            if i >= len(coins):
+                return 0
+            if memo[i][a] != -1:
+                return memo[i][a]
+
+            res = 0
+            if a >= coins[i]:
+                res = dfs(i + 1, a)
+                res += dfs(i, a - coins[i])
+
+            memo[i][a] = res
+            return res
+
+        return dfs(0, amount)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -36,3 +58,7 @@ class TestSolution(unittest.TestCase):
     def test_change(self):
         for amount, coins, expected in self.test_cases:
             self.assertEqual(self.solution.change(amount, coins), expected)
+
+    def test_change_v2(self):
+        for amount, coins, expected in self.test_cases:
+            self.assertEqual(self.solution.change_v2(amount, coins), expected)
