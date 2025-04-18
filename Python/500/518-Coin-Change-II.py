@@ -42,6 +42,22 @@ class Solution:
 
         return dfs(0, amount)
 
+    def change_v3(self, amount: int, coins: List[int]) -> int:
+        n = len(coins)
+        coins.sort()
+        dp = [[0] * (amount + 1) for _ in range(n + 1)]
+
+        for i in range(n + 1):
+            dp[i][0] = 1
+
+        for i in range(n - 1, -1, -1):
+            for a in range(amount + 1):
+                if a >= coins[i]:
+                    dp[i][a] = dp[i + 1][a]
+                    dp[i][a] += dp[i][a - coins[i]]
+
+        return dp[0][amount]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -62,3 +78,7 @@ class TestSolution(unittest.TestCase):
     def test_change_v2(self):
         for amount, coins, expected in self.test_cases:
             self.assertEqual(self.solution.change_v2(amount, coins), expected)
+
+    def test_change_v3(self):
+        for amount, coins, expected in self.test_cases:
+            self.assertEqual(self.solution.change_v3(amount, coins), expected)
