@@ -4,6 +4,10 @@ import unittest
 
 class Solution:
     def change(self, amount: int, coins: List[int]) -> int:
+        """
+        Time complexity: O(2^n)
+        Space complexity: O(n)
+        """
         coins.sort()
 
         def dfs(i, a):
@@ -21,6 +25,10 @@ class Solution:
         return dfs(0, amount)
 
     def change_v2(self, amount: int, coins: List[int]) -> int:
+        """
+        Time complexity: O(n * amount)
+        Space complexity: O(n * amount)
+        """
         coins.sort()
         memo = [[-1] * (amount + 1) for _ in range(len(coins) + 1)]
 
@@ -43,6 +51,10 @@ class Solution:
         return dfs(0, amount)
 
     def change_v3(self, amount: int, coins: List[int]) -> int:
+        """
+        Time complexity: O(n * amount)
+        Space complexity: O(n * amount)
+        """
         n = len(coins)
         coins.sort()
         dp = [[0] * (amount + 1) for _ in range(n + 1)]
