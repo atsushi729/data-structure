@@ -68,7 +68,7 @@ class TestSolution(unittest.TestCase):
             (3, [2], 0),
             (10, [10], 1),
             (0, [1], 1),
-            (7, [2, 3, 6], 8),
+            (7, [2, 3, 6], 1),
         ]
 
     def test_change(self):
