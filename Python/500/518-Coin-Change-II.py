@@ -70,6 +70,20 @@ class Solution:
 
         return dp[0][amount]
 
+    def change_v4(self, amount: int, coins: List[int]) -> int:
+        """
+        Time complexity: O(n * amount)
+        Space complexity: O(amount)
+        """
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+
+        for coin in coins:
+            for a in range(coin, amount + 1):
+                dp[a] += dp[a - coin]
+
+        return dp[amount]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -94,3 +108,7 @@ class TestSolution(unittest.TestCase):
     def test_change_v3(self):
         for amount, coins, expected in self.test_cases:
             self.assertEqual(self.solution.change_v3(amount, coins), expected)
+
+    def test_change_v4(self):
+        for amount, coins, expected in self.test_cases:
+            self.assertEqual(self.solution.change_v4(amount, coins), expected)
