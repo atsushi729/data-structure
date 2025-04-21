@@ -84,6 +84,20 @@ class Solution:
 
         return dp[amount]
 
+    def change_v5(self, amount: int, coins: List[int]) -> int:
+        dp = [0] * (amount + 1)
+        dp[0] = 1
+        for i in range(len(coins) - 1, -1, -1):
+            nextDP = [0] * (amount + 1)
+            nextDP[0] = 1
+
+            for a in range(1, amount + 1):
+                nextDP[a] = dp[a]
+                if a - coins[i] >= 0:
+                    nextDP[a] += nextDP[a - coins[i]]
+            dp = nextDP
+        return dp[amount]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -112,3 +126,7 @@ class TestSolution(unittest.TestCase):
     def test_change_v4(self):
         for amount, coins, expected in self.test_cases:
             self.assertEqual(self.solution.change_v4(amount, coins), expected)
+
+    def test_change_v5(self):
+        for amount, coins, expected in self.test_cases:
+            self.assertEqual(self.solution.change_v5(amount, coins), expected)
