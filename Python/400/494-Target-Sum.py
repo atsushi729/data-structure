@@ -13,6 +13,21 @@ class Solution:
 
         return backtrack(0, 0)
 
+    def findTargetSumWays_v2(self, nums: List[int], target: int) -> int:
+        memo = {}
+
+        def backtrack(i, total):
+            if i == len(nums):
+                return total == target
+            if (i, total) in memo:
+                return memo[(i, total)]
+
+            memo[(i, total)] = (backtrack(i + 1, total + nums[i]) +
+                                backtrack(i + 1, total - nums[i]))
+            return memo[(i, total)]
+
+        return backtrack(0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -29,3 +44,7 @@ class TestSolution(unittest.TestCase):
     def test_find_target_sum_ways(self):
         for nums, target, expected in self.test_cases:
             self.assertEqual(self.solution.findTargetSumWays(nums, target), expected)
+
+    def test_find_target_sum_ways_v2(self):
+        for nums, target, expected in self.test_cases:
+            self.assertEqual(self.solution.findTargetSumWays_v2(nums, target), expected)
