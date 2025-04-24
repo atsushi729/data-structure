@@ -1,3 +1,4 @@
+from collections import defaultdict
 from typing import List
 import unittest
 
@@ -28,6 +29,17 @@ class Solution:
 
         return backtrack(0, 0)
 
+    def findTargetSumWays_v3(self, nums: List[int], target: int) -> int:
+        n = len(nums)
+        dp = [defaultdict(int) for _ in range(n + 1)]
+        dp[0][0] = 1
+
+        for i in range(n):
+            for total, count in dp[i].items():
+                dp[i + 1][total + nums[i]] += count
+                dp[i + 1][total - nums[i]] += count
+        return dp[n][target]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -48,3 +60,7 @@ class TestSolution(unittest.TestCase):
     def test_find_target_sum_ways_v2(self):
         for nums, target, expected in self.test_cases:
             self.assertEqual(self.solution.findTargetSumWays_v2(nums, target), expected)
+
+    def test_find_target_sum_ways_v3(self):
+        for nums, target, expected in self.test_cases:
+            self.assertEqual(self.solution.findTargetSumWays_v3(nums, target), expected)
