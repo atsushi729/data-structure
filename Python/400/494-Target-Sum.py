@@ -40,6 +40,19 @@ class Solution:
                 dp[i + 1][total - nums[i]] += count
         return dp[n][target]
 
+    def findTargetSumWays_v4(self, nums: List[int], target: int) -> int:
+        dp = defaultdict(int)
+        dp[0] = 1
+
+        for num in nums:
+            next_dp = defaultdict(int)
+            for total, count in dp.items():
+                next_dp[total + num] += count
+                next_dp[total - num] += count
+            dp = next_dp
+
+        return dp[target]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -64,3 +77,7 @@ class TestSolution(unittest.TestCase):
     def test_find_target_sum_ways_v3(self):
         for nums, target, expected in self.test_cases:
             self.assertEqual(self.solution.findTargetSumWays_v3(nums, target), expected)
+
+    def test_find_target_sum_ways_v4(self):
+        for nums, target, expected in self.test_cases:
+            self.assertEqual(self.solution.findTargetSumWays_v4(nums, target), expected)
