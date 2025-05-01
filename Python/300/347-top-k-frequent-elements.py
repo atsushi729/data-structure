@@ -39,6 +39,21 @@ def top_k_frequent_v2(nums: [int], k: int) -> [int]:
     return top_k_frequents
 
 
+def top_k_frequent_v3(nums: [int], k: int) -> [int]:
+    frequent_counter = {}
+
+    for num in nums:
+        frequent_counter[num] = frequent_counter.get(num, 0) + 1
+
+    # Sort based on value.
+    sorted_frequent_counter = sorted(frequent_counter.items(), key=lambda x: x[1], reverse=True)
+
+    # Create key which contain top k frequents value.
+    top_k_frequents = [item[0] for item in sorted_frequent_counter[:k]]
+
+    return top_k_frequents
+
+
 #################### Test Case ####################
 class TestTopKFrequent(unittest.TestCase):
     def test_top_k_frequent(self):
@@ -48,6 +63,10 @@ class TestTopKFrequent(unittest.TestCase):
     def test_top_k_frequent_v2(self):
         self.assertEqual(top_k_frequent_v2([1, 1, 1, 2, 2, 3], 2), [1, 2])
         self.assertEqual(top_k_frequent_v2([1, 2], 2), [1, 2])
+
+    def test_top_k_frequent_v3(self):
+        self.assertEqual(top_k_frequent_v3([1, 1, 1, 2, 2, 3], 2), [1, 2])
+        self.assertEqual(top_k_frequent_v3([1, 2], 2), [1, 2])
 
 
 #################### Test via terminal ####################
