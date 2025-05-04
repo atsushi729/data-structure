@@ -11,6 +11,15 @@ class Solution:
             count += v * (v - 1) // 2
         return count
 
+    def num_identical_pairs_v2(self, nums: List[int]) -> int:
+        count = 0
+
+        for i in range(len(nums)):
+            for j in range(i + 1, len(nums)):
+                if nums[i] == nums[j]:
+                    count += 1
+        return count
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -27,4 +36,9 @@ class TestSolution(unittest.TestCase):
     def test_num_identical_pairs(self):
         for nums, expected in self.test_cases:
             result = self.solution.num_identical_pairs(nums)
+            self.assertEqual(result, expected)
+
+    def test_num_identical_pairs_v2(self):
+        for nums, expected in self.test_cases:
+            result = self.solution.num_identical_pairs_v2(nums)
             self.assertEqual(result, expected)
