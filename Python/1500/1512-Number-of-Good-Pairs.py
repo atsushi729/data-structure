@@ -20,6 +20,10 @@ class Solution:
                     count += 1
         return count
 
+    def num_identical_pairs_v3(self, nums: List[int]) -> int:
+        freq = Counter(nums)
+        return sum(v * (v - 1) // 2 for v in freq.values())
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -41,4 +45,9 @@ class TestSolution(unittest.TestCase):
     def test_num_identical_pairs_v2(self):
         for nums, expected in self.test_cases:
             result = self.solution.num_identical_pairs_v2(nums)
+            self.assertEqual(result, expected)
+
+    def test_num_identical_pairs_v3(self):
+        for nums, expected in self.test_cases:
+            result = self.solution.num_identical_pairs_v3(nums)
             self.assertEqual(result, expected)
