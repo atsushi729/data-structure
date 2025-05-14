@@ -59,3 +59,8 @@ class TestSolution(unittest.TestCase):
         for n, expected in self.test_cases:
             result = self.solution.count_bits_v2(n)
             self.assertEqual(result, expected)
+
+    def test_count_bits_v3(self):
+        for n, expected in self.test_cases:
+            result = self.solution.count_bits_v3(n)
+            self.assertEqual(result, expected)
