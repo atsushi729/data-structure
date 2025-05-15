@@ -4,7 +4,7 @@ import unittest
 
 
 class Solution:
-    def countTwoSumPairs(self, nums: List[int], target: int) -> int:
+    def count_two_sum_pairs(self, nums: List[int], target: int) -> int:
         count = 0
         num_map = defaultdict(int)
 
@@ -33,5 +33,5 @@ class TestSolution(unittest.TestCase):
 
     def test_count_two_sum_pairs(self):
         for nums, target, expected in self.test_cases:
-            result = self.solution.countTwoSumPairs(nums, target)
+            result = self.solution.count_two_sum_pairs(nums, target)
             self.assertEqual(result, expected)
