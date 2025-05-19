@@ -38,6 +38,9 @@ class Solution:
                 num &= (num - 1)
         return res
 
+    def count_bits_v4(self, n: int) -> List[int]:
+        return [bin(i).count('1') for i in range(n + 1)]
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -63,4 +66,9 @@ class TestSolution(unittest.TestCase):
     def test_count_bits_v3(self):
         for n, expected in self.test_cases:
             result = self.solution.count_bits_v3(n)
+            self.assertEqual(result, expected)
+
+    def test_count_bits_v4(self):
+        for n, expected in self.test_cases:
+            result = self.solution.count_bits_v4(n)
             self.assertEqual(result, expected)
