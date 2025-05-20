@@ -8,6 +8,14 @@ class Solution:
         expected_sum = n * (n + 1) // 2
         return expected_sum - sum(nums)
 
+    def missingNumber_v2(self, nums: List[int]) -> int:
+        n = len(nums)
+        nums.sort()
+        for i in range(n):
+            if nums[i] != i:
+                return i
+        return n
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -24,4 +32,9 @@ class TestSolution(unittest.TestCase):
     def test_missingNumber(self):
         for nums, expected in self.test_cases:
             result = self.solution.missingNumber(nums)
+            self.assertEqual(result, expected)
+
+    def test_missingNumber_v2(self):
+        for nums, expected in self.test_cases:
+            result = self.solution.missingNumber_v2(nums)
             self.assertEqual(result, expected)
