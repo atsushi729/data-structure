@@ -23,6 +23,12 @@ class Solution:
             res += i - nums[i]
         return res
 
+    def missingNumber_v4(self, nums: List[int]) -> int:
+        res = 0
+        for i in range(len(nums)):
+            res ^= i ^ nums[i]
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -49,4 +55,9 @@ class TestSolution(unittest.TestCase):
     def test_missingNumber_v3(self):
         for nums, expected in self.test_cases:
             result = self.solution.missingNumber_v3(nums)
+            self.assertEqual(result, expected)
+
+    def test_missingNumber_v4(self):
+        for nums, expected in self.test_cases:
+            result = self.solution.missingNumber_v4(nums)
             self.assertEqual(result, expected)
