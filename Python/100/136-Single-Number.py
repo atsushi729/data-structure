@@ -27,6 +27,20 @@ class Solution:
                 seen.add(num)
         return list(seen)[0]
 
+    def singleNumber_v3(self, nums: List[int]) -> int:
+        """
+        Time complexity: O(n^2)
+        Space complexity: O(1)
+        """
+        for i in range(len(nums)):
+            flag = True
+            for j in range(len(nums)):
+                if i != j and nums[i] == nums[j]:
+                    flag = False
+                    break
+            if flag:
+                return nums[i]
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -47,4 +61,9 @@ class TestSolution(unittest.TestCase):
     def test_single_number_v2(self):
         for nums, expected in self.test_cases:
             result = self.solution.singleNumber_v2(nums)
+            self.assertEqual(result, expected)
+
+    def test_single_number_v3(self):
+        for nums, expected in self.test_cases:
+            result = self.solution.singleNumber_v3(nums)
             self.assertEqual(result, expected)
