@@ -1,4 +1,5 @@
 import unittest
+import math
 
 
 class Solution:
@@ -11,6 +12,23 @@ class Solution:
             res *= -1
         if res < -(1 << 31) or res > (1 << 31) - 1:
             return 0
+        return res
+
+    def reverse_v2(self, x: int) -> int:
+        MIN = -2147483648
+        MAX = 2147483647
+        res = 0
+
+        while x:
+            digit = int(math.fmod(x, 10))
+            x = int(x / 10)
+
+            if res > MAX // 10 or (res == MAX // 10 and digit > MAX % 10):
+                return 0
+            if res < MIN // 10 or (res == MIN // 10 and digit < MIN % 10):
+                return 0
+            res = (res * 10) + digit
+
         return res
 
 
@@ -29,4 +47,9 @@ class TestSolution(unittest.TestCase):
     def test_reverse(self):
         for x, expected in self.test_cases:
             result = self.solution.reverse(x)
+            self.assertEqual(result, expected)
+
+    def test_reverse_v2(self):
+        for x, expected in self.test_cases:
+            result = self.solution.reverse_v2(x)
             self.assertEqual(result, expected)
