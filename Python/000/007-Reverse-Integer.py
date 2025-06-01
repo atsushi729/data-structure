@@ -78,10 +78,10 @@ class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
         self.test_cases = [
-            # (123, 321),
-            # (-123, -321),
-            # (120, 21),
-            # (0, 0),
+            (123, 321),
+            (-123, -321),
+            (120, 21),
+            (0, 0),
             (1534236469, 0),  # Overflow case
             (-2147483648, 0),  # Overflow case
         ]
