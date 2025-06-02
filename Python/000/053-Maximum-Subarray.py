@@ -47,6 +47,17 @@ class Solution:
             dp[i] = max(nums[i], nums[i] + dp[i - 1])
         return max(dp)
 
+    def max_sub_array_v5(self, nums: List[int]) -> int:
+        max_sum = nums[0]
+        cur_sum = 0
+
+        for num in nums:
+            if cur_sum < 0:
+                cur_sum = 0
+            cur_sum += num
+            max_sum = max(max_sum, cur_sum)
+        return max_sum
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -86,4 +97,10 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.solution.max_sub_array_v4(nums)
+                self.assertEqual(result, expected)
+
+    def test_max_sub_array_v5(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.solution.max_sub_array_v5(nums)
                 self.assertEqual(result, expected)
