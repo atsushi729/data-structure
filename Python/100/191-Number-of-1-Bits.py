@@ -13,6 +13,14 @@ class Solution:
             n = n >> 1
         return res
 
+    def hamming_weight_v2(self, n: int) -> int:
+        res = 0
+
+        while n:
+            res += n & 1
+            n >>= 1
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -27,4 +35,9 @@ class TestSolution(unittest.TestCase):
     def test_hamming_weight(self):
         for n, expected in self.test_cases:
             result = self.solution.hamming_weight(n)
+            self.assertEqual(result, expected)
+
+    def test_hamming_weight_v2(self):
+        for n, expected in self.test_cases:
+            result = self.solution.hamming_weight_v2(n)
             self.assertEqual(result, expected)
