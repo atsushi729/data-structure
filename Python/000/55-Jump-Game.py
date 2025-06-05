@@ -11,6 +11,20 @@ class Solution:
                 goal = i
         return goal == 0
 
+    def can_jump2(self, nums: List[int]) -> bool:
+        def dfs(index: int) -> bool:
+            if index >= len(nums) - 1:
+                return True
+
+            end = min(index + nums[index], len(nums) - 1)
+
+            for jump in range(index + 1, end + 1):
+                if dfs(jump):
+                    return True
+            return False
+
+        return dfs(0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -32,4 +46,10 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_case:
             with self.subTest(nums=nums):
                 result = self.solution.can_jump(nums)
+                self.assertEqual(result, expected, f"Failed for input: {nums}")
+
+    def test_can_jump2(self):
+        for nums, expected in self.test_case:
+            with self.subTest(nums=nums):
+                result = self.solution.can_jump2(nums)
                 self.assertEqual(result, expected, f"Failed for input: {nums}")
