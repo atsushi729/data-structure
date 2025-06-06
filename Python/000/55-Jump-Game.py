@@ -25,6 +25,28 @@ class Solution:
 
         return dfs(0)
 
+    def can_jump3(self, nums: List[int]) -> bool:
+        memo = {}
+
+        def dfs(index: int) -> bool:
+            if index >= len(nums) - 1:
+                return True
+
+            if index in memo:
+                return memo[index]
+
+            end = min(index + nums[index], len(nums) - 1)
+
+            for jump in range(index + 1, end + 1):
+                if dfs(jump):
+                    memo[index] = True
+                    return True
+
+            memo[index] = False
+            return False
+
+        return dfs(0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -52,4 +74,10 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_case:
             with self.subTest(nums=nums):
                 result = self.solution.can_jump2(nums)
+                self.assertEqual(result, expected, f"Failed for input: {nums}")
+
+    def test_can_jump3(self):
+        for nums, expected in self.test_case:
+            with self.subTest(nums=nums):
+                result = self.solution.can_jump3(nums)
                 self.assertEqual(result, expected, f"Failed for input: {nums}")
