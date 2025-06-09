@@ -19,6 +19,27 @@ class Solutions:
             res += 1
         return res
 
+    def jump2(self, nums: list[int]) -> int:
+        """
+        Time complexity: O(n!)
+        Space complexity: O(n)
+        """
+
+        def dfs(i):
+            if i == len(nums) - 1:
+                return 0
+            if nums[i] == 0:
+                return float("inf")
+
+            end = min(len(nums) - 1, i + nums[i])
+            res = float("inf")
+
+            for j in range(i + 1, end + 1):
+                res = min(res, 1 + dfs(j))
+            return res
+
+        return dfs(0)
+
 
 class TestSolutions(unittest.TestCase):
     @classmethod
@@ -37,4 +58,10 @@ class TestSolutions(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.solution.jump(nums)
+                self.assertEqual(result, expected)
+
+    def test_jump2_with_query(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.solution.jump2(nums)
                 self.assertEqual(result, expected)
