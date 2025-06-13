@@ -1,3 +1,4 @@
+from collections import Counter
 from typing import List
 import heapq
 import unittest
@@ -27,6 +28,21 @@ class Solution:
                     heapq.heappop(minH)
         return True
 
+    def isNStraightHand2(self, hand: List[int], groupSize: int) -> bool:
+        if len(hand) % groupSize:
+            return False
+
+        count = Counter(hand)
+        hand.sort()
+
+        for num in hand:
+            if count[num]:
+                for i in range(num, num + groupSize):
+                    if count[i] <= 0:
+                        return False
+                    count[i] -= 1
+        return True
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -44,4 +60,10 @@ class TestSolution(unittest.TestCase):
         for hand, groupSize, expected in self.test_cases:
             with self.subTest(hand=hand, groupSize=groupSize):
                 result = self.solution.isNStraightHand(hand, groupSize)
+                self.assertEqual(result, expected)
+
+    def test_isNStraightHand2(self):
+        for hand, groupSize, expected in self.test_cases:
+            with self.subTest(hand=hand, groupSize=groupSize):
+                result = self.solution.isNStraightHand2(hand, groupSize)
                 self.assertEqual(result, expected)
