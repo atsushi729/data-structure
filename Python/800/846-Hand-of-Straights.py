@@ -43,6 +43,26 @@ class Solution:
                     count[i] -= 1
         return True
 
+    def isNStraightHand3(self, hand: List[int], groupSize: int) -> bool:
+        if len(hand) % groupSize:
+            return False
+
+        count = Counter(hand)
+
+        for num in hand:
+            start = num
+
+            while count[start - 1]:
+                start -= 1
+            while start <= num:
+                while count[start]:
+                    for i in range(start, start + groupSize):
+                        if not count[i]:
+                            return False
+                        count[i] -= 1
+                start += 1
+        return True
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -66,4 +86,10 @@ class TestSolution(unittest.TestCase):
         for hand, groupSize, expected in self.test_cases:
             with self.subTest(hand=hand, groupSize=groupSize):
                 result = self.solution.isNStraightHand2(hand, groupSize)
+                self.assertEqual(result, expected)
+
+    def test_isNStraightHand3(self):
+        for hand, groupSize, expected in self.test_cases:
+            with self.subTest(hand=hand, groupSize=groupSize):
+                result = self.solution.isNStraightHand3(hand, groupSize)
                 self.assertEqual(result, expected)
