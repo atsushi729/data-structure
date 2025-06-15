@@ -42,6 +42,19 @@ class Solution:
 
         return -1
 
+    def can_complete_circuit3(self, gas: List[int], cost: List[int]) -> int:
+        n = len(gas)
+        start, end = n - 1, 0
+        tank = gas[start] - cost[start]
+        while start > end:
+            if tank < 0:
+                start -= 1
+                tank += gas[start] - cost[start]
+            else:
+                tank += gas[end] - cost[end]
+                end += 1
+        return start if tank >= 0 else -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -65,4 +78,10 @@ class TestSolution(unittest.TestCase):
         for gas, cost, expected in self.test_cases:
             with self.subTest(gas=gas, cost=cost):
                 result = self.solution.can_complete_circuit2(gas, cost)
+                self.assertEqual(result, expected)
+
+    def test_can_complete_circuit3(self):
+        for gas, cost, expected in self.test_cases:
+            with self.subTest(gas=gas, cost=cost):
+                result = self.solution.can_complete_circuit3(gas, cost)
                 self.assertEqual(result, expected)
