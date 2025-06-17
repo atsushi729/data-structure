@@ -14,6 +14,17 @@ class Solution:
                     good.add(i)
         return len(good) == 3
 
+    def mergeTriplets2(self, triplets: List[List[int]], target: List[int]) -> bool:
+        good = [False] * 3
+
+        for t in triplets:
+            if any(t[i] > target[i] for i in range(3)):
+                continue
+            for i in range(3):
+                if t[i] == target[i]:
+                    good[i] = True
+        return all(good)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -30,4 +41,10 @@ class TestSolution(unittest.TestCase):
         for triplets, target, expected in self.test_cases:
             with self.subTest(triplets=triplets, target=target, expected=expected):
                 result = self.solution.mergeTriplets(triplets, target)
+                self.assertEqual(result, expected)
+
+    def test_mergeTriplets2(self):
+        for triplets, target, expected in self.test_cases:
+            with self.subTest(triplets=triplets, target=target, expected=expected):
+                result = self.solution.mergeTriplets2(triplets, target)
                 self.assertEqual(result, expected)
