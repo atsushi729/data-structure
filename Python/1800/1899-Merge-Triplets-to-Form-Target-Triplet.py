@@ -25,6 +25,16 @@ class Solution:
                     good[i] = True
         return all(good)
 
+    def mergeTriplets3(self, triplets: List[List[int]], target: List[int]) -> bool:
+        x = y = z = False
+        for t in triplets:
+            x |= (t[0] == target[0] and t[1] <= target[1] and t[2] <= target[2])
+            y |= (t[0] <= target[0] and t[1] == target[1] and t[2] <= target[2])
+            z |= (t[0] <= target[0] and t[1] <= target[1] and t[2] == target[2])
+            if x and y and z:
+                return True
+        return False
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -47,4 +57,10 @@ class TestSolution(unittest.TestCase):
         for triplets, target, expected in self.test_cases:
             with self.subTest(triplets=triplets, target=target, expected=expected):
                 result = self.solution.mergeTriplets2(triplets, target)
+                self.assertEqual(result, expected)
+
+    def test_mergeTriplets3(self):
+        for triplets, target, expected in self.test_cases:
+            with self.subTest(triplets=triplets, target=target, expected=expected):
+                result = self.solution.mergeTriplets3(triplets, target)
                 self.assertEqual(result, expected)
