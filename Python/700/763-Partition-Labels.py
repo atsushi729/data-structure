@@ -26,6 +26,20 @@ class Solution:
 
         return res
 
+    def partitionLabels2(self, s: str) -> List[int]:
+        """
+        Alternative implementation with the same time and space complexity.
+        """
+        last = {c: i for i, c in enumerate(s)}
+        result, start, end = [], 0, 0
+
+        for i, c in enumerate(s):
+            end = max(end, last[c])
+            if i == end:
+                result.append(i - start + 1)
+                start = i + 1
+
+        return result
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -43,4 +57,10 @@ class TestSolution(unittest.TestCase):
         for s, expected in self.test_cases:
             with self.subTest(s=s, expected=expected):
                 result = self.solution.partitionLabels(s)
+                self.assertEqual(result, expected)
+
+    def test_partition_labels2(self):
+        for s, expected in self.test_cases:
+            with self.subTest(s=s, expected=expected):
+                result = self.solution.partitionLabels2(s)
                 self.assertEqual(result, expected)
