@@ -29,6 +29,25 @@ class Solution:
 
         return max_delay if len(visited_nodes) == n else -1
 
+    def networkDelayTime2(self, times: List[List[int]], n: int, k: int) -> int:
+        adj = collections.defaultdict(list)
+        for u, v, w in times:
+            adj[u].append((v, w))
+
+        dist = {node: float("inf") for node in range(1, n + 1)}
+
+        def dfs(node, time):
+            if time >= dist[node]:
+                return
+
+            dist[node] = time
+            for nei, w in adj[node]:
+                dfs(nei, time + w)
+
+        dfs(k, 0)
+        res = max(dist.values())
+        return res if res < float('inf') else -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -45,4 +64,10 @@ class TestSolution(unittest.TestCase):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.networkDelayTime(times, n, k)
+                self.assertEqual(result, expected)
+
+    def test_networkDelayTime2(self):
+        for times, n, k, expected in self.test_cases:
+            with self.subTest(times=times, n=n, k=k):
+                result = self.solution.networkDelayTime2(times, n, k)
                 self.assertEqual(result, expected)
