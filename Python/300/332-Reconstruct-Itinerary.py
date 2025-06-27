@@ -1,4 +1,5 @@
 from typing import List
+from collections import defaultdict
 import unittest
 
 
@@ -28,6 +29,22 @@ class Solution:
         dfs("JFK")
         return res
 
+    def findItinerary2(self, tickets: List[List[str]]) -> List[str]:
+        adj = defaultdict(list)
+        for src, dst in sorted(tickets)[::-1]:
+            adj[src].append(dst)
+
+        stack = ["JFK"]
+        res = []
+
+        while stack:
+            cur = stack[-1]
+            if not adj[cur]:
+                res.append(stack.pop())
+            else:
+                stack.append(adj[cur].pop())
+        return res[::-1]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -46,4 +63,10 @@ class TestSolution(unittest.TestCase):
         for tickets, expected in self.test_cases:
             with self.subTest(tickets=tickets, expected=expected):
                 result = self.solution.findItinerary(tickets)
+                self.assertEqual(result, expected)
+
+    def test_findItinerary2(self):
+        for tickets, expected in self.test_cases:
+            with self.subTest(tickets=tickets, expected=expected):
+                result = self.solution.findItinerary2(tickets)
                 self.assertEqual(result, expected)
