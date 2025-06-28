@@ -45,6 +45,22 @@ class Solution:
                 stack.append(adj[cur].pop())
         return res[::-1]
 
+    def findItinerary3(self, tickets: List[List[str]]) -> List[str]:
+        adj = defaultdict(list)
+        for src, dst in sorted(tickets)[::-1]:
+            adj[src].append(dst)
+
+        res = []
+
+        def dfs(src):
+            while adj[src]:
+                dst = adj[src].pop()
+                dfs(dst)
+            res.append(src)
+
+        dfs('JFK')
+        return res[::-1]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -69,4 +85,10 @@ class TestSolution(unittest.TestCase):
         for tickets, expected in self.test_cases:
             with self.subTest(tickets=tickets, expected=expected):
                 result = self.solution.findItinerary2(tickets)
+                self.assertEqual(result, expected)
+
+    def test_findItinerary3(self):
+        for tickets, expected in self.test_cases:
+            with self.subTest(tickets=tickets, expected=expected):
+                result = self.solution.findItinerary3(tickets)
                 self.assertEqual(result, expected)
