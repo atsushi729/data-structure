@@ -1,6 +1,7 @@
 from typing import List
 from collections import defaultdict
 import unittest
+import heapq
 
 
 class Solution:
@@ -61,6 +62,22 @@ class Solution:
         dfs('JFK')
         return res[::-1]
 
+    def findItinerary4(self, tickets: List[List[str]]) -> List[str]:
+        adj = defaultdict(list)
+        for src, dst in tickets:
+            heapq.heappush(adj[src], dst)
+
+        res = []
+
+        def dfs(cur):
+            while adj[cur]:
+                next = heapq.heappop(adj[cur])
+                dfs(next)
+            res.append(cur)
+
+        dfs("JFK")
+        return res[::-1]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -91,4 +108,10 @@ class TestSolution(unittest.TestCase):
         for tickets, expected in self.test_cases:
             with self.subTest(tickets=tickets, expected=expected):
                 result = self.solution.findItinerary3(tickets)
+                self.assertEqual(result, expected)
+
+    def test_findItinerary4(self):
+        for tickets, expected in self.test_cases:
+            with self.subTest(tickets=tickets, expected=expected):
+                result = self.solution.findItinerary4(tickets)
                 self.assertEqual(result, expected)
