@@ -30,10 +30,53 @@ class Solution:
         return res
 
 
+class DSU:
+    def __init__(self, n):
+        self.Parent = list(range(n + 1))
+        self.Size = [1] * (n + 1)
+
+    def find(self, node):
+        if self.Parent[node] != node:
+            self.Parent[node] = self.find(self.Parent[node])
+        return self.Parent[node]
+
+    def union(self, u, v):
+        pu = self.find(u)
+        pv = self.find(v)
+        if pu == pv:
+            return False
+        if self.Size[pu] < self.Size[pv]:
+            pu, pv = pv, pu
+        self.Size[pu] += self.Size[pv]
+        self.Parent[pv] = pu
+        return True
+
+
+class Solution2:
+    def minCostConnectPoints(self, points: List[List[int]]) -> int:
+        n = len(points)
+        dsu = DSU(n)
+        edges = []
+
+        for i in range(n):
+            x1, y1 = points[i]
+            for j in range(i + 1, n):
+                x2, y2 = points[j]
+                dist = abs(x1 - x2) + abs(y1 - y2)
+                edges.append((dist, i, j))
+        edges.sort()
+        res = 0
+        for dist, u, v in edges:
+            if dsu.union(u, v):
+                res += dist
+        return res
+
+
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.solution = Solution()
+        cls.solution2 = Solution2()
         cls.test_cases = [
             ([[0, 0], [2, 2], [3, 10], [5, 2], [7, 0]], 20),
             ([[3, 12], [-2, 5], [-4, 1]], 18),
@@ -45,4 +88,10 @@ class TestSolution(unittest.TestCase):
         for points, expected in self.test_cases:
             with self.subTest(points=points, expected=expected):
                 result = self.solution.minCostConnectPoints(points)
+                self.assertEqual(result, expected)
+
+    def test_minCostConnectPoints2(self):
+        for points, expected in self.test_cases:
+            with self.subTest(points=points, expected=expected):
+                result = self.solution2.minCostConnectPoints(points)
                 self.assertEqual(result, expected)
