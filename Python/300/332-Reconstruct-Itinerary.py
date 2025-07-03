@@ -78,6 +78,32 @@ class Solution:
         dfs("JFK")
         return res[::-1]
 
+    def findItinerary5(self, tickets: List[List[str]]) -> List[str]:
+        # Initialize an adjacency list to represent the graph
+        adj_list = defaultdict(list)
+
+        # Sort tickets in reverse lexical order and build the adjacency list
+        for src, dst in sorted(tickets, reverse=True):
+            adj_list[src].append(dst)
+
+        # Stack to perform DFS; we always start from 'JFK'
+        stack = ["JFK"]
+        itinerary = []
+
+        # Perform DFS traversal
+        while stack:
+            current = stack[-1]
+
+            # If there are no more destinations to visit from current airport, add it to the result (we're backtracking)
+            if not adj_list[current]:
+                itinerary.append(stack.pop())
+            else:
+                # Otherwise, keep visiting the next lexical smallest destination
+                stack.append(adj_list[current].pop())
+
+        # The itinerary is built in reverse, so we reverse it at the end
+        return itinerary[::-1]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -114,4 +140,10 @@ class TestSolution(unittest.TestCase):
         for tickets, expected in self.test_cases:
             with self.subTest(tickets=tickets, expected=expected):
                 result = self.solution.findItinerary4(tickets)
+                self.assertEqual(result, expected)
+
+    def test_findItinerary5(self):
+        for tickets, expected in self.test_cases:
+            with self.subTest(tickets=tickets, expected=expected):
+                result = self.solution.findItinerary5(tickets)
                 self.assertEqual(result, expected)
