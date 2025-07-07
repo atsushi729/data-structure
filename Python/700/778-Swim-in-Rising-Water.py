@@ -51,6 +51,27 @@ class Solution:
 
         return max_h
 
+    def swim_in_water3(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+        visit = [[False] * n for _ in range(n)]
+
+        def dfs(node, t):
+            r, c = node
+            if min(r, c) < 0 or max(r, c) >= n or visit[r][c]:
+                return 1000000
+            if r == (n - 1) and c == (n - 1):
+                return max(t, grid[r][c])
+            visit[r][c] = True
+            t = max(t, grid[r][c])
+            res = min(dfs((r + 1, c), t),
+                      dfs((r - 1, c), t),
+                      dfs((r, c + 1), t),
+                      dfs((r, c - 1), t))
+            visit[r][c] = False
+            return res
+
+        return dfs((0, 0), 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -72,4 +93,9 @@ class TestSolution(unittest.TestCase):
     def test_swim_in_water2(self):
         for grid, expected in self.test_cases:
             result = self.solution.swim_in_water2(grid)
+            self.assertEqual(result, expected, f"Failed for grid: {grid}, expected: {expected}, got: {result}")
+
+    def test_swim_in_water3(self):
+        for grid, expected in self.test_cases:
+            result = self.solution.swim_in_water3(grid)
             self.assertEqual(result, expected, f"Failed for grid: {grid}, expected: {expected}, got: {result}")
