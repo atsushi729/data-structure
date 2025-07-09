@@ -35,6 +35,42 @@ class Solution:
 
         return "".join(res)
 
+    def foreign_dictionary2(self, words):
+        adj = {c: set() for w in words for c in w}
+
+        for i in range(len(words) - 1):
+            w1, w2 = words[i], words[i + 1]
+            min_len = min(len(w1), len(w2))
+            if len(w1) > len(w2) and w1[:min_len] == w2[:min_len]:
+                return ""
+            for j in range(min_len):
+                if w1[j] != w2[j]:
+                    adj[w1[j]].add(w2[j])
+                    break
+
+        visited = {}
+        res = []
+
+        def dfs(char):
+            if char in visited:
+                return visited[char]
+
+            visited[char] = True
+
+            for neighChar in adj[char]:
+                if dfs(neighChar):
+                    return True
+
+            visited[char] = False
+            res.append(char)
+
+        for char in adj:
+            if dfs(char):
+                return ""
+
+        res.reverse()
+        return "".join(res)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -52,4 +88,10 @@ class TestSolution(unittest.TestCase):
         for words, expected in self.test_case:
             with self.subTest(words=words, expected=expected):
                 result = self.solution.foreign_dictionary(words)
+                self.assertEqual(result, expected)
+
+    def test_foreign_dictionary2(self):
+        for words, expected in self.test_case:
+            with self.subTest(words=words, expected=expected):
+                result = self.solution.foreign_dictionary2(words)
                 self.assertEqual(result, expected)
