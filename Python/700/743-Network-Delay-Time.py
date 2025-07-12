@@ -65,6 +65,30 @@ class Solution:
         res = max(dist[k - 1])
         return res if res < inf else -1
 
+    def networkDelayTime4(self, times: List[List[int]], n: int, k: int) -> int:
+        edges = collections.defaultdict(list)
+        for u, v, w in times:
+            edges[u].append((v, w))
+
+        min_heap = [(0, k)]
+        visit = set()
+        total = 0
+
+        while min_heap:
+            weight1, node1 = heapq.heappop(min_heap)
+
+            if node1 in visit:
+                continue
+
+            visit.add(node1)
+            total = weight1
+
+            for node2, weight2 in edges[node1]:
+                if node2 not in visit:
+                    heapq.heappush(min_heap, (weight1 + weight2, node2))
+
+        return total if len(visit) == n else -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -93,4 +117,10 @@ class TestSolution(unittest.TestCase):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.networkDelayTime3(times, n, k)
+                self.assertEqual(result, expected)
+
+    def test_networkDelayTime4(self):
+        for times, n, k, expected in self.test_cases:
+            with self.subTest(times=times, n=n, k=k):
+                result = self.solution.networkDelayTime4(times, n, k)
                 self.assertEqual(result, expected)
