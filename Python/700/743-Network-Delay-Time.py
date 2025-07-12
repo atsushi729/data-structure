@@ -5,7 +5,7 @@ import unittest
 
 
 class Solution:
-    def networkDelayTime(self, times: List[List[int]], n: int, start_node: int) -> int:
+    def network_delay_time(self, times: List[List[int]], n: int, start_node: int) -> int:
         graph = collections.defaultdict(list)
 
         for source, target, time_cost in times:
@@ -29,7 +29,7 @@ class Solution:
 
         return max_delay if len(visited_nodes) == n else -1
 
-    def networkDelayTime2(self, times: List[List[int]], n: int, k: int) -> int:
+    def network_delay_time2(self, times: List[List[int]], n: int, k: int) -> int:
         adj = collections.defaultdict(list)
         for u, v, w in times:
             adj[u].append((v, w))
@@ -48,7 +48,7 @@ class Solution:
         res = max(dist.values())
         return res if res < float('inf') else -1
 
-    def networkDelayTime3(self, times: List[List[int]], n: int, k: int) -> int:
+    def network_delay_time3(self, times: List[List[int]], n: int, k: int) -> int:
         inf = float('inf')
         dist = [[inf] * n for _ in range(n)]
 
@@ -65,7 +65,7 @@ class Solution:
         res = max(dist[k - 1])
         return res if res < inf else -1
 
-    def networkDelayTime4(self, times: List[List[int]], n: int, k: int) -> int:
+    def network_delay_time4(self, times: List[List[int]], n: int, k: int) -> int:
         edges = collections.defaultdict(list)
         for u, v, w in times:
             edges[u].append((v, w))
@@ -104,23 +104,23 @@ class TestSolution(unittest.TestCase):
     def test_networkDelayTime(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
-                result = self.solution.networkDelayTime(times, n, k)
+                result = self.solution.network_delay_time(times, n, k)
                 self.assertEqual(result, expected)
 
     def test_networkDelayTime2(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
-                result = self.solution.networkDelayTime2(times, n, k)
+                result = self.solution.network_delay_time2(times, n, k)
                 self.assertEqual(result, expected)
 
     def test_networkDelayTime3(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
-                result = self.solution.networkDelayTime3(times, n, k)
+                result = self.solution.network_delay_time3(times, n, k)
                 self.assertEqual(result, expected)
 
     def test_networkDelayTime4(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
-                result = self.solution.networkDelayTime4(times, n, k)
+                result = self.solution.network_delay_time4(times, n, k)
                 self.assertEqual(result, expected)
