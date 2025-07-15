@@ -101,25 +101,25 @@ class TestSolution(unittest.TestCase):
             ([[1, 2, 10], [2, 3, 5], [3, 4, 10]], 4, 1, 25),
         ]
 
-    def test_networkDelayTime(self):
+    def test_network_delay_time(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time(times, n, k)
                 self.assertEqual(result, expected)
 
-    def test_networkDelayTime2(self):
+    def test_network_delay_time2(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time2(times, n, k)
                 self.assertEqual(result, expected)
 
-    def test_networkDelayTime3(self):
+    def test_network_delay_time3(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time3(times, n, k)
                 self.assertEqual(result, expected)
 
-    def test_networkDelayTime4(self):
+    def test_network_delay_time4(self):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time4(times, n, k)
