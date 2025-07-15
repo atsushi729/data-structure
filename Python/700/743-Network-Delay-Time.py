@@ -89,6 +89,16 @@ class Solution:
 
         return total if len(visit) == n else -1
 
+    def network_delay_time5(self, times: List[List[int]], n: int, k: int) -> int:
+        dist = [float('inf')] * n
+        dist[k - 1] = 0
+        for _ in range(n - 1):
+            for u, v, w in times:
+                if dist[u - 1] + w < dist[v - 1]:
+                    dist[v - 1] = dist[u - 1] + w
+        max_dist = max(dist)
+        return max_dist if max_dist < float('inf') else -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -123,4 +133,10 @@ class TestSolution(unittest.TestCase):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time4(times, n, k)
+                self.assertEqual(result, expected)
+
+    def test_network_delay_time5(self):
+        for times, n, k, expected in self.test_cases:
+            with self.subTest(times=times, n=n, k=k):
+                result = self.solution.network_delay_time5(times, n, k)
                 self.assertEqual(result, expected)
