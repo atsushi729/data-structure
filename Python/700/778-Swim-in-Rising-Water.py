@@ -72,6 +72,36 @@ class Solution:
 
         return dfs((0, 0), 0)
 
+    def swim_in_water4(self, grid: List[List[int]]) -> int:
+        n = len(grid)
+
+        def can_reach(t: int) -> bool:
+            visit = [[False] * n for _ in range(n)]
+
+            def dfs(r: int, c: int) -> bool:
+                if (r < 0 or c < 0 or r >= n or c >= n or
+                        visit[r][c] or grid[r][c] > t):
+                    return False
+                if r == n - 1 and c == n - 1:
+                    return True
+                visit[r][c] = True
+                return (dfs(r + 1, c) or dfs(r - 1, c) or
+                        dfs(r, c + 1) or dfs(r, c - 1))
+
+            return dfs(0, 0)
+
+        low = max(grid[0][0], grid[n - 1][n - 1])
+        high = max(max(row) for row in grid)
+
+        while low < high:
+            mid = (low + high) // 2
+            if can_reach(mid):
+                high = mid
+            else:
+                low = mid + 1
+
+        return low
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -98,4 +128,9 @@ class TestSolution(unittest.TestCase):
     def test_swim_in_water3(self):
         for grid, expected in self.test_cases:
             result = self.solution.swim_in_water3(grid)
+            self.assertEqual(result, expected, f"Failed for grid: {grid}, expected: {expected}, got: {result}")
+
+    def test_swim_in_water4(self):
+        for grid, expected in self.test_cases:
+            result = self.solution.swim_in_water4(grid)
             self.assertEqual(result, expected, f"Failed for grid: {grid}, expected: {expected}, got: {result}")
