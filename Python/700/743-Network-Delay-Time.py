@@ -99,6 +99,36 @@ class Solution:
         max_dist = max(dist)
         return max_dist if max_dist < float('inf') else -1
 
+    def network_delay_time6(self, times: List[List[int]], n: int, k: int) -> int:
+        # Build the graph: adjacency list mapping each node to its neighbors and weights
+        graph = collections.defaultdict(list)
+        for start, end, time in times:
+            graph[start].append((end, time))
+
+        # Priority queue: (current total time, node)
+        min_heap = [(0, k)]  # Start from node k with time 0
+        visited = set()  # Track visited nodes
+        max_time = 0  # Maximum time needed to reach all nodes
+
+        while min_heap:
+            current_time, current_node = heapq.heappop(min_heap)
+
+            # Skip if node has already been visited
+            if current_node in visited:
+                continue
+
+            # Mark node as visited and update maximum time
+            visited.add(current_node)
+            max_time = current_time
+
+            # Explore neighboring nodes
+            for next_node, travel_time in graph[current_node]:
+                if next_node not in visited:
+                    heapq.heappush(min_heap, (current_time + travel_time, next_node))
+
+        # Return max_time if all nodes are visited, otherwise -1
+        return max_time if len(visited) == n else -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -139,4 +169,10 @@ class TestSolution(unittest.TestCase):
         for times, n, k, expected in self.test_cases:
             with self.subTest(times=times, n=n, k=k):
                 result = self.solution.network_delay_time5(times, n, k)
+                self.assertEqual(result, expected)
+
+    def test_network_delay_time6(self):
+        for times, n, k, expected in self.test_cases:
+            with self.subTest(times=times, n=n, k=k):
+                result = self.solution.network_delay_time6(times, n, k)
                 self.assertEqual(result, expected)
