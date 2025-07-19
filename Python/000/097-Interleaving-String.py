@@ -2,7 +2,7 @@ import unittest
 
 
 class Solution:
-    def isInterleave(self, s1: str, s2: str, s3: str) -> bool:
+    def is_interleave(self, s1: str, s2: str, s3: str) -> bool:
         if len(s1) + len(s2) != len(s3):
             return False
 
@@ -25,6 +25,7 @@ class Solution:
 
         return dfs(0, 0, 0)
 
+
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -39,8 +40,8 @@ class TestSolution(unittest.TestCase):
             ("abc", "def", "abdecf", True)
         ]
 
-    def test_isInterleave(self):
+    def test_is_interleave(self):
         for s1, s2, s3, expected in self.test_cases:
             with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.isInterleave(s1, s2, s3)
+                result = self.solution.is_interleave(s1, s2, s3)
                 self.assertEqual(result, expected)
