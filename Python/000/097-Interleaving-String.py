@@ -25,6 +25,24 @@ class Solution:
 
         return dfs(0, 0, 0)
 
+    def is_interleave2(self, s1: str, s2: str, s3: str) -> bool:
+
+        def dfs(i, j, k):
+            if k == len(s3):
+                return (i == len(s1)) and (j == len(s2))
+
+            if i < len(s1) and s1[i] == s3[k]:
+                if dfs(i + 1, j, k + 1):
+                    return True
+
+            if j < len(s2) and s2[j] == s3[k]:
+                if dfs(i, j + 1, k + 1):
+                    return True
+
+            return False
+
+        return dfs(0, 0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -44,4 +62,10 @@ class TestSolution(unittest.TestCase):
         for s1, s2, s3, expected in self.test_cases:
             with self.subTest(s1=s1, s2=s2, s3=s3):
                 result = self.solution.is_interleave(s1, s2, s3)
+                self.assertEqual(result, expected)
+
+    def test_is_interleave2(self):
+        for s1, s2, s3, expected in self.test_cases:
+            with self.subTest(s1=s1, s2=s2, s3=s3):
+                result = self.solution.is_interleave2(s1, s2, s3)
                 self.assertEqual(result, expected)
