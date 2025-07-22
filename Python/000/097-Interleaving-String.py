@@ -58,6 +58,27 @@ class Solution:
                     dp[i][j] = True
         return dp[0][0]
 
+    def is_interleave4(self, s1: str, s2: str, s3: str) -> bool:
+        m, n = len(s1), len(s2)
+        if m + n != len(s3):
+            return False
+        if n < m:
+            s1, s2 = s2, s1
+            m, n = n, m
+
+        dp = [False for _ in range(n + 1)]
+        dp[n] = True
+        for i in range(m, -1, -1):
+            nextDp = [False for _ in range(n + 1)]
+            nextDp[n] = True
+            for j in range(n, -1, -1):
+                if i < m and s1[i] == s3[i + j] and dp[j]:
+                    nextDp[j] = True
+                if j < n and s2[j] == s3[i + j] and nextDp[j + 1]:
+                    nextDp[j] = True
+            dp = nextDp
+        return dp[0]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -89,4 +110,10 @@ class TestSolution(unittest.TestCase):
         for s1, s2, s3, expected in self.test_cases:
             with self.subTest(s1=s1, s2=s2, s3=s3):
                 result = self.solution.is_inter_leave_3(s1, s2, s3)
+                self.assertEqual(result, expected)
+
+    def test_is_interleave4(self):
+        for s1, s2, s3, expected in self.test_cases:
+            with self.subTest(s1=s1, s2=s2, s3=s3):
+                result = self.solution.is_interleave4(s1, s2, s3)
                 self.assertEqual(result, expected)
