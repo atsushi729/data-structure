@@ -49,6 +49,26 @@ class Solution:
                 LIP = max(LIP, dfs(r, c, float('-inf')))
         return LIP
 
+    def longest_increasing_path3(self, matrix: List[List[int]]) -> int:
+        rows, cols = len(matrix), len(matrix[0])
+        dp = [[0] * cols for _ in range(rows)]
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        def dfs(r, c):
+            if dp[r][c] != 0:
+                return dp[r][c]
+
+            max_length = 1
+            for dr, dc in directions:
+                nr, nc = r + dr, c + dc
+                if 0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] > matrix[r][c]:
+                    max_length = max(max_length, 1 + dfs(nr, nc))
+
+            dp[r][c] = max_length
+            return max_length
+
+        return max(dfs(r, c) for r in range(rows) for c in range(cols))
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -71,4 +91,10 @@ class TestSolution(unittest.TestCase):
         for matrix, expected in self.test_cases:
             with self.subTest(matrix=matrix):
                 result = self.solution.longest_increasing_path2(matrix)
+                self.assertEqual(result, expected)
+
+    def test_longest_increasing_path3(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                result = self.solution.longest_increasing_path3(matrix)
                 self.assertEqual(result, expected)
