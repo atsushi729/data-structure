@@ -1,3 +1,4 @@
+from collections import deque
 from typing import List
 import unittest
 
@@ -69,6 +70,37 @@ class Solution:
 
         return max(dfs(r, c) for r in range(rows) for c in range(cols))
 
+    def longest_increasing_path4(self, matrix: List[List[int]]) -> int:
+        rows, cols = len(matrix), len(matrix[0])
+        directions = [[-1, 0], [1, 0], [0, -1], [0, 1]]
+        indegree = [[0] * cols for _ in range(rows)]
+
+        for r in range(rows):
+            for c in range(cols):
+                for d in directions:
+                    nr, nc = d[0] + r, d[1] + c
+                    if (0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] < matrix[r][c]):
+                        indegree[r][c] += 1
+
+        q = deque()
+        for r in range(rows):
+            for c in range(cols):
+                if indegree[r][c] == 0:
+                    q.append([r, c])
+
+        LIS = 0
+        while q:
+            for _ in range(len(q)):
+                r, c = q.popleft()
+                for d in directions:
+                    nr, nc = r + d[0], c + d[1]
+                    if (0 <= nr < rows and 0 <= nc < cols and matrix[nr][nc] > matrix[r][c]):
+                        indegree[nr][nc] -= 1
+                        if indegree[nr][nc] == 0:
+                            q.append([nr, nc])
+            LIS += 1
+        return LIS
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -97,4 +129,10 @@ class TestSolution(unittest.TestCase):
         for matrix, expected in self.test_cases:
             with self.subTest(matrix=matrix):
                 result = self.solution.longest_increasing_path3(matrix)
+                self.assertEqual(result, expected)
+
+    def test_longest_increasing_path4(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                result = self.solution.longest_increasing_path4(matrix)
                 self.assertEqual(result, expected)
