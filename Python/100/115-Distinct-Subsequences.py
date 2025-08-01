@@ -72,6 +72,23 @@ class Solution:
 
         return dp[0]
 
+    def numDistinct5(self, s: str, t: str) -> int:
+        m, n = len(s), len(t)
+        dp = [0] * (n + 1)
+
+        dp[n] = 1
+        for i in range(m - 1, -1, -1):
+            prev = 1
+            for j in range(n - 1, -1, -1):
+                res = dp[j]
+                if s[i] == t[j]:
+                    res += prev
+
+                prev = dp[j]
+                dp[j] = res
+
+        return dp[0]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -109,4 +126,10 @@ class TestSolution(unittest.TestCase):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
                 result = self.solution.numDistinct4(s, t)
+                self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
+
+    def test_num_distinct5(self):
+        for s, t, expected in self.test_cases:
+            with self.subTest(s=s, t=t):
+                result = self.solution.numDistinct5(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
