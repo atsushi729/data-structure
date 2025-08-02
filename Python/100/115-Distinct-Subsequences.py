@@ -89,6 +89,40 @@ class Solution:
 
         return dp[0]
 
+    def numDistinct6(self, s: str, t: str) -> int:
+        if len(t) > len(s):
+            return 0
+
+        dp = {}
+
+        def dfs(i, j):
+            print(f"Entering dfs(i={i}, j={j})")
+
+            if j == len(t):
+                print(f"✔️ t matched completely at i={i}, j={j} → return 1")
+                return 1
+            if i == len(s):
+                print(f"❌ s exhausted at i={i}, j={j} → return 0")
+                return 0
+            if (i, j) in dp:
+                print(f"🔁 Returning memoized dp[{i},{j}] = {dp[(i, j)]}")
+                return dp[(i, j)]
+
+            print(f"Trying to skip s[{i}]='{s[i]}' and keep t[{j}]='{t[j]}'")
+            res = dfs(i + 1, j)
+
+            if s[i] == t[j]:
+                print(f"✅ s[{i}]='{s[i]}' matches t[{j}]='{t[j]}', trying to match the rest")
+                res += dfs(i + 1, j + 1)
+            else:
+                print(f"🚫 s[{i}]='{s[i]}' does NOT match t[{j}]='{t[j]}'")
+
+            dp[(i, j)] = res
+            print(f"↩️ dp[{i},{j}] = {res} (returning)")
+            return res
+
+        return dfs(0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -132,4 +166,10 @@ class TestSolution(unittest.TestCase):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
                 result = self.solution.numDistinct5(s, t)
+                self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
+
+    def test_num_distinct6(self):
+        for s, t, expected in self.test_cases:
+            with self.subTest(s=s, t=t):
+                result = self.solution.numDistinct6(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
