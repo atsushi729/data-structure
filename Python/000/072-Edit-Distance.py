@@ -18,6 +18,22 @@ class Solution:
                     dp[i][j] = 1 + min(dp[i + 1][j], dp[i][j + 1], dp[i + 1][j + 1])
         return dp[0][0]
 
+    def min_distance2(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+
+        def dfs(i, j):
+            if i == m:
+                return n - j
+            if j == n:
+                return m - i
+            if word1[i] == word2[j]:
+                return dfs(i + 1, j + 1)
+            res = min(dfs(i + 1, j), dfs(i, j + 1))
+            res = min(res, dfs(i + 1, j + 1))
+            return res + 1
+
+        return dfs(0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -35,4 +51,10 @@ class TestSolution(unittest.TestCase):
         for word1, word2, expected in self.test_cases:
             with self.subTest(word1=word1, word2=word2):
                 result = self.solution.min_distance(word1, word2)
+                self.assertEqual(result, expected, f"Failed for {word1} and {word2}")
+
+    def test_min_distance2(self):
+        for word1, word2, expected in self.test_cases:
+            with self.subTest(word1=word1, word2=word2):
+                result = self.solution.min_distance2(word1, word2)
                 self.assertEqual(result, expected, f"Failed for {word1} and {word2}")
