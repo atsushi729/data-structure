@@ -80,6 +80,26 @@ class Solution:
 
         return dp[0]
 
+    def min_distance5(self, word1: str, word2: str) -> int:
+        m, n = len(word1), len(word2)
+        if m < n:
+            m, n = n, m
+            word1, word2 = word2, word1
+
+        dp = [n - i for i in range(n + 1)]
+
+        for i in range(m - 1, -1, -1):
+            nextDp = dp[n]
+            dp[n] = m - i
+            for j in range(n - 1, -1, -1):
+                temp = dp[j]
+                if word1[i] == word2[j]:
+                    dp[j] = nextDp
+                else:
+                    dp[j] = 1 + min(dp[j], dp[j + 1], nextDp)
+                nextDp = temp
+        return dp[0]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -115,4 +135,10 @@ class TestSolution(unittest.TestCase):
         for word1, word2, expected in self.test_cases:
             with self.subTest(word1=word1, word2=word2):
                 result = self.solution.min_distance4(word1, word2)
+                self.assertEqual(result, expected, f"Failed for {word1} and {word2}")
+
+    def test_min_distance5(self):
+        for word1, word2, expected in self.test_cases:
+            with self.subTest(word1=word1, word2=word2):
+                result = self.solution.min_distance5(word1, word2)
                 self.assertEqual(result, expected, f"Failed for {word1} and {word2}")
