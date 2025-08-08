@@ -2,7 +2,7 @@ import unittest
 
 
 class Solution:
-    def numDistinct(self, s: str, t: str) -> int:
+    def num_distinct(self, s: str, t: str) -> int:
         if len(t) > len(s):
             return 0
 
@@ -24,7 +24,7 @@ class Solution:
 
         return dfs(0, 0)
 
-    def numDistinct2(self, s: str, t: str) -> int:
+    def num_distinct2(self, s: str, t: str) -> int:
         if len(t) > len(s):
             return 0
 
@@ -41,7 +41,7 @@ class Solution:
 
         return dfs(0, 0)
 
-    def numDistinct3(self, s: str, t: str) -> int:
+    def num_distinct3(self, s: str, t: str) -> int:
         if len(t) > len(s):
             return 0
 
@@ -57,7 +57,7 @@ class Solution:
 
         return dp[0][0]
 
-    def numDistinct4(self, s: str, t: str) -> int:
+    def num_distinct4(self, s: str, t: str) -> int:
         m, n = len(s), len(t)
         dp = [0] * (n + 1)
         nextDp = [0] * (n + 1)
@@ -72,7 +72,7 @@ class Solution:
 
         return dp[0]
 
-    def numDistinct5(self, s: str, t: str) -> int:
+    def num_distinct5(self, s: str, t: str) -> int:
         m, n = len(s), len(t)
         dp = [0] * (n + 1)
 
@@ -89,7 +89,7 @@ class Solution:
 
         return dp[0]
 
-    def numDistinct6(self, s: str, t: str) -> int:
+    def num_distinct6(self, s: str, t: str) -> int:
         if len(t) > len(s):
             return 0
 
@@ -141,35 +141,35 @@ class TestSolution(unittest.TestCase):
     def test_num_distinct(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct(s, t)
+                result = self.solution.num_distinct(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
 
     def test_num_distinct2(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct2(s, t)
+                result = self.solution.num_distinct2(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
 
     def test_num_distinct3(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct3(s, t)
+                result = self.solution.num_distinct3(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
 
     def test_num_distinct4(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct4(s, t)
+                result = self.solution.num_distinct4(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
 
     def test_num_distinct5(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct5(s, t)
+                result = self.solution.num_distinct5(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
 
     def test_num_distinct6(self):
         for s, t, expected in self.test_cases:
             with self.subTest(s=s, t=t):
-                result = self.solution.numDistinct6(s, t)
+                result = self.solution.num_distinct6(s, t)
                 self.assertEqual(result, expected, f"Failed for s: {s}, t: {t}. Expected {expected}, got {result}.")
