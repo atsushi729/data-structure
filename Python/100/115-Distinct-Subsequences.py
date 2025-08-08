@@ -3,6 +3,10 @@ import unittest
 
 class Solution:
     def num_distinct(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(m * n)
+        """
         if len(t) > len(s):
             return 0
 
@@ -25,6 +29,10 @@ class Solution:
         return dfs(0, 0)
 
     def num_distinct2(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(m * n)
+        """
         if len(t) > len(s):
             return 0
 
@@ -42,6 +50,10 @@ class Solution:
         return dfs(0, 0)
 
     def num_distinct3(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(m * n)
+        """
         if len(t) > len(s):
             return 0
 
@@ -58,6 +70,10 @@ class Solution:
         return dp[0][0]
 
     def num_distinct4(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(n)
+        """
         m, n = len(s), len(t)
         dp = [0] * (n + 1)
         nextDp = [0] * (n + 1)
@@ -73,6 +89,10 @@ class Solution:
         return dp[0]
 
     def num_distinct5(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(n)
+        """
         m, n = len(s), len(t)
         dp = [0] * (n + 1)
 
@@ -90,6 +110,10 @@ class Solution:
         return dp[0]
 
     def num_distinct6(self, s: str, t: str) -> int:
+        """
+        Time Complexity: O(m * n)
+        Space Complexity: O(m * n)
+        """
         if len(t) > len(s):
             return 0
 
