@@ -22,6 +22,21 @@ class Solution:
 
         return dfs(1, len(nums) - 2)
 
+    def max_coins2(self, nums: List[int]) -> int:
+        nums = [1] + nums + [1]
+
+        def dfs(nums):
+            if nums == 2:
+                return 0
+            max_coins = 0
+            for i in range(1, len(nums) - 1):
+                coins = nums[i - 1] * nums[i] * nums[i + 1]
+                new_nums = nums[:i] + nums[i + 1:]
+                max_coins = max(max_coins, coins + dfs(new_nums))
+            return max_coins
+
+        return dfs(nums)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -38,3 +53,8 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 self.assertEqual(self.solution.max_coins(nums), expected)
+
+    def test_max_coins2(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                self.assertEqual(self.solution.max_coins2(nums), expected)
