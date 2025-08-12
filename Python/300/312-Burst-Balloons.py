@@ -1,4 +1,5 @@
 from typing import List
+from functools import cache
 import unittest
 
 
@@ -51,6 +52,28 @@ class Solution:
 
         return dp[1][n]
 
+    def max_coins4(self, nums: List[int]) -> int:
+        # 任意の軽量最適化：0を除去（0があると部分問題が事実上分割される）
+        arr = [1] + [x for x in nums if x != 0] + [1]
+        n = len(arr)
+
+        @cache
+        def dfs(l: int, r: int) -> int:
+            if l > r:
+                return 0
+            left_val = arr[l - 1]
+            right_val = arr[r + 1]
+            best = 0
+            # i を最後に割る
+            for i in range(l, r + 1):
+                coins = left_val * arr[i] * right_val
+                coins += dfs(l, i - 1) + dfs(i + 1, r)
+                if coins > best:
+                    best = coins
+            return best
+
+        return dfs(1, n - 2)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -77,3 +100,8 @@ class TestSolution(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 self.assertEqual(self.solution.max_coins3(nums), expected)
+
+    def test_max_coins4(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                self.assertEqual(self.solution.max_coins4(nums), expected)
