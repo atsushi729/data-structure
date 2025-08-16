@@ -1,4 +1,5 @@
 import unittest
+from typing import List, Tuple
 
 
 class Solution:
@@ -61,6 +62,45 @@ class Solution:
 
         return dp[0][0]
 
+    def is_match4(self, s: str, p: str) -> bool:
+        tokens: List[Tuple[str, bool]] = []
+        i = 0
+
+        while i < len(p):
+            ch = p[i]
+            if i + 1 < len(p) and p[i + 1] == '*':
+                tokens.append((ch, True))
+                i += 2
+            else:
+                tokens.append((ch, False))
+                i += 1
+
+        m, T = len(s), len(tokens)
+
+        dp = [False] * (T + 1)
+        dp[0] = True
+
+        for j in range(1, T + 1):
+            ch, star = tokens[j - 1]
+            if star:
+                dp[j] = dp[j - 1]
+            else:
+                dp[j] = False
+
+        for i in range(1, m + 1):
+            new = [False] * (T + 1)
+            for j in range(1, T + 1):
+                ch, star = tokens[j - 1]
+                if not star:
+                    new[j] = dp[j - 1] and (ch == s[i - 1] or ch == '.')
+                else:
+                    use_zero = new[j - 1]
+                    use_more = dp[j] and (ch == s[i - 1] or ch == '.')
+                    new[j] = use_zero or use_more
+            dp = new
+
+        return dp[T]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -93,3 +133,8 @@ class TestSolution(unittest.TestCase):
         for s, p, expected in self.test_cases:
             with self.subTest(s=s, p=p):
                 self.assertEqual(self.solution.is_match3(s, p), expected)
+
+    def test_is_match4(self):
+        for s, p, expected in self.test_cases:
+            with self.subTest(s=s, p=p):
+                self.assertEqual(self.solution.is_match4(s, p), expected)
