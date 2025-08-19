@@ -26,6 +26,18 @@ class Solution:
             for j in range(i + 1, n):
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
+    def rotate3(self, matrix: List[List[int]]) -> None:
+        n = len(matrix)
+        rotated = [[0] * n for _ in range(n)]
+
+        for i in range(n):
+            for j in range(n):
+                rotated[j][n - 1 - i] = matrix[i][j]
+
+        for i in range(n):
+            for j in range(n):
+                matrix[i][j] = rotated[i][j]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -57,4 +69,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(matrix=matrix):
                 m = deepcopy(matrix)
                 self.solution.rotate2(m)
+                self.assertEqual(m, expected)
+
+    def test_rotate3(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                m = deepcopy(matrix)
+                self.solution.rotate3(m)
                 self.assertEqual(m, expected)
