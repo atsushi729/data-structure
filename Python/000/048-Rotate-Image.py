@@ -38,6 +38,33 @@ class Solution:
             for j in range(n):
                 matrix[i][j] = rotated[i][j]
 
+    def rotate4(self, matrix: List[List[int]]) -> None:
+        n = len(matrix)
+        if n <= 1:
+            return
+
+        # 外側の層から内側へ
+        for first in range(n // 2):
+            last = n - 1 - first
+            # 層の左→右へ走査（四点入れ替えを offset で表現）
+            for i in range(first, last):
+                offset = i - first
+
+                # 4点スワップ（top ← left ← bottom ← right ← top）
+                top = matrix[first][i]  # 退避（上）
+
+                # left -> top
+                matrix[first][i] = matrix[last - offset][first]
+
+                # bottom -> left
+                matrix[last - offset][first] = matrix[last][last - offset]
+
+                # right -> bottom
+                matrix[last][last - offset] = matrix[i][last]
+
+                # top(退避) -> right
+                matrix[i][last] = top
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -76,4 +103,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(matrix=matrix):
                 m = deepcopy(matrix)
                 self.solution.rotate3(m)
+                self.assertEqual(m, expected)
+
+    def test_rotate4(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                m = deepcopy(matrix)
+                self.solution.rotate4(m)
                 self.assertEqual(m, expected)
