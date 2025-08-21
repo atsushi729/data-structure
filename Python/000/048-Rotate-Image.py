@@ -65,6 +65,9 @@ class Solution:
                 # top(退避) -> right
                 matrix[i][last] = top
 
+    def rotate5(self, matrix: List[List[int]]) -> None:
+        rotated = list(map(list, zip(*matrix[::-1])))
+        matrix[:] = rotated
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -110,4 +113,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(matrix=matrix):
                 m = deepcopy(matrix)
                 self.solution.rotate4(m)
+                self.assertEqual(m, expected)
+
+    def test_rotate5(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                m = deepcopy(matrix)
+                self.solution.rotate5(m)
                 self.assertEqual(m, expected)
