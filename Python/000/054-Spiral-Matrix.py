@@ -26,6 +26,27 @@ class Solution:
 
         return res
 
+    def spiralOrder2(self, matrix: List[List[int]]) -> List[int]:
+        m, n = len(matrix), len(matrix[0])
+        res = []
+
+        # append all the elements in the given direction
+        def dfs(row, col, r, c, dr, dc):
+            if row == 0 or col == 0:
+                return
+
+            for i in range(col):
+                r += dr
+                c += dc
+                res.append(matrix[r][c])
+
+            # sub-problem
+            dfs(col, row - 1, r, c, dc, -dr)
+
+        # start by going to the right
+        dfs(m, n, 0, -1, 0, 1)
+        return res
+
 
 class TestSolution(unittest.TestCase):
 
@@ -63,4 +84,10 @@ class TestSolution(unittest.TestCase):
         for matrix, expected in self.test_cases:
             with self.subTest(matrix=matrix):
                 result = self.sol.spiralOrder(matrix)
+                self.assertEqual(result, expected)
+
+    def test_spiralOrder2(self):
+        for matrix, expected in self.test_cases:
+            with self.subTest(matrix=matrix):
+                result = self.sol.spiralOrder2(matrix)
                 self.assertEqual(result, expected)
