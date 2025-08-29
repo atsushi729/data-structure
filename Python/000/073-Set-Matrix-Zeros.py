@@ -62,6 +62,21 @@ def set_zeroes3(matrix: list[list[int]]) -> None:
         for c in range(COLS):
             matrix[r][c] = mark[r][c]
 
+def set_zeroes4(matrix: list[list[int]]) -> None:
+    rows, cols = len(matrix), len(matrix[0])
+    zero_rows, zero_cols = [False] * rows, [False] * cols
+
+    for r in range(rows):
+        for c in range(cols):
+            if matrix[r][c] == 0:
+                zero_rows[r] = True
+                zero_cols[c] = True
+
+    for r in range(rows):
+        for c in range(cols):
+            if zero_rows[r] or zero_cols[c]:
+                matrix[r][c] = 0
+
 
 #################### Test Case ####################
 class TestSetZeroes(unittest.TestCase):
@@ -90,4 +105,13 @@ class TestSetZeroes(unittest.TestCase):
 
         matrix = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
         set_zeroes3(matrix)
+        self.assertEqual(matrix, [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]])
+
+    def test_set_zeroes4(self):
+        matrix = [[1, 1, 1], [1, 0, 1], [1, 1, 1]]
+        set_zeroes4(matrix)
+        self.assertEqual(matrix, [[1, 0, 1], [0, 0, 0], [1, 0, 1]])
+
+        matrix = [[0, 1, 2, 0], [3, 4, 5, 2], [1, 3, 1, 5]]
+        set_zeroes4(matrix)
         self.assertEqual(matrix, [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]])
