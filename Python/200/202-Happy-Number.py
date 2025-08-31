@@ -20,6 +20,26 @@ class Solution:
             fast = digit_square_sum(digit_square_sum(fast))
         return fast == 1
 
+    def is_happy2(self, n: int) -> bool:
+        seen = set()
+        is_positive = True
+        cur_n = n
+
+        while is_positive:
+            list_n = list(str(cur_n))
+            cur_sum = 0
+
+            for num in list_n:
+                cur_sum += int(num) ** 2
+
+            if cur_sum == 1:
+                return True
+            elif cur_sum in seen:
+                return False
+            else:
+                seen.add(cur_sum)
+                cur_n = cur_sum
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -37,4 +57,10 @@ class TestSolution(unittest.TestCase):
         for n, expected in self.test_cases:
             with self.subTest(n=n):
                 result = self.solution.is_happy(n)
+                self.assertEqual(result, expected)
+
+    def test_is_happy2(self):
+        for n, expected in self.test_cases:
+            with self.subTest(n=n):
+                result = self.solution.is_happy2(n)
                 self.assertEqual(result, expected)
