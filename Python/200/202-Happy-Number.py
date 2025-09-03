@@ -40,6 +40,24 @@ class Solution:
                 seen.add(cur_sum)
                 cur_n = cur_sum
 
+    def is_happy3(self, n: int) -> bool:
+        slow, fast = n, self.sum_of_sequares(n)
+
+        while slow != fast:
+            fast = self.sum_of_sequares(fast)
+            fast = self.sum_of_sequares(fast)
+            slow = self.sum_of_sequares(slow)
+        return True if fast == 1 else False
+
+    def sum_of_sequares(self, n: int) -> int:
+        output = 0
+        while n:
+            digit = n % 10
+            digit = digit ** 2
+            output += digit
+            n = n // 10
+        return output
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -63,4 +81,10 @@ class TestSolution(unittest.TestCase):
         for n, expected in self.test_cases:
             with self.subTest(n=n):
                 result = self.solution.is_happy2(n)
+                self.assertEqual(result, expected)
+
+    def test_is_happy3(self):
+        for n, expected in self.test_cases:
+            with self.subTest(n=n):
+                result = self.solution.is_happy3(n)
                 self.assertEqual(result, expected)
