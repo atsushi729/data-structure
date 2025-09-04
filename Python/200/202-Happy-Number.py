@@ -58,6 +58,13 @@ class Solution:
             n = n // 10
         return output
 
+    def is_happy4(self, n: int) -> bool:
+        seen = set()
+        while n != 1 and n not in seen:
+            seen.add(n)
+            n = sum(int(digit) ** 2 for digit in str(n))
+        return n == 1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -87,4 +94,10 @@ class TestSolution(unittest.TestCase):
         for n, expected in self.test_cases:
             with self.subTest(n=n):
                 result = self.solution.is_happy3(n)
+                self.assertEqual(result, expected)
+
+    def test_is_happy4(self):
+        for n, expected in self.test_cases:
+            with self.subTest(n=n):
+                result = self.solution.is_happy4(n)
                 self.assertEqual(result, expected)
