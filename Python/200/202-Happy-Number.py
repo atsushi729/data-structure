@@ -65,6 +65,29 @@ class Solution:
             n = sum(int(digit) ** 2 for digit in str(n))
         return n == 1
 
+    def is_happy5(self, n: int) -> bool:
+        slow, fast = n, self.sumOfSquares(n)
+        power = lam = 1
+
+        while slow != fast:
+            if power == lam:
+                slow = fast
+                power *= 2
+                lam = 0
+            fast = self.sumOfSquares(fast)
+            lam += 1
+        return True if fast == 1 else False
+
+    def sumOfSquares(self, n: int) -> int:
+        output = 0
+
+        while n:
+            digit = n % 10
+            digit = digit ** 2
+            output += digit
+            n = n // 10
+        return output
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -100,4 +123,10 @@ class TestSolution(unittest.TestCase):
         for n, expected in self.test_cases:
             with self.subTest(n=n):
                 result = self.solution.is_happy4(n)
+                self.assertEqual(result, expected)
+
+    def test_is_happy5(self):
+        for n, expected in self.test_cases:
+            with self.subTest(n=n):
+                result = self.solution.is_happy5(n)
                 self.assertEqual(result, expected)
