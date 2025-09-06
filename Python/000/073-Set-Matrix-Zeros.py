@@ -62,6 +62,7 @@ def set_zeroes3(matrix: list[list[int]]) -> None:
         for c in range(COLS):
             matrix[r][c] = mark[r][c]
 
+
 def set_zeroes4(matrix: list[list[int]]) -> None:
     rows, cols = len(matrix), len(matrix[0])
     zero_rows, zero_cols = [False] * rows, [False] * cols
