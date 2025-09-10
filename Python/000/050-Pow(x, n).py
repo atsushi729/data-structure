@@ -26,6 +26,23 @@ class Solution:
         res = helper(x, abs(n))
         return res if n >= 0 else 1 / res
 
+    def my_pow3(self, x: float, n: int) -> float:
+        if x == 0:
+            return 0
+        if n == 0:
+            return 1
+
+        res = 1
+        power = abs(n)
+
+        while power:
+            if power & 1:
+                res *= x
+            x *= x
+            power >>= 1
+
+        return res if n >= 0 else 1 / res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -48,4 +65,10 @@ class TestSolution(unittest.TestCase):
         for x, n, expected in self.test_cases:
             with self.subTest(x=x, n=n):
                 result = self.solution.my_pow2(x, n)
+                self.assertAlmostEqual(result, expected, places=5)
+
+    def test_myPow3(self):
+        for x, n, expected in self.test_cases:
+            with self.subTest(x=x, n=n):
+                result = self.solution.my_pow3(x, n)
                 self.assertAlmostEqual(result, expected, places=5)
