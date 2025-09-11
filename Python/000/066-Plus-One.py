@@ -6,12 +6,10 @@ class Solution:
     def plus_one(self, digits: List[int]) -> List[int]:
         result = int("".join(map(str, digits)))
         total = result + 1
-        res = []
-        for n in str(total):
-            res.append(int(n))
-        return res
+        return [int(n) for n in str(total)]
 
     def plus_one2(self, digits: List[int]) -> List[int]:
+        digits = digits[:]
         one = 1
         i = 0
         digits.reverse()
@@ -27,6 +25,27 @@ class Solution:
                 digits.append(one)
                 one = 0
             i += 1
+        digits.reverse()
+        return digits
+
+    def plusOne(self, digits: List[int]) -> List[int]:
+        digits = digits[:]
+        one = 1
+        i = 0
+        digits.reverse()
+
+        while one:
+            if i < len(digits):
+                if digits[i] == 9:
+                    digits[i] = 0
+                else:
+                    digits[i] += 1
+                    one = 0
+            else:
+                digits.append(one)
+                one = 0
+            i += 1
+
         digits.reverse()
         return digits
 
@@ -55,4 +74,10 @@ class TestSolution(unittest.TestCase):
         for digits, expected in self.test_cases:
             with self.subTest(digits=digits):
                 result = self.solution.plus_one2(digits)
+                self.assertEqual(result, expected)
+
+    def test_plusOne(self):
+        for digits, expected in self.test_cases:
+            with self.subTest(digits=digits):
+                result = self.solution.plusOne(digits)
                 self.assertEqual(result, expected)
