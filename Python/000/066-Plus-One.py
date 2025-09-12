@@ -28,7 +28,7 @@ class Solution:
         digits.reverse()
         return digits
 
-    def plusOne(self, digits: List[int]) -> List[int]:
+    def plus_one3(self, digits: List[int]) -> List[int]:
         digits = digits[:]
         one = 1
         i = 0
@@ -76,8 +76,8 @@ class TestSolution(unittest.TestCase):
                 result = self.solution.plus_one2(digits)
                 self.assertEqual(result, expected)
 
-    def test_plusOne(self):
+    def test_plus_one3(self):
         for digits, expected in self.test_cases:
             with self.subTest(digits=digits):
-                result = self.solution.plusOne(digits)
+                result = self.solution.plus_one3(digits)
                 self.assertEqual(result, expected)
