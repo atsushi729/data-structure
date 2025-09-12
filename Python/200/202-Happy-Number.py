@@ -6,7 +6,7 @@ class Solution:
         if n <= 0:
             return False
 
-        def digit_square_sum(x: int) -> int:
+        def _digit_square_sum(x: int) -> int:
             s = 0
             while x:
                 x, d = divmod(x, 10)
@@ -14,10 +14,10 @@ class Solution:
             return s
 
         slow = n
-        fast = digit_square_sum(n)
+        fast = _digit_square_sum(n)
         while fast != 1 and slow != fast:
-            slow = digit_square_sum(slow)
-            fast = digit_square_sum(digit_square_sum(fast))
+            slow = _digit_square_sum(slow)
+            fast = _digit_square_sum(_digit_square_sum(fast))
         return fast == 1
 
     def is_happy2(self, n: int) -> bool:
