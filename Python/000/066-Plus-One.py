@@ -49,6 +49,24 @@ class Solution:
         digits.reverse()
         return digits
 
+    def plus_one4(self, digits: List[int]) -> List[int]:
+        """
+        Time Complexity: O(n)
+            - Best case: O(1)  when the last digit is less than 9
+            - Base case: O(k)  when the last k digits are 9
+            - Worst case: O(n) when all digits are 9
+        Space Complexity: O(1)
+        """
+        digits = digits[:]
+        n = len(digits)
+
+        for i in range(n - 1, -1, -1):
+            if digits[i] < 9:
+                digits[i] += 1
+                return digits
+            digits[i] = 0
+        return [1] + digits
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -80,4 +98,10 @@ class TestSolution(unittest.TestCase):
         for digits, expected in self.test_cases:
             with self.subTest(digits=digits):
                 result = self.solution.plus_one3(digits)
+                self.assertEqual(result, expected)
+
+    def test_plus_one4(self):
+        for digits, expected in self.test_cases:
+            with self.subTest(digits=digits):
+                result = self.solution.plus_one4(digits)
                 self.assertEqual(result, expected)
