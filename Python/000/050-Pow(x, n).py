@@ -43,6 +43,31 @@ class Solution:
 
         return res if n >= 0 else 1 / res
 
+    def my_pow4(self, x: float, n: int) -> float:
+
+        if n == 0:
+            return 1.0
+        if x == 1.0:
+            return 1.0
+        if x == -1.0:
+            # (-1)^n は n が偶数なら 1、奇数なら -1
+            return 1.0 if (n & 1) == 0 else -1.0
+
+        if x == 0.0:
+            return 0.0 if n > 0 else float('inf')
+
+        if n < 0:
+            x = 1.0 / x
+            n = -n
+
+        res = 1.0
+        while n:
+            if n & 1:
+                res *= x
+            x *= x
+            n >>= 1
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -71,4 +96,10 @@ class TestSolution(unittest.TestCase):
         for x, n, expected in self.test_cases:
             with self.subTest(x=x, n=n):
                 result = self.solution.my_pow3(x, n)
+                self.assertAlmostEqual(result, expected, places=5)
+
+    def test_myPow4(self):
+        for x, n, expected in self.test_cases:
+            with self.subTest(x=x, n=n):
+                result = self.solution.my_pow4(x, n)
                 self.assertAlmostEqual(result, expected, places=5)
