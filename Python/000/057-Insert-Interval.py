@@ -24,6 +24,36 @@ class Solution:
 
         return res
 
+    def insert_v2(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        Time complexity: O(N)
+        Space complexity: O(N)
+        """
+        # Result list to store merged intervals
+        res = []
+
+        for i in range(len(intervals)):
+            # Case 1: newInterval comes before the current interval (no overlap)
+            if newInterval[1] < intervals[i][0]:
+                res.append(newInterval)
+                # Append all remaining intervals and return
+                return res + intervals[i:]
+
+            # Case 2: newInterval comes after the current interval (no overlap)
+            elif newInterval[0] > intervals[i][1]:
+                res.append(intervals[i])
+
+            # Case 3: Overlapping intervals -> merge them
+            else:
+                newInterval = [
+                    min(newInterval[0], intervals[i][0]),  # extend start
+                    max(newInterval[1], intervals[i][1])  # extend end
+                ]
+
+        # Add the last newInterval after processing all intervals
+        res.append(newInterval)
+        return res
+
 
 class TestInsertInterval(unittest.TestCase):
     @classmethod
@@ -40,4 +70,9 @@ class TestInsertInterval(unittest.TestCase):
     def test_insert(self):
         for intervals, newInterval, expected in self.test_cases:
             result = self.solution.insert(intervals, newInterval)
+            self.assertEqual(result, expected)
+
+    def test_insert_v2(self):
+        for intervals, newInterval, expected in self.test_cases:
+            result = self.solution.insert_v2(intervals, newInterval)
             self.assertEqual(result, expected)
