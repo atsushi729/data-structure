@@ -4,6 +4,13 @@ import unittest
 
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        Time complexity: O(N)
+        Space complexity: O(N)
+        :param intervals:
+        :param newInterval:
+        :return:
+        """
         n = len(intervals)
         i = 0
         res = []
