@@ -90,6 +90,27 @@ class Solution:
                 res[-1][1] = max(res[-1][1], interval[1])
         return res
 
+    def insert_v4(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        """
+        Time complexity: O(N)
+        Space complexity: O(N)
+        """
+        res = []
+
+        for i in range(len(intervals)):
+            if newInterval[1] < intervals[i][0]:
+                res.append(newInterval)
+                return res + intervals[i:]
+            elif newInterval[0] > intervals[i][1]:
+                res.append(intervals[i])
+            else:
+                newInterval = [
+                    min(newInterval[0], intervals[i][0]),
+                    max(newInterval[1], intervals[i][1]),
+                ]
+        res.append(newInterval)
+        return res
+
 
 class TestInsertInterval(unittest.TestCase):
     @classmethod
@@ -116,4 +137,9 @@ class TestInsertInterval(unittest.TestCase):
     def test_insert_v3(self):
         for intervals, newInterval, expected in self.test_cases:
             result = self.solution.insert_v3(intervals, newInterval)
+            self.assertEqual(result, expected)
+
+    def test_insert_v4(self):
+        for intervals, newInterval, expected in self.test_cases:
+            result = self.solution.insert_v4(intervals, newInterval)
             self.assertEqual(result, expected)
