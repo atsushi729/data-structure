@@ -1,4 +1,5 @@
 from typing import List
+from collections import defaultdict
 import unittest
 
 
@@ -15,6 +16,26 @@ class Solution:
             else:
                 res.append([start, end])
 
+        return res
+
+    def merge_v2(self, intervals: List[List[int]]) -> List[List[int]]:
+        mp = defaultdict(int)
+        for start, end in intervals:
+            mp[start] += 1
+            mp[end] -= 1
+
+        res = []
+        intervals = []
+        have = 0
+
+        for i in sorted(mp):
+            if not intervals:
+                intervals.append(i)
+            have += mp[i]
+            if have == 0:
+                intervals.append(i)
+                res.append(intervals)
+                intervals = []
         return res
 
 
@@ -45,4 +66,10 @@ class TestSolution(unittest.TestCase):
         for intervals, expected in self.test_cases:
             with self.subTest(intervals=intervals, expected=expected):
                 result = self.solution.merge(intervals)
+                self.assertEqual(result, expected)
+
+    def test_merge_v2(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals, expected=expected):
+                result = self.solution.merge_v2(intervals)
                 self.assertEqual(result, expected)
