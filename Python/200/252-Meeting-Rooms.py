@@ -8,6 +8,7 @@ class Interval(object):
         self.start = start
         self.end = end
 
+
 # Solution:
 class Solution:
     def can_attend_meetings(self, intervals: List[Interval]) -> bool:
@@ -21,6 +22,17 @@ class Solution:
             if intervals[i].start < prev_end:
                 return False
             prev_end = intervals[i].end
+        return True
+
+    def can_attend_meetings_v2(self, intervals: List[Interval]) -> bool:
+        n = len(intervals)
+
+        for i in range(n):
+            a = intervals[i]
+            for j in range(i + 1, n):
+                b = intervals[j]
+                if not (a.end <= b.start or b.end <= a.start):
+                    return False
         return True
 
 
@@ -47,4 +59,10 @@ class TestSolution(unittest.TestCase):
         for intervals, expected in self.test_cases:
             with self.subTest(intervals=intervals):
                 result = self.solution.can_attend_meetings(intervals)
+                self.assertEqual(result, expected)
+
+    def test_can_attend_meetings_v2(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals):
+                result = self.solution.can_attend_meetings_v2(intervals)
                 self.assertEqual(result, expected)
