@@ -28,6 +28,19 @@ class Solution:
                 prev_end = min(end, prev_end)
         return res
 
+    def erase_overlap_intervals_v3(self, intervals: List[List[int]]) -> int:
+        intervals.sort()
+
+        def dfs(i, prev):
+            if i == len(intervals):
+                return 0
+            res = dfs(i + 1, prev)
+            if prev == -1 or intervals[prev][1] <= intervals[i][0]:
+                res = max(res, 1 + dfs(i + 1, i))
+            return res
+
+        return len(intervals) - dfs(0, -1)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -69,5 +82,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(intervals=intervals):
                 self.assertEqual(
                     self.solution.erase_overlap_intervals_v2(intervals),
+                    expected,
+                )
+
+    def test_erase_overlap_intervals_v3(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals):
+                self.assertEqual(
+                    self.solution.erase_overlap_intervals_v3(intervals),
                     expected,
                 )
