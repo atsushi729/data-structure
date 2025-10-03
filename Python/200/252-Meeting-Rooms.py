@@ -35,6 +35,17 @@ class Solution:
                     return False
         return True
 
+    def can_attend_meetings_v3(self, intervals: List[Interval]) -> bool:
+        intervals.sort(key=lambda x: x.start)
+
+        for i in range(1, len(intervals)):
+            i1 = intervals[i - 1]
+            i2 = intervals[i]
+
+            if i1.end > i2.start:
+                return False
+        return True
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -65,4 +76,10 @@ class TestSolution(unittest.TestCase):
         for intervals, expected in self.test_cases:
             with self.subTest(intervals=intervals):
                 result = self.solution.can_attend_meetings_v2(intervals)
+                self.assertEqual(result, expected)
+
+    def test_can_attend_meetings_v3(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals):
+                result = self.solution.can_attend_meetings_v3(intervals)
                 self.assertEqual(result, expected)
