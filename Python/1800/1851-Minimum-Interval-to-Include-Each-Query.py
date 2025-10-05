@@ -1,5 +1,6 @@
 from typing import List
 import unittest
+import heapq
 
 
 class Solution:
@@ -14,6 +15,22 @@ class Solution:
                         cur = r - l + 1
             res.append(cur)
         return res
+
+    def min_interval_v2(self, intervals: List[List[int]], queries: List[int]) -> List[int]:
+        intervals.sort()
+        minHeap = []
+        res = {}
+        i = 0
+        for q in sorted(queries):
+            while i < len(intervals) and intervals[i][0] <= q:
+                l, r = intervals[i]
+                heapq.heappush(minHeap, (r - l + 1, r))
+                i += 1
+
+            while minHeap and minHeap[0][1] < q:
+                heapq.heappop(minHeap)
+            res[q] = minHeap[0][0] if minHeap else -1
+        return [res[q] for q in queries]
 
 
 class TestSolution(unittest.TestCase):
@@ -53,5 +70,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(intervals=intervals, queries=queries):
                 self.assertEqual(
                     self.solution.min_interval(intervals, queries),
+                    expected,
+                )
+
+    def test_min_interval_v2(self):
+        for intervals, queries, expected in self.test_cases:
+            with self.subTest(intervals=intervals, queries=queries):
+                self.assertEqual(
+                    self.solution.min_interval_v2(intervals, queries),
                     expected,
                 )
