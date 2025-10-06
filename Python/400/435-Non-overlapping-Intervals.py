@@ -58,6 +58,20 @@ class Solution:
 
         return n - dfs(0)
 
+    def erase_overlap_intervals_v5(self, intervals: List[List[int]]) -> int:
+        intervals.sort(key=lambda x: x[1])
+        n = len(intervals)
+        dp = [0] * n
+
+        for i in range(n):
+            dp[i] = 1
+            for j in range(i):
+                if intervals[j][1] <= intervals[i][0]:
+                    dp[i] = max(dp[i], 1 + dp[j])
+
+        max_non_overlapping = max(dp)
+        return n - max_non_overlapping
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -115,5 +129,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(intervals=intervals):
                 self.assertEqual(
                     self.solution.erase_overlap_intervals_v4(intervals),
+                    expected,
+                )
+
+    def test_erase_overlap_intervals_v5(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals):
+                self.assertEqual(
+                    self.solution.erase_overlap_intervals_v5(intervals),
                     expected,
                 )
