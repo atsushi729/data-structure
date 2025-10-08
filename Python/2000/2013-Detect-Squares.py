@@ -22,6 +22,26 @@ class DetectSquares:
         return square_count
 
 
+class DetectSquaresV2:
+    def __init__(self):
+        self.pts_count = defaultdict(lambda: defaultdict(int))
+
+    def add(self, point: List[int]) -> None:
+        self.pts_count[point[0]][point[1]] += 1
+
+    def count(self, point: List[int]) -> int:
+        res = 0
+        x1, y1 = point
+        for y2 in self.pts_count[x1]:
+            side = y2 - y1
+            if side == 0:
+                continue
+            x3, x4 = x1 + side, x1 - side
+            res += (self.pts_count[x1][y2] * self.pts_count[x3][y1] * self.pts_count[x3][y2])
+            res += (self.pts_count[x1][y2] * self.pts_count[x4][y1] * self.pts_count[x4][y2])
+        return res
+
+
 class TestDetectSquares(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -73,4 +93,16 @@ class TestDetectSquares(unittest.TestCase):
                         results.append(ds.add(point))
                     elif op == "count":
                         results.append(ds.count(point))
+                self.assertEqual(results, expected)
+
+    def test_count_squares_v2(self):
+        for operations, expected in self.test_cases:
+            with self.subTest(operations=operations, expected=expected):
+                cs = DetectSquaresV2()
+                results = []
+                for op, point in operations:
+                    if op == "add":
+                        results.append(cs.add(point))
+                    elif op == "count":
+                        results.append(cs.count(point))
                 self.assertEqual(results, expected)
