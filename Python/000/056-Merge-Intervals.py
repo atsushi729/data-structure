@@ -63,6 +63,24 @@ class Solution:
 
         return res
 
+    def merge_v4(self, intervals: List[List[int]]) -> List[List[int]]:
+        if not intervals:
+            return []
+
+        intervals.sort(key=lambda x: x[0])
+        res = []
+        prev_start, prev_end = intervals[0]
+
+        for start, end in intervals[1:]:
+            if start <= prev_end:
+                prev_end = max(prev_end, end)
+            else:
+                res.append([prev_start, prev_end])
+                prev_start, prev_end = start, end
+
+        res.append([prev_start, prev_end])
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -103,4 +121,10 @@ class TestSolution(unittest.TestCase):
         for intervals, expected in self.test_cases:
             with self.subTest(intervals=intervals, expected=expected):
                 result = self.solution.merge_v3(intervals)
+                self.assertEqual(result, expected)
+
+    def test_merge_v4(self):
+        for intervals, expected in self.test_cases:
+            with self.subTest(intervals=intervals, expected=expected):
+                result = self.solution.merge_v4(intervals)
                 self.assertEqual(result, expected)
