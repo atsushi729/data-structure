@@ -1,4 +1,3 @@
-import unittest
 from typing import Optional
 import unittest
 
@@ -20,34 +19,55 @@ def reverse_list(head: Optional[ListNode]) -> Optional[ListNode]:
     return prev_node
 
 
+def reverse_list_v2(head: Optional[ListNode]) -> Optional[ListNode]:
+    if not head or not head.next:
+        return head
+    new_head = reverse_list_v2(head.next)
+    head.next.next = head
+    head.next = None
+    return new_head
+
+
 class TestReverseList(unittest.TestCase):
-    def test_reverse_test(self):
-        head = ListNode(1)
-        head.next = ListNode(2)
-        head.next.next = ListNode(3)
-        head.next.next.next = ListNode(4)
-        head.next.next.next.next = ListNode(5)
-        reversed_head = reverse_list(head)
-        self.assertEqual(reversed_head.val, 5)
-        self.assertEqual(reversed_head.next.val, 4)
-        self.assertEqual(reversed_head.next.next.val, 3)
-        self.assertEqual(reversed_head.next.next.next.val, 2)
-        self.assertEqual(reversed_head.next.next.next.next.val, 1)
-        self.assertIsNone(reversed_head.next.next.next.next.next)
+    @classmethod
+    def setUpClass(cls):
+        cls.test_cases = [
+            ([1, 2, 3, 4, 5], [5, 4, 3, 2, 1]),
+            ([1, 2], [2, 1]),
+            ([], []),
+        ]
+        cls.test_cases_linked = []
+        for case in cls.test_cases:
+            dummy = ListNode(0)
+            current = dummy
+            for val in case[0]:
+                current.next = ListNode(val)
+                current = current.next
+            cls.test_cases_linked.append((dummy.next, case[1]))
 
+    def linked_list_to_list(self, head: Optional[ListNode]) -> list:
+        result = []
+        while head:
+            result.append(head.val)
+            head = head.next
+        return result
 
-if __name__ == "__main__":
-    # Example 1
-    # Input: head = [1,2,3,4,5]
-    # Output: [5,4,3,2,1]
-    # Explanation: The input linked list looks like 1 -> 2 -> 3 -> 4 -> 5 -> None
-    # The reversed linked list looks like 5 -> 4 -> 3 -> 2 -> 1 -> None
-    head = ListNode(1)
-    head.next = ListNode(2)
-    head.next.next = ListNode(3)
-    head.next.next.next = ListNode(4)
-    head.next.next.next.next = ListNode(5)
-    reversed_head = reverse_list(head)
-    while reversed_head:
-        print(reversed_head.val)
-        reversed_head = reversed_head.next
+    def test_reverse_list_iterative(self):
+        for i, (input_head, expected) in enumerate(self.test_cases_linked):
+            with self.subTest(f"Iterative Test Case {i + 1}"):
+                result_head = reverse_list(input_head)
+                result_list = self.linked_list_to_list(result_head)
+                self.assertEqual(result_list, expected)
+
+    def test_reverse_list_recursive(self):
+        for i, (input_vals, expected) in enumerate(self.test_cases):
+            dummy = ListNode(0)
+            current = dummy
+            for val in input_vals:
+                current.next = ListNode(val)
+                current = current.next
+
+            with self.subTest(f"Recursive Test Case {i + 1}"):
+                result_head = reverse_list_v2(dummy.next)
+                result_list = self.linked_list_to_list(result_head)
+                self.assertEqual(result_list, expected)
