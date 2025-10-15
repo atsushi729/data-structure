@@ -28,6 +28,29 @@ def reverse_list_v2(head: Optional[ListNode]) -> Optional[ListNode]:
     return new_head
 
 
+def reverse_list_v3(head: Optional[ListNode]) -> Optional[ListNode]:
+    stack = []
+    current = head
+
+    while current:
+        stack.append(current)
+        current = current.next
+
+    if not stack:
+        return None
+
+    new_head = stack.pop()
+    current = new_head
+
+    while stack:
+        node = stack.pop()
+        current.next = node
+        current = current.next
+
+    current.next = None
+    return new_head
+
+
 class TestReverseList(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -69,5 +92,18 @@ class TestReverseList(unittest.TestCase):
 
             with self.subTest(f"Recursive Test Case {i + 1}"):
                 result_head = reverse_list_v2(dummy.next)
+                result_list = self.linked_list_to_list(result_head)
+                self.assertEqual(result_list, expected)
+
+    def test_reverse_list_stack(self):
+        for i, (input_vals, expected) in enumerate(self.test_cases):
+            dummy = ListNode(0)
+            current = dummy
+            for val in input_vals:
+                current.next = ListNode(val)
+                current = current.next
+
+            with self.subTest(f"Stack Test Case {i + 1}"):
+                result_head = reverse_list_v3(dummy.next)
                 result_list = self.linked_list_to_list(result_head)
                 self.assertEqual(result_list, expected)
