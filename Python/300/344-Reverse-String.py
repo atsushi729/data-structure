@@ -14,6 +14,20 @@ class Solution:
             right -= 1
         return s
 
+    def reverse_string_v2(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        stack = []
+
+        for c in s:
+            stack.append(c)
+        i = 0
+        while stack:
+            s[i] = stack.pop()
+            i += 1
+        return s
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -32,4 +46,9 @@ class TestSolution(unittest.TestCase):
     def test_reverse_string(self):
         for input_data, expected in self.test_cases:
             with self.subTest(input_data=input_data, expected=expected):
-                self.assertEqual(self.s.reverse_string(input_data), expected)
+                self.assertEqual(self.s.reverse_string(input_data.copy()), expected)
+
+    def test_reverse_string_v2(self):
+        for input_data, expected in self.test_cases:
+            with self.subTest(input_data=input_data, expected=expected):
+                self.assertEqual(self.s.reverse_string_v2(input_data.copy()), expected)
