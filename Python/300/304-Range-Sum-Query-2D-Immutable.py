@@ -7,7 +7,7 @@ class NumMatrix:
     def __init__(self, matrix: List[List[int]]):
         self.matrix = matrix
 
-    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+    def sum_region(self, row1: int, col1: int, row2: int, col2: int) -> int:
         res = 0
 
         for i in range(row1, row2 + 1):
@@ -26,7 +26,7 @@ class NumMatrixV2:
             for col in range(1, len(matrix[0])):
                 self.prefix[row][col] = self.prefix[row][col - 1] + matrix[row][col]
 
-    def sumRegion(self, row1: int, col1: int, row2: int, col2: int) -> int:
+    def sum_region(self, row1: int, col1: int, row2: int, col2: int) -> int:
         res = 0
         for row in range(row1, row2 + 1):
             if col1 > 0:
@@ -75,7 +75,7 @@ class TestNumMatrix(unittest.TestCase):
                               query_params=query_params,
                               expected=expected):
                 num_matrix = NumMatrix(matrix_data)
-                self.assertEqual(num_matrix.sumRegion(*query_params), expected)
+                self.assertEqual(num_matrix.sum_region(*query_params), expected)
 
     def test_sumRegion_v2(self):
         for matrix_data, query_params, expected in self.test_cases:
@@ -83,4 +83,4 @@ class TestNumMatrix(unittest.TestCase):
                               query_params=query_params,
                               expected=expected):
                 num_matrix = NumMatrixV2(matrix_data)
-                self.assertEqual(num_matrix.sumRegion(*query_params), expected)
+                self.assertEqual(num_matrix.sum_region(*query_params), expected)
