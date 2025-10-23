@@ -20,6 +20,7 @@ class Solution:
         Time complexity: O(n^2)
         Space complexity: O(n)
         """
+
         def rec(i, bought):
             if i == len(prices):
                 return 0
@@ -32,6 +33,19 @@ class Solution:
             return res
 
         return rec(0, False)
+
+    def max_profit_v3(self, prices: List[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        n = len(prices)
+        dp = [[0] * 2 for _ in range(n + 1)]
+
+        for i in range(n - 1, -1, -1):
+            dp[i][0] = max(dp[i + 1][0], -prices[i] + dp[i + 1][1])
+            dp[i][1] = max(dp[i + 1][1], prices[i] + dp[i + 1][0])
+        return dp[0][0]
 
 
 class TestSolution(unittest.TestCase):
@@ -59,3 +73,8 @@ class TestSolution(unittest.TestCase):
         for prices, expected in self.test_cases:
             with self.subTest(prices=prices, expected=expected):
                 self.assertEqual(self.s.max_profit_v2(prices), expected)
+
+    def test_max_profit_v3(self):
+        for prices, expected in self.test_cases:
+            with self.subTest(prices=prices, expected=expected):
+                self.assertEqual(self.s.max_profit_v3(prices), expected)
