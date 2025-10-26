@@ -72,6 +72,22 @@ class Solution:
 
         return rec(0, False)
 
+    def max_profit_v5(self, prices: List[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
+        n = len(prices)
+        next_buy = next_sell = 0
+        cur_buy = cur_sell = 0
+
+        for i in range(n - 1, -1, -1):
+            cur_buy = max(next_buy, -prices[i] + next_sell)
+            cur_sell = max(next_sell, prices[i] + next_buy)
+            next_buy = cur_buy
+            next_sell = cur_sell
+        return cur_buy
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -108,3 +124,8 @@ class TestSolution(unittest.TestCase):
         for prices, expected in self.test_cases:
             with self.subTest(prices=prices, expected=expected):
                 self.assertEqual(self.s.max_profit_v4(prices), expected)
+
+    def test_max_profit_v5(self):
+        for prices, expected in self.test_cases:
+            with self.subTest(prices=prices, expected=expected):
+                self.assertEqual(self.s.max_profit_v5(prices), expected)
