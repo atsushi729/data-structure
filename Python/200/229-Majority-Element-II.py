@@ -18,6 +18,14 @@ class Solution:
 
         return res
 
+    def majority_element_v2(self, nums: List[int]) -> List[int]:
+        res = set()
+        for num in nums:
+            count = sum(1 for i in nums if i == num)
+            if count > len(nums) // 3:
+                res.add(num)
+        return list(res)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -39,4 +47,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(input_data=input_data, expected=expected):
                 self.assertEqual(
                     sorted(self.s.majority_element(input_data)), sorted(expected)
+                )
+
+    def test_majority_element_v2(self):
+        for input_data, expected in self.test_cases:
+            with self.subTest(input_data=input_data, expected=expected):
+                self.assertEqual(
+                    sorted(self.s.majority_element_v2(input_data)), sorted(expected)
                 )
