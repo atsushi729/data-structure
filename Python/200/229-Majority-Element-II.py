@@ -35,6 +35,21 @@ class Solution:
                 res.append(key)
         return res
 
+    def majority_element_v4(self, nums: List[int]) -> List[int]:
+        nums.sort()
+        res, n = [], len(nums)
+
+        i = 0
+        while i < n:
+            j = i + 1
+            while j < n and nums[i] == nums[j]:
+                j += 1
+            if (j - i) > n // 3:
+                res.append(nums[i])
+            i = j
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -70,4 +85,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(input_data=input_data, expected=expected):
                 self.assertEqual(
                     sorted(self.s.majority_element_v3(input_data)), sorted(expected)
+                )
+
+    def test_majority_element_v4(self):
+        for input_data, expected in self.test_cases:
+            with self.subTest(input_data=input_data, expected=expected):
+                self.assertEqual(
+                    sorted(self.s.majority_element_v4(input_data)), sorted(expected)
                 )
