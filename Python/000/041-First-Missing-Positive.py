@@ -25,6 +25,18 @@ class Solution:
 
         return len(nums) + 1
 
+    def first_missing_positive_v2(self, nums: List[int]) -> int:
+        missing = 1
+        while True:
+            found = False
+            for num in nums:
+                if num == missing:
+                    found = True
+                    break
+            if not found:
+                return missing
+            missing += 1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -43,4 +55,9 @@ class TestSolution(unittest.TestCase):
     def test_firstMissingPositive(self):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums, expected=expected):
-                self.assertEqual(self.s.first_missing_positive(nums), expected)
+                self.assertEqual(self.s.first_missing_positive(nums.copy()), expected)
+
+    def test_first_missing_positive_v2(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums, expected=expected):
+                self.assertEqual(self.s.first_missing_positive_v2(nums.copy()), expected)
