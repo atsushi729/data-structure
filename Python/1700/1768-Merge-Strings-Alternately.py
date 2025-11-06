@@ -1,0 +1,38 @@
+import unittest
+
+
+class Solution:
+    def merge_alternately(self, word1: str, word2: str) -> str:
+        word1_list = list(word1)
+        word2_list = list(word2)
+        res = []
+
+        while word1_list and word2_list:
+            res.append(word1_list.pop(0))
+            res.append(word2_list.pop(0))
+
+        if word1_list:
+            res.extend(word1_list)
+        if word2_list:
+            res.extend(word2_list)
+
+        return "".join(res)
+
+
+class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.s = Solution()
+        cls.test_cases = [
+            ("abc", "pqr", "apbqcr"),
+            ("ab", "pqrs", "apbqrs"),
+            ("abcd", "pq", "apbqcd"),
+            ("", "xyz", "xyz"),
+            ("hello", "", "hello"),
+            ("a", "b", "ab"),
+        ]
+
+    def test_merge_alternately(self):
+        for word1, word2, expected in self.test_cases:
+            with self.subTest(word1=word1, word2=word2, expected=expected):
+                self.assertEqual(self.s.merge_alternately(word1, word2), expected)
