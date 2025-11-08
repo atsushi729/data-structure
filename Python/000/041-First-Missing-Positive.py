@@ -95,7 +95,7 @@ class TestSolution(unittest.TestCase):
             ([], 1),
         ]
 
-    def test_firstMissingPositive(self):
+    def test_first_missing_positive(self):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums, expected=expected):
                 self.assertEqual(self.s.first_missing_positive(nums.copy()), expected)
