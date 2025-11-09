@@ -4,18 +4,28 @@ from typing import List
 
 class Solution:
     def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
-        """
-        Do not return anything, modify nums1 in-place instead.
-        """
         nums1[m:] = nums2[:n]
         nums1.sort()
 
+    def merge_v2(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        nums1_copy = nums1[:m]
+        idx = 0
+        i = j = 0
+
+        while idx < m + n:
+            if j >= n or (i < len(nums1_copy) and nums1_copy[i] <= nums2[j]):
+                nums1[idx] = nums1_copy[i]
+                i += 1
+            else:
+                nums1[idx] = nums2[j]
+                j += 1
+            idx += 1
+
 
 class TestSolution(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls) -> None:
-        cls.s = Solution()
-        cls.test_cases = [
+    def setUp(self) -> None:
+        self.s = Solution()
+        self.test_cases = [
             ([1, 2, 3, 0, 0, 0], 3, [2, 5, 6], 3, [1, 2, 2, 3, 5, 6]),
             ([1], 1, [], 0, [1]),
             ([0], 0, [1], 1, [1]),
@@ -25,8 +35,12 @@ class TestSolution(unittest.TestCase):
 
     def test_merge(self):
         for nums1, m, nums2, n, expected in self.test_cases:
-            with self.subTest(
-                    nums1=nums1, m=m, nums2=nums2, n=n, expected=expected
-            ):
-                self.s.merge(nums1, m, nums2, n)
-                self.assertEqual(nums1, expected)
+            nums1_copy = nums1.copy()
+            self.s.merge(nums1_copy, m, nums2, n)
+            self.assertEqual(nums1_copy, expected)
+
+    def test_merge_v2(self):
+        for nums1, m, nums2, n, expected in self.test_cases:
+            nums1_copy = nums1.copy()
+            self.s.merge_v2(nums1_copy, m, nums2, n)
+            self.assertEqual(nums1_copy, expected)
