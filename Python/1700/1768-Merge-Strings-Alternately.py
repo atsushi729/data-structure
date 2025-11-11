@@ -31,6 +31,16 @@ class Solution:
         res.append(word2[j:])
         return "".join(res)
 
+    def merge_alternately_v3(self, word1: str, word2: str) -> str:
+        n, m = len(word1), len(word2)
+        res = []
+        for i in range(max(n, m)):
+            if i < n:
+                res.append(word1[i])
+            if i < m:
+                res.append(word2[i])
+        return "".join(res)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -54,3 +64,8 @@ class TestSolution(unittest.TestCase):
         for word1, word2, expected in self.test_cases:
             with self.subTest(word1=word1, word2=word2, expected=expected):
                 self.assertEqual(self.s.merge_alternately_v2(word1, word2), expected)
+
+    def test_merge_alternately_v3(self):
+        for word1, word2, expected in self.test_cases:
+            with self.subTest(word1=word1, word2=word2, expected=expected):
+                self.assertEqual(self.s.merge_alternately_v3(word1, word2), expected)
