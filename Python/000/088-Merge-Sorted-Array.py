@@ -40,6 +40,20 @@ class Solution:
             j -= 1
             k -= 1
 
+    def merge_v4(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        last = m + n - 1
+        i, j = m - 1, n - 1
+
+        while j >= 0:
+            if i >= 0 and nums1[i] > nums2[j]:
+                nums1[last] = nums1[i]
+                i -= 1
+            else:
+                nums1[last] = nums2[j]
+                j -= 1
+
+            last -= 1
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self) -> None:
@@ -68,4 +82,10 @@ class TestSolution(unittest.TestCase):
         for nums1, m, nums2, n, expected in self.test_cases:
             nums1_copy = nums1.copy()
             self.s.merge_v3(nums1_copy, m, nums2, n)
+            self.assertEqual(nums1_copy, expected)
+
+    def test_merge_v4(self):
+        for nums1, m, nums2, n, expected in self.test_cases:
+            nums1_copy = nums1.copy()
+            self.s.merge_v4(nums1_copy, m, nums2, n)
             self.assertEqual(nums1_copy, expected)
