@@ -22,6 +22,11 @@ class Solution:
 
         return position
 
+    def remove_duplicates_v2(self, nums: List[int]) -> int:
+        unique = sorted(set(nums))
+        nums[:len(unique)] = unique
+        return len(unique)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -39,5 +44,12 @@ class TestSolution(unittest.TestCase):
         for nums, expected_length, expected_nums in self.test_cases:
             with self.subTest(nums=nums):
                 length = self.s.remove_duplicates(nums)
+                self.assertEqual(length, expected_length)
+                self.assertEqual(nums[:length], expected_nums)
+
+    def test_remove_duplicates_v2(self):
+        for nums, expected_length, expected_nums in self.test_cases:
+            with self.subTest(nums=nums):
+                length = self.s.remove_duplicates_v2(nums)
                 self.assertEqual(length, expected_length)
                 self.assertEqual(nums[:length], expected_nums)
