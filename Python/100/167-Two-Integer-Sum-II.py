@@ -24,6 +24,19 @@ class Solution:
 
         return []
 
+    def two_sum_v3(self, numbers: list[int], target: int) -> list[int]:
+        num_dict = {}
+
+        for i, num in enumerate(numbers):
+            complement = target - num
+
+            if complement in num_dict:
+                return [num_dict[complement] + 1, i + 1]
+
+            num_dict[num] = i
+
+        return []
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -46,4 +59,10 @@ class TestSolution(unittest.TestCase):
         for numbers, target, expected in self.test_cases:
             with self.subTest(numbers=numbers, target=target):
                 result = self.s.two_sum_v2(numbers, target)
+                self.assertEqual(result, expected)
+
+    def test_two_sum_v3(self):
+        for numbers, target, expected in self.test_cases:
+            with self.subTest(numbers=numbers, target=target):
+                result = self.s.two_sum_v3(numbers, target)
                 self.assertEqual(result, expected)
