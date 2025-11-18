@@ -1,4 +1,5 @@
 import unittest
+from collections import defaultdict
 
 
 #################### Solution ####################
@@ -44,6 +45,37 @@ class Solution:
                         left += 1
         return res
 
+    def three_sum_v3(self, nums: list[int]) -> list[list[int]]:
+        """
+        Time complexity: O(n^2)
+        Space complexity: O(n)
+        """
+        nums.sort()
+        count = defaultdict(int)
+
+        for num in nums:
+            count[num] += 1
+
+        res = []
+
+        for i in range(len(nums)):
+            count[nums[i]] -= 1
+            if i and nums[i] == nums[i - 1]:
+                continue
+
+            for j in range(i + 1, len(nums)):
+                count[nums[j]] -= 1
+                if j - 1 > i and nums[j] == nums[j - 1]:
+                    continue
+
+                target = -(nums[i] + nums[j])
+                if count[target] > 0:
+                    res.append([nums[i], nums[j], target])
+
+            for j in range(i + 1, len(nums)):
+                count[nums[j]] += 1
+        return res
+
 
 #################### Test Case ####################
 class TestThreeSum(unittest.TestCase):
@@ -68,6 +100,14 @@ class TestThreeSum(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.s.three_sum_v2(nums)
+                result_sorted = [sorted(triplet) for triplet in result]
+                expected_sorted = [sorted(triplet) for triplet in expected]
+                self.assertCountEqual(result_sorted, expected_sorted)
+
+    def test_threeSum_v3(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.s.three_sum_v3(nums)
                 result_sorted = [sorted(triplet) for triplet in result]
                 expected_sorted = [sorted(triplet) for triplet in expected]
                 self.assertCountEqual(result_sorted, expected_sorted)
