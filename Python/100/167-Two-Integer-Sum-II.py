@@ -10,6 +10,10 @@ class Solution:
                     return [i + 1, j + 1]
 
     def two_sum_v2(self, numbers: list[int], target: int) -> list[int]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
         left, right = 0, len(numbers) - 1
 
         while left < right:
