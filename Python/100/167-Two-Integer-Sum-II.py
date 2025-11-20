@@ -41,6 +41,24 @@ class Solution:
 
         return []
 
+    def two_sum_v4(self, numbers: list[int], target: int) -> list[int]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
+        for i in range(len(numbers)):
+            l, r = i + 1, len(numbers) - 1
+            tmp = target - numbers[i]
+            while l <= r:
+                mid = l + (r - l) // 2
+                if numbers[mid] == tmp:
+                    return [i + 1, mid + 1]
+                elif numbers[mid] < tmp:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+        return []
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -69,4 +87,10 @@ class TestSolution(unittest.TestCase):
         for numbers, target, expected in self.test_cases:
             with self.subTest(numbers=numbers, target=target):
                 result = self.s.two_sum_v3(numbers, target)
+                self.assertEqual(result, expected)
+
+    def test_two_sum_v4(self):
+        for numbers, target, expected in self.test_cases:
+            with self.subTest(numbers=numbers, target=target):
+                result = self.s.two_sum_v4(numbers, target)
                 self.assertEqual(result, expected)
