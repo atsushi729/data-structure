@@ -4,6 +4,10 @@ from typing import List
 
 class Solution:
     def four_sum(self, nums: List[int], target: int) -> List[List[int]]:
+        """
+        Time complexity: O(n^4)
+        Space complexity: O(n)
+        """
         n = len(nums)
         nums.sort()
         res = set()
@@ -17,6 +21,10 @@ class Solution:
         return list(res)
 
     def four_sum_v2(self, nums: List[int], target: int) -> List[List[int]]:
+        """
+        Time complexity: O(n^3)
+        Space complexity: O(n)
+        """
         nums.sort()
         n = len(nums)
         res = set()
