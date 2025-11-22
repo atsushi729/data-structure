@@ -16,6 +16,26 @@ class Solution:
                             res.add((nums[a], nums[b], nums[c], nums[d]))
         return list(res)
 
+    def four_sum_v2(self, nums: List[int], target: int) -> List[List[int]]:
+        nums.sort()
+        n = len(nums)
+        res = set()
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                left, right = j + 1, n - 1
+                while left < right:
+                    total = nums[i] + nums[j] + nums[left] + nums[right]
+                    if total < target:
+                        left += 1
+                    elif total > target:
+                        right -= 1
+                    else:
+                        res.add((nums[i], nums[j], nums[left], nums[right]))
+                        left += 1
+                        right -= 1
+        return list(res)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -30,6 +50,14 @@ class TestSolution(unittest.TestCase):
         for nums, target, expected in self.test_cases:
             with self.subTest(nums=nums, target=target):
                 result = self.s.four_sum(nums, target)
+                result_sorted = [sorted(quad) for quad in result]
+                expected_sorted = [sorted(quad) for quad in expected]
+                self.assertCountEqual(result_sorted, expected_sorted)
+
+    def test_four_sum_v2(self):
+        for nums, target, expected in self.test_cases:
+            with self.subTest(nums=nums, target=target):
+                result = self.s.four_sum_v2(nums, target)
                 result_sorted = [sorted(quad) for quad in result]
                 expected_sorted = [sorted(quad) for quad in expected]
                 self.assertCountEqual(result_sorted, expected_sorted)
