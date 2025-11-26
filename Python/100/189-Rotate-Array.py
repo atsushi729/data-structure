@@ -16,6 +16,19 @@ class Solution:
             nums[0] = tmp
             k -= 1
 
+    def rotate_v2(self, nums: List[int], k: int) -> None:
+        n = len(nums)
+        k %= n
+
+        def reverse(l, r):
+            while l < r:
+                nums[l], nums[r] = nums[r], nums[l]
+                l, r = l + 1, r - 1
+
+        reverse(0, n - 1)
+        reverse(0, k - 1)
+        reverse(k, n - 1)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -30,5 +43,13 @@ class TestSolution(unittest.TestCase):
     def test_rotate(self):
         for nums, k, expected in self.test_cases:
             with self.subTest(nums=nums, k=k, expected=expected):
-                self.s.rotate(nums, k)
-                self.assertEqual(nums, expected)
+                arr = nums[:]
+                self.s.rotate(arr, k)
+                self.assertEqual(arr, expected)
+
+    def test_rotate_v2(self):
+        for nums, k, expected in self.test_cases:
+            with self.subTest(nums=nums, k=k, expected=expected):
+                arr = nums[:]
+                self.s.rotate_v2(arr, k)
+                self.assertEqual(arr, expected)
