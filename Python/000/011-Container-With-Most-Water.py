@@ -34,6 +34,15 @@ class Solution:
                 r -= 1
         return res
 
+    def max_area_v2(self, heights: list[int]) -> int:
+        res = 0
+        n = len(heights)
+
+        for i in range(n):
+            for j in range(i + 1, n):
+                res = max(res, min(heights[i], heights[j]) * (j - i))
+        return res
+
 
 #################### Test Case ####################
 class TestMaxArea(unittest.TestCase):
@@ -57,4 +66,10 @@ class TestMaxArea(unittest.TestCase):
         for heights, expected in self.test_cases:
             with self.subTest(heights=heights):
                 result = self.s.model_max_area(heights)
+                self.assertEqual(result, expected)
+
+    def test_max_area_v2(self):
+        for heights, expected in self.test_cases:
+            with self.subTest(heights=heights):
+                result = self.s.max_area_v2(heights)
                 self.assertEqual(result, expected)
