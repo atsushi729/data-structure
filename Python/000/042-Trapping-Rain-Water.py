@@ -25,6 +25,18 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.s = Solution()
+        cls.test_cases = [
+            ([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1], 6),
+            ([4, 2, 0, 3, 2, 5], 9),
+            ([1, 0, 2, 1, 0, 1, 3], 5),
+            ([5, 4, 1, 2], 1),
+        ]
+
     def test_trap(self):
-        self.assertEqual(Solution().trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6)
-        self.assertEqual(Solution().trap([4, 2, 0, 3, 2, 5]), 9)
+        for height, expected in self.test_cases:
+            with self.subTest(height=height):
+                result = self.s.trap(height)
+                self.assertEqual(result, expected)
