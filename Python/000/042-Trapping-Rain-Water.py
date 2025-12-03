@@ -22,6 +22,28 @@ class Solution:
                 result += right_max - height[right]
         return result
 
+    def trap_v2(self, height: list[int]) -> int:
+        """
+        Time complexity: O(n^2)
+        Space complexity: O(1)
+        """
+        if not height:
+            return 0
+        n = len(height)
+        res = 0
+
+        for i in range(n):
+            left_max = right_max = height[i]
+
+            for j in range(i):
+                left_max = max(left_max, height[j])
+            for j in range(i + 1, n):
+                right_max = max(right_max, height[j])
+
+            res += min(left_max, right_max) - height[i]
+
+        return res
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -39,4 +61,10 @@ class TestSolution(unittest.TestCase):
         for height, expected in self.test_cases:
             with self.subTest(height=height):
                 result = self.s.trap(height)
+                self.assertEqual(result, expected)
+
+    def test_trap_v2(self):
+        for height, expected in self.test_cases:
+            with self.subTest(height=height):
+                result = self.s.trap_v2(height)
                 self.assertEqual(result, expected)
