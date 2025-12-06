@@ -4,6 +4,10 @@ from typing import List
 
 class Solution:
     def max_profit(self, prices: List[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
         l, r = 0, 1
         max_profit = 0
 
