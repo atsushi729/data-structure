@@ -33,6 +33,19 @@ class Solution:
                 res = max(res, sell - buy)
         return res
 
+    def max_profit_v3(self, prices: List[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
+        max_profit = 0
+        min_buy = prices[0]
+
+        for sell in prices:
+            max_profit = max(max_profit, sell - min_buy)
+            min_buy = min(min_buy, sell)
+        return max_profit
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -54,3 +67,8 @@ class TestSolution(unittest.TestCase):
         for prices, expected in self.test_cases:
             with self.subTest(prices=prices, expected=expected):
                 self.assertEqual(self.s.max_profit_v2(prices), expected)
+
+    def test_max_profit_v3(self):
+        for prices, expected in self.test_cases:
+            with self.subTest(prices=prices, expected=expected):
+                self.assertEqual(self.s.max_profit_v3(prices), expected)
