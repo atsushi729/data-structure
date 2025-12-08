@@ -18,6 +18,24 @@ class Solution:
             seen[n] = i
         return False
 
+    def contains_nearby_duplicate_v2(self, nums: List[int], k: int) -> bool:
+        """
+        Time complexity: O(n)
+        Space complexity: O(min(n, k))
+        """
+        seen = set()
+
+        for i, n in enumerate(nums):
+            if n in seen:
+                return True
+
+            seen.add(n)
+
+            if len(seen) > k:
+                seen.remove(nums[i - k])
+
+        return False
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -35,4 +53,10 @@ class TestSolution(unittest.TestCase):
         for nums, k, expected in self.test_cases:
             with self.subTest(nums=nums, k=k, expected=expected):
                 result = self.s.contains_nearby_duplicate(nums, k)
+                self.assertEqual(result, expected)
+
+    def test_contains_nearby_duplicate_v2(self):
+        for nums, k, expected in self.test_cases:
+            with self.subTest(nums=nums, k=k, expected=expected):
+                result = self.s.contains_nearby_duplicate_v2(nums, k)
                 self.assertEqual(result, expected)
