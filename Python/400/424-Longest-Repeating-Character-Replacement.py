@@ -50,6 +50,24 @@ class Solution:
                     res = max(res, j - i + 1)
         return res
 
+    def character_replacement_v3(self, s: str, k: int) -> int:
+        res = 0
+        charSet = set(s)
+
+        for c in charSet:
+            count = l = 0
+            for r in range(len(s)):
+                if s[r] == c:
+                    count += 1
+
+                while (r - l + 1) - count > k:
+                    if s[l] == c:
+                        count -= 1
+                    l += 1
+
+                res = max(res, r - l + 1)
+        return res
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -80,4 +98,10 @@ class TestSolution(unittest.TestCase):
         for s, k, expected in self.test_cases:
             with self.subTest(s=s, k=k):
                 result = self.solution.character_replacement_v2(s, k)
+                self.assertEqual(result, expected)
+
+    def test_character_replacement_v3(self):
+        for s, k, expected in self.test_cases:
+            with self.subTest(s=s, k=k):
+                result = self.solution.character_replacement_v3(s, k)
                 self.assertEqual(result, expected)
