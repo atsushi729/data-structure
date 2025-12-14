@@ -4,6 +4,10 @@ import unittest
 #################### Solution ####################
 class Solution:
     def check_inclusion(self, s1: str, s2: str) -> bool:
+        """
+        Time complexity: O(N * M log M) where N is the length of s2 and M is the length of s1
+        Space complexity: O(M) where M is the length of s1
+        """
         if len(s2) < len(s1):
             return False
 
@@ -19,6 +23,10 @@ class Solution:
         return False
 
     def model_check_inclusion(self, s1: str, s2: str) -> bool:
+        """
+        Time complexity: O(N) where N is the length of s2
+        Space complexity: O(1) because the size of the s1_map and s2_map dictionaries is bounded by the number of unique characters (at most 26 for lowercase letters)
+        """
         if len(s2) < len(s1):
             return False
 
@@ -45,6 +53,10 @@ class Solution:
         return False
 
     def check_inclusion_v2(self, s1: str, s2: str) -> bool:
+        """
+        Time complexity: O(N * M) where N is the length of s2 and M is the length of s1
+        Space complexity: O(1) because the size of the count1 and count2 dictionaries is bounded by the number of unique characters (at most 26 for lowercase letters)
+        """
         count1 = {}
         for c in s1:
             count1[c] = 1 + count1.get(c, 0)
