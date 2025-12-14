@@ -75,6 +75,36 @@ class Solution:
                     return True
         return False
 
+    def check_inclusion_v3(self, s1: str, s2: str) -> bool:
+        """
+        Time complexity: O(N) where N is the length of s2
+        Space complexity: O(1) because the size of the count1 and count2 dictionaries is bounded by the number of unique characters (at most 26 for lowercase letters)
+        """
+        if len(s2) < len(s1):
+            return False
+
+        s1_map = {}
+        s2_map = {}
+        for i in range(26):
+            s1_map[chr(97 + i)] = 0
+            s2_map[chr(97 + i)] = 0
+
+        for i in range(len(s1)):
+            s1_map[s1[i]] += 1
+            s2_map[s2[i]] += 1
+
+        if s1_map == s2_map:
+            return True
+
+        for i in range(len(s1), len(s2)):
+            s2_map[s2[i]] += 1
+            s2_map[s2[i - len(s1)]] -= 1
+
+            if s1_map == s2_map:
+                return True
+
+        return False
+
 
 #################### Test Case ####################
 class TestCheckInclusion(unittest.TestCase):
@@ -101,3 +131,7 @@ class TestCheckInclusion(unittest.TestCase):
     def test_check_inclusion_v2(self):
         for s1, s2, expected in self.test_cases:
             self.assertEqual(self.solution.check_inclusion_v2(s1, s2), expected)
+
+    def test_check_inclusion_v3(self):
+        for s1, s2, expected in self.test_cases:
+            self.assertEqual(self.solution.check_inclusion_v3(s1, s2), expected)
