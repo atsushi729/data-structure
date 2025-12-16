@@ -20,6 +20,25 @@ class Solution:
                     break
         return 0 if res == float('inf') else res
 
+    def min_sub_array_len_v2(self, target: int, nums: List[int]) -> int:
+        """
+        Time complexity: O(N) where N is the length of nums
+        Space complexity: O(1)
+        """
+        left = 0
+        cur_sum = 0
+        res = float('inf')
+
+        for right in range(len(nums)):
+            cur_sum += nums[right]
+
+            while cur_sum >= target:
+                res = min(res, right - left + 1)
+                cur_sum -= nums[left]
+                left += 1
+
+        return 0 if res == float('inf') else res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -36,3 +55,8 @@ class TestSolution(unittest.TestCase):
         for target, nums, expected in self.test_cases:
             with self.subTest(target=target, nums=nums, expected=expected):
                 self.assertEqual(self.s.min_sub_array_len(target, nums), expected)
+
+    def test_minSubArrayLen_v2(self):
+        for target, nums, expected in self.test_cases:
+            with self.subTest(target=target, nums=nums, expected=expected):
+                self.assertEqual(self.s.min_sub_array_len_v2(target, nums), expected)
