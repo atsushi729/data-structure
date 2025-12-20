@@ -4,6 +4,10 @@ import unittest
 
 class Solution:
     def find_closest_elements(self, arr: List[int], k: int, x: int) -> List[int]:
+        """
+        Time complexity: O(N)
+        Space complexity: O(1)  # excluding output
+        """
         l, r = 0, len(arr) - 1
         while r - l >= k:
             if abs(x - arr[l]) <= abs(x - arr[r]):
@@ -13,10 +17,18 @@ class Solution:
         return arr[l:r + 1]
 
     def find_closest_elements_v2(self, arr: List[int], k: int, x: int) -> List[int]:
+        """
+        Time complexity: O(N log N)
+        Space complexity: O(N)
+        """
         arr.sort(key=lambda num: (abs(num - x), num))
         return sorted(arr[:k])
 
     def find_closest_elements_v3(self, arr: List[int], k: int, x: int) -> List[int]:
+        """
+        Time complexity: O(N + k log k)
+        Space complexity: O(k)
+        """
         n = len(arr)
         idx = 0
         for i in range(1, n):
