@@ -16,6 +16,30 @@ class Solution:
         arr.sort(key=lambda num: (abs(num - x), num))
         return sorted(arr[:k])
 
+    def find_closest_elements_v3(self, arr: List[int], k: int, x: int) -> List[int]:
+        n = len(arr)
+        idx = 0
+        for i in range(1, n):
+            if abs(x - arr[idx]) > abs(x - arr[i]):
+                idx = i
+        res = [arr[idx]]
+        l, r = idx - 1, idx + 1
+        while len(res) < k:
+            if l >= 0 and r < n:
+                if abs(x - arr[l]) <= abs(x - arr[r]):
+                    res.append(arr[l])
+                    l -= 1
+                else:
+                    res.append(arr[r])
+                    r += 1
+            elif l >= 0:
+                res.append(arr[l])
+                l -= 1
+            elif r < n:
+                res.append(arr[r])
+                r += 1
+        return sorted(res)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -38,3 +62,8 @@ class TestSolution(unittest.TestCase):
         for arr, k, x, expected in self.test_cases:
             with self.subTest(arr=arr, k=k, x=x, expected=expected):
                 self.assertEqual(self.s.find_closest_elements_v2(arr, k, x), expected)
+
+    def test_find_closest_elements_v3(self):
+        for arr, k, x, expected in self.test_cases:
+            with self.subTest(arr=arr, k=k, x=x, expected=expected):
+                self.assertEqual(self.s.find_closest_elements_v3(arr, k, x), expected)
