@@ -52,6 +52,20 @@ class Solution:
                 r += 1
         return sorted(res)
 
+    def find_closet_elements_v4(self, arr: List[int], k: int, x: int) -> List[int]:
+        """
+        Time complexity: O(N)
+        Space complexity: O(1)  # excluding output
+        """
+        l, r = 0, len(arr) - k
+        while l < r:
+            m = (l + r) // 2
+            if x - arr[m] > arr[m + k] - x:
+                l = m + 1
+            else:
+                r = m
+        return arr[l:l + k]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -68,14 +82,20 @@ class TestSolution(unittest.TestCase):
     def test_find_closest_elements(self):
         for arr, k, x, expected in self.test_cases:
             with self.subTest(arr=arr, k=k, x=x, expected=expected):
-                self.assertEqual(self.s.find_closest_elements(arr, k, x), expected)
+                self.assertEqual(self.s.find_closest_elements(arr.copy(), k, x), expected)
+                self.assertEqual(self.s.find_closest_elements(arr.copy(), k, x), expected)
 
     def test_find_closest_elements_v2(self):
         for arr, k, x, expected in self.test_cases:
             with self.subTest(arr=arr, k=k, x=x, expected=expected):
-                self.assertEqual(self.s.find_closest_elements_v2(arr, k, x), expected)
+                self.assertEqual(self.s.find_closest_elements_v2(arr.copy(), k, x), expected)
 
     def test_find_closest_elements_v3(self):
         for arr, k, x, expected in self.test_cases:
             with self.subTest(arr=arr, k=k, x=x, expected=expected):
-                self.assertEqual(self.s.find_closest_elements_v3(arr, k, x), expected)
+                self.assertEqual(self.s.find_closest_elements_v3(arr.copy(), k, x), expected)
+
+    def test_find_closest_elements_v4(self):
+        for arr, k, x, expected in self.test_cases:
+            with self.subTest(arr=arr, k=k, x=x, expected=expected):
+                self.assertEqual(self.s.find_closet_elements_v4(arr.copy(), k, x), expected)
