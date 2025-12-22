@@ -1,3 +1,6 @@
+import unittest
+
+
 class Solution:
     def min_window(self, s: str, t: str) -> str:
         if not t:
@@ -57,3 +60,20 @@ class Solution:
             return s[start:end + 1]
         else:
             return ""
+
+
+class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            ("ADOBECODEBANC", "ABC", "BANC"),
+            ("a", "a", "a"),
+            ("a", "aa", ""),
+            ("ab", "A", ""),
+            ("aaflslflsldkalskaaa", "aaa", "aaa"),
+        ]
+
+    def test_min_window(self):
+        for s, t, expected in self.test_cases:
+            self.assertEqual(self.solution.min_window(s, t), expected)
