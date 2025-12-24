@@ -1,4 +1,5 @@
 import unittest
+from collections import Counter
 
 
 class Solution:
@@ -88,6 +89,40 @@ class Solution:
         l, r = res
         return s[l: r + 1] if resLen != float("infinity") else ""
 
+    def min_window_v3(self, s: str, t: str) -> str:
+        if not t or not s:
+            return ""
+
+        target = Counter(t)
+        window = {}
+
+        have = 0
+        need = len(target)
+
+        res_start = 0
+        res_len = float("inf")
+
+        left = 0
+        for right, char in enumerate(s):
+            window[char] = window.get(char, 0) + 1
+
+            if char in target and window[char] == target[char]:
+                have += 1
+
+            while have == need:
+                window_len = right - left + 1
+                if window_len < res_len:
+                    res_start = left
+                    res_len = window_len
+
+                left_char = s[left]
+                window[left_char] -= 1
+                if left_char in target and window[left_char] < target[left_char]:
+                    have -= 1
+                left += 1
+
+        return "" if res_len == float("inf") else s[res_start:res_start + res_len]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -108,3 +143,7 @@ class TestSolution(unittest.TestCase):
     def test_min_window_v2(self):
         for s, t, expected in self.test_cases:
             self.assertEqual(self.solution.min_window_v2(s, t), expected)
+
+    def test_min_window_v3(self):
+        for s, t, expected in self.test_cases:
+            self.assertEqual(self.solution.min_window_v3(s, t), expected)
