@@ -58,6 +58,21 @@ class Solution:
 
         return output
 
+    def max_sliding_window_v4(self, nums: list[int], k: int) -> list[int]:
+        """
+        Time complexity: O(n * k)
+        Space complexity: O(k)
+        """
+        output = []
+
+        for i in range(len(nums) - k + 1):
+            maxi = nums[i]
+            for j in range(i, i + k):
+                maxi = max(maxi, nums[j])
+            output.append(maxi)
+
+        return output
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -86,3 +101,8 @@ class TestSolution(unittest.TestCase):
         for inputs, expected in self.test_cases:
             nums, k = inputs
             self.assertEqual(self.solution.max_sliding_window_v3(nums, k), expected)
+
+    def test_max_sliding_window_v4(self):
+        for inputs, expected in self.test_cases:
+            nums, k = inputs
+            self.assertEqual(self.solution.max_sliding_window_v4(nums, k), expected)
