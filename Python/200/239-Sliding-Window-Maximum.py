@@ -1,3 +1,4 @@
+import heapq
 import unittest
 from collections import deque
 
@@ -73,6 +74,20 @@ class Solution:
 
         return output
 
+    def max_sliding_window_v5(self, nums: list[int], k: int) -> list[int]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(k)
+        """
+        heap = []
+        output = []
+        for i in range(len(nums)):
+            heapq.heappush(heap, (-nums[i], i))
+            if i >= k - 1:
+                while heap[0][1] <= i - k:
+                    heapq.heappop(heap)
+                output.append(-heap[0][0])
+        return output
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
