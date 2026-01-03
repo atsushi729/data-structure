@@ -48,6 +48,31 @@ class MyQueue2:
         return not self.stack1
 
 
+class MyQueue3:
+
+    def __init__(self):
+        self.s1 = []
+        self.s2 = []
+
+    def push(self, x: int) -> None:
+        self.s1.append(x)
+
+    def pop(self) -> int:
+        if not self.s2:
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2.pop()
+
+    def peek(self) -> int:
+        if not self.s2:
+            while self.s1:
+                self.s2.append(self.s1.pop())
+        return self.s2[-1]
+
+    def empty(self) -> bool:
+        return max(len(self.s1), len(self.s2)) == 0
+
+
 class TestMyQueueCases(unittest.TestCase):
     def test_queue_operations(self):
         obj = MyQueue()
@@ -64,6 +89,19 @@ class TestMyQueueCases(unittest.TestCase):
 
     def test_queue_v2_operations(self):
         obj = MyQueue2()
+        obj.push(1)
+        obj.push(2)
+        self.assertEqual(obj.peek(), 1)
+        self.assertEqual(obj.pop(), 1)
+        self.assertFalse(obj.empty())
+        obj.push(3)
+        self.assertEqual(obj.peek(), 2)
+        self.assertEqual(obj.pop(), 2)
+        self.assertEqual(obj.pop(), 3)
+        self.assertTrue(obj.empty())
+
+    def test_queue_v3_operations(self):
+        obj = MyQueue3()
         obj.push(1)
         obj.push(2)
         self.assertEqual(obj.peek(), 1)
