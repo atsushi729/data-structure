@@ -19,7 +19,7 @@ class MinStack:
         return min(self.stack)
 
 
-class ModelMinStack:
+class Minstack2:
     def __init__(self):
         self.stack = []
         self.minStack = []
@@ -40,6 +40,40 @@ class ModelMinStack:
         return self.minStack[-1]
 
 
+class MinStack3:
+    def __init__(self):
+        self.min = float('inf')
+        self.stack = []
+
+    def push(self, val: int) -> None:
+        if not self.stack:
+            self.stack.append(0)
+            self.min = val
+        else:
+            self.stack.append(val - self.min)
+            if val < self.min:
+                self.min = val
+
+    def pop(self) -> None:
+        if not self.stack:
+            return
+
+        pop = self.stack.pop()
+
+        if pop < 0:
+            self.min = self.min - pop
+
+    def top(self) -> int:
+        top = self.stack[-1]
+        if top > 0:
+            return top + self.min
+        else:
+            return self.min
+
+    def getMin(self) -> int:
+        return self.min
+
+
 #################### Test Case ####################
 class TestMinStack(unittest.TestCase):
     def test_min_stack(self):
@@ -53,7 +87,7 @@ class TestMinStack(unittest.TestCase):
         self.assertEqual(min_stack.get_min(), -2)
 
     def test_model_min_stack(self):
-        min_stack = ModelMinStack()
+        min_stack = Minstack2()
         min_stack.push(-2)
         min_stack.push(0)
         min_stack.push(-3)
@@ -61,3 +95,13 @@ class TestMinStack(unittest.TestCase):
         min_stack.pop()
         self.assertEqual(min_stack.top(), 0)
         self.assertEqual(min_stack.get_min(), -2)
+
+    def test_optimized_min_stack(self):
+        min_stack = MinStack3()
+        min_stack.push(-2)
+        min_stack.push(0)
+        min_stack.push(-3)
+        self.assertEqual(min_stack.getMin(), -3)
+        min_stack.pop()
+        self.assertEqual(min_stack.top(), 0)
+        self.assertEqual(min_stack.getMin(), -2)
