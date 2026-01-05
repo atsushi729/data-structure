@@ -4,6 +4,10 @@ import unittest
 #################### Solution ####################
 class Solution:
     def eval_rpn(self, tokens: list[str]) -> int:
+        """
+        Time complexity: O(N) where N is the length of tokens
+        Space complexity: O(N) where N is the length of tokens
+        """
         stack = []
         operators = {'+', '-', '*', '/'}
 
@@ -27,6 +31,10 @@ class Solution:
         return stack[0]
 
     def model_eval_rpn(self, tokens: list[str]) -> int:
+        """
+        Time complexity: O(N) where N is the length of tokens
+        Space complexity: O(N) where N is the length of tokens
+        """
         stack = []
 
         for c in tokens:
