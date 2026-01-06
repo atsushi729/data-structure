@@ -52,6 +52,33 @@ class Solution:
                 stack.append(int(c))
         return stack[0]
 
+    def eval_rpn_v2(self, tokens: list[str]) -> int:
+        """
+        Time complexity: O(N) where N is the length of tokens
+        Space complexity: O(N) where N is the length of tokens
+        """
+
+        local = tokens[:]
+
+        def dfs():
+            token = local.pop()
+            if token not in "+-*/":
+                return int(token)
+
+            right = dfs()
+            left = dfs()
+
+            if token == "+":
+                return left + right
+            elif token == "-":
+                return left - right
+            elif token == "*":
+                return left * right
+            elif token == "/":
+                return int(left / right)
+
+        return dfs()
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -73,3 +100,8 @@ class TestSolution(unittest.TestCase):
         for tokens, expected in self.test_cases:
             with self.subTest(tokens=tokens, expected=expected):
                 self.assertEqual(self.s.model_eval_rpn(tokens), expected)
+
+    def test_eval_rpn_v2(self):
+        for tokens, expected in self.test_cases:
+            with self.subTest(tokens=tokens, expected=expected):
+                self.assertEqual(self.s.eval_rpn_v2(tokens), expected)
