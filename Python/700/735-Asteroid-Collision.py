@@ -19,6 +19,27 @@ class Solution:
                 stack.append(a)
         return stack
 
+    def asteroid_collision_v2(self, asteroids: List[int]) -> List[int]:
+        n = len(asteroids)
+        j = -1
+
+        for a in asteroids:
+            while j >= 0 > a and asteroids[j] > 0:
+                if asteroids[j] > abs(a):
+                    a = 0
+                    break
+                elif asteroids[j] == abs(a):
+                    j -= 1
+                    a = 0
+                    break
+                else:
+                    j -= 1
+            if a:
+                j += 1
+                asteroids[j] = a
+
+        return asteroids[:j + 1]
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -35,3 +56,8 @@ class TestSolution(unittest.TestCase):
         for asteroids, expected in self.test_cases:
             with self.subTest(asteroids=asteroids, expected=expected):
                 self.assertEqual(self.s.asteroid_collision(asteroids), expected)
+
+    def test_asteroidCollision_v2(self):
+        for asteroids, expected in self.test_cases:
+            with self.subTest(asteroids=asteroids, expected=expected):
+                self.assertEqual(self.s.asteroid_collision_v2(asteroids), expected)
