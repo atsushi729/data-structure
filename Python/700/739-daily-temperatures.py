@@ -39,6 +39,22 @@ class Solution:
             stack.append(i)  # Append the current index to the stack
         return answer
 
+    def daily_temperatures_v3(self, temperatures: [int]) -> [int]:
+        n = len(temperatures)
+        res = [0] * n
+
+        for i in range(n - 2, -1, -1):
+            j = i + 1
+            while j < n and temperatures[j] <= temperatures[i]:
+                if res[j] == 0:
+                    j = n
+                    break
+                j += res[j]
+
+            if j < n:
+                res[i] = j - i
+        return res
+
 
 #################### Test Case ####################
 class TestDailyTemperature(unittest.TestCase):
@@ -60,3 +76,7 @@ class TestDailyTemperature(unittest.TestCase):
     def test_model_daily_temperatures(self):
         for temperatures, expected in self.test_cases:
             self.assertEqual(self.s.model_daily_temperatures(temperatures), expected)
+
+    def test_daily_temperatures_v3(self):
+        for temperatures, expected in self.test_cases:
+            self.assertEqual(self.s.daily_temperatures_v3(temperatures), expected)
