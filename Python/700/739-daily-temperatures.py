@@ -55,6 +55,19 @@ class Solution:
                 res[i] = j - i
         return res
 
+    def daily_temperatures_v4(self, temperatures: [int]) -> [int]:
+        n = len(temperatures)
+        res = [0] * n
+        stack = []
+
+        for i in range(n):
+            while stack and temperatures[i] > temperatures[stack[-1]]:
+                idx = stack.pop()
+                res[idx] = i - idx
+            stack.append(i)
+
+        return res
+
 
 #################### Test Case ####################
 class TestDailyTemperature(unittest.TestCase):
@@ -80,3 +93,7 @@ class TestDailyTemperature(unittest.TestCase):
     def test_daily_temperatures_v3(self):
         for temperatures, expected in self.test_cases:
             self.assertEqual(self.s.daily_temperatures_v3(temperatures), expected)
+
+    def test_daily_temperatures_v4(self):
+        for temperatures, expected in self.test_cases:
+            self.assertEqual(self.s.daily_temperatures_v4(temperatures), expected)
