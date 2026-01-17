@@ -1,5 +1,7 @@
 import unittest
 
+from attr import dataclass
+
 
 class StockSpanner:
 
@@ -28,6 +30,24 @@ class StockSpanner2:
         return span
 
 
+@dataclass
+class PriceSpan:
+    price: int
+    span: int
+
+
+class StockSpanner3:
+    def __init__(self):
+        self.stack: [PriceSpan] = []
+
+    def next(self, price: int) -> int:
+        span = 1
+        while self.stack and self.stack[-1].price <= price:
+            span += self.stack.pop().span
+        self.stack.append(PriceSpan(price, span))
+        return span
+
+
 class TestStockSpanner(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -50,5 +70,12 @@ class TestStockSpanner(unittest.TestCase):
         for prices, expected in self.test_cases:
             with self.subTest(prices=prices):
                 s = StockSpanner2()
+                for price, exp in zip(prices, expected):
+                    self.assertEqual(s.next(price), exp)
+
+    def test_stock_spanner3(self):
+        for prices, expected in self.test_cases:
+            with self.subTest(prices=prices):
+                s = StockSpanner3()
                 for price, exp in zip(prices, expected):
                     self.assertEqual(s.next(price), exp)
