@@ -33,6 +33,20 @@ class Solution:
 
         return len(stack)
 
+    def car_fleet_v3(self, target: int, position: list[int], speed: list[int]) -> int:
+        cars = sorted(zip(position, speed), reverse=True)
+        times = [(target - p) / s for p, s in cars]
+
+        fleets = 0
+        current_time = 0
+
+        for time in times:
+            if time > current_time:
+                fleets += 1
+                current_time = time
+
+        return fleets
+
 
 #################### Test Case ####################
 class TestCarFleet(unittest.TestCase):
@@ -59,4 +73,11 @@ class TestCarFleet(unittest.TestCase):
             with self.subTest(target=target, position=position, speed=speed):
                 self.assertEqual(
                     self.s.model_car_fleet(target, position, speed), expected
+                )
+
+    def test_car_fleet_v3(self):
+        for target, position, speed, expected in self.test_cases:
+            with self.subTest(target=target, position=position, speed=speed):
+                self.assertEqual(
+                    self.s.car_fleet_v3(target, position, speed), expected
                 )
