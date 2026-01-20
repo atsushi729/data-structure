@@ -47,6 +47,16 @@ class Solution:
 
         return fleets
 
+    def car_fleet_v4(self, target: int, position: list[int], speed: list[int]) -> int:
+        pair = [(p, s) for p, s in zip(position, speed)]
+        pair.sort(reverse=True)
+        stack = []
+        for p, s in pair:  # Reverse Sorted Order
+            stack.append((target - p) / s)
+            if len(stack) >= 2 and stack[-1] <= stack[-2]:
+                stack.pop()
+        return len(stack)
+
 
 #################### Test Case ####################
 class TestCarFleet(unittest.TestCase):
@@ -80,4 +90,11 @@ class TestCarFleet(unittest.TestCase):
             with self.subTest(target=target, position=position, speed=speed):
                 self.assertEqual(
                     self.s.car_fleet_v3(target, position, speed), expected
+                )
+
+    def test_car_fleet_v4(self):
+        for target, position, speed, expected in self.test_cases:
+            with self.subTest(target=target, position=position, speed=speed):
+                self.assertEqual(
+                    self.s.car_fleet_v4(target, position, speed), expected
                 )
