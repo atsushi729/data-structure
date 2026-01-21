@@ -57,6 +57,23 @@ class Solution:
                 stack.pop()
         return len(stack)
 
+    def car_fleet_v5(self, target: int, position: list[int], speed: list[int]) -> int:
+        cars = sorted(zip(position, speed), reverse=True)
+
+        fleets = 0
+        last_dist = 0
+        last_speed = 1
+
+        for p, s in cars:
+            dist = target - p
+
+            if fleets == 0 or dist * last_speed > last_dist * s:
+                fleets += 1
+                last_dist = dist
+                last_speed = s
+
+        return fleets
+
 
 #################### Test Case ####################
 class TestCarFleet(unittest.TestCase):
@@ -97,4 +114,11 @@ class TestCarFleet(unittest.TestCase):
             with self.subTest(target=target, position=position, speed=speed):
                 self.assertEqual(
                     self.s.car_fleet_v4(target, position, speed), expected
+                )
+
+    def test_car_fleet_v5(self):
+        for target, position, speed, expected in self.test_cases:
+            with self.subTest(target=target, position=position, speed=speed):
+                self.assertEqual(
+                    self.s.car_fleet_v5(target, position, speed), expected
                 )
