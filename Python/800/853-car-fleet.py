@@ -1,4 +1,5 @@
 import unittest
+import math
 
 
 #################### Solution ####################
@@ -88,6 +89,23 @@ class Solution:
 
         return num_fleets
 
+    def car_fleet_v7(self, target: int, position: list[int], speed: list[int]) -> int:
+        car_position_speed_pair = sorted(zip(position, speed), reverse=True)
+
+        num_fleets = 0
+        current_fleet_time = 0.0
+
+        for p, s in car_position_speed_pair:
+            time = (target - p) / s
+
+            if time > current_fleet_time and not math.isclose(
+                    time, current_fleet_time, rel_tol=1e-9, abs_tol=0.0
+            ):
+                num_fleets += 1
+                current_fleet_time = time
+
+        return num_fleets
+
 
 #################### Test Case ####################
 class TestCarFleet(unittest.TestCase):
@@ -142,4 +160,11 @@ class TestCarFleet(unittest.TestCase):
             with self.subTest(target=target, position=position, speed=speed):
                 self.assertEqual(
                     self.s.car_fleet_v6(target, position, speed), expected
+                )
+
+    def test_car_fleet_v7(self):
+        for target, position, speed, expected in self.test_cases:
+            with self.subTest(target=target, position=position, speed=speed):
+                self.assertEqual(
+                    self.s.car_fleet_v7(target, position, speed), expected
                 )
