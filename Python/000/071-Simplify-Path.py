@@ -13,6 +13,18 @@ class Solution:
                 directory.append(symbol)
         return "/" + "/".join(directory)
 
+    def simplify_path_v2(self, path: str) -> str:
+        stack = []
+        paths = path.split("/")
+
+        for cur in paths:
+            if cur == "..":
+                if stack:
+                    stack.pop()
+            elif cur != "" and cur != ".":
+                stack.append(cur)
+        return "/" + "/".join(stack)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -31,3 +43,8 @@ class TestSolution(unittest.TestCase):
         for path, expected in self.test_cases:
             with self.subTest(path=path, expected=expected):
                 self.assertEqual(self.s.simplify_path(path), expected)
+
+    def test_simplify_path_v2(self):
+        for path, expected in self.test_cases:
+            with self.subTest(path=path, expected=expected):
+                self.assertEqual(self.s.simplify_path_v2(path), expected)
