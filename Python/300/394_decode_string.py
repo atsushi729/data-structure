@@ -21,6 +21,30 @@ class Solution:
                 stack.append(int(digit) * substr)
         return "".join(stack)
 
+    def decode_string_v2(self, s: str) -> str:
+        char_stack: list[str] = []
+
+        for char in s:
+            if char != "]":
+                char_stack.append(char)
+            else:
+                substr_list = []
+                while char_stack and char_stack[-1] != "[":
+                    substr_list.append(char_stack.pop())
+                substr_list.reverse()
+                substr = "".join(substr_list)
+                char_stack.pop()  # Remove the '['
+
+                digit_list = []
+                while char_stack and char_stack[-1].isdigit():
+                    digit_list.append(char_stack.pop())
+                digit_list.reverse()
+                digit = "".join(digit_list)
+
+                # Repeat the substring and push back to the stack
+                char_stack.append(int(digit) * substr)
+        return "".join(char_stack)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -37,3 +61,8 @@ class TestSolution(unittest.TestCase):
         for s, expected in self.test_cases:
             with self.subTest(s=s, expected=expected):
                 self.assertEqual(self.s.decode_string(s), expected)
+
+    def test_decode_string_v2(self):
+        for s, expected in self.test_cases:
+            with self.subTest(s=s, expected=expected):
+                self.assertEqual(self.s.decode_string_v2(s), expected)
