@@ -5,19 +5,19 @@ from collections import defaultdict
 class FreqStack:
 
     def __init__(self):
-        self.cnt = defaultdict(int)
+        self.count = defaultdict(int)
         self.stack = []
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        self.cnt[val] += 1
+        self.count[val] += 1
 
     def pop(self) -> int:
-        max_cnt = max(self.cnt.values())
+        max_cnt = max(self.count.values())
         i = len(self.stack) - 1
-        while self.cnt[self.stack[i]] != max_cnt:
+        while self.count[self.stack[i]] != max_cnt:
             i -= 1
-        self.cnt[self.stack[i]] -= 1
+        self.count[self.stack[i]] -= 1
         return self.stack.pop(i)
 
 
