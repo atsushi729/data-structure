@@ -1,3 +1,4 @@
+import heapq
 import unittest
 from collections import defaultdict
 
@@ -19,6 +20,23 @@ class FreqStack:
             i -= 1
         self.count[self.stack[i]] -= 1
         return self.stack.pop(i)
+
+
+class FreqStackV2:
+    def __init__(self):
+        self.count = defaultdict(int)
+        self.heap = []
+        self.index = 0
+
+    def push(self, val: int) -> None:
+        self.count[val] += 1
+        heapq.heappush(self.heap, (-self.count[val], -self.index, val))
+        self.index += 1
+
+    def pop(self) -> int:
+        _, _, val = heapq.heappop(self.heap)
+        self.count[val] -= 1
+        return val
 
 
 class TestFreqStackLeetCodeStyle(unittest.TestCase):
@@ -43,6 +61,22 @@ class TestFreqStackLeetCodeStyle(unittest.TestCase):
             with self.subTest(operations=operations):
 
                 fs = FreqStack()
+                results = []
+
+                for op, arg in zip(operations, inputs):
+                    if op == "push":
+                        fs.push(arg)
+                        results.append(None)
+                    elif op == "pop":
+                        results.append(fs.pop())
+
+                self.assertEqual(results, expected)
+
+    def test_operations_v2(self):
+        for operations, inputs, expected in self.test_cases:
+            with self.subTest(operations=operations):
+
+                fs = FreqStackV2()
                 results = []
 
                 for op, arg in zip(operations, inputs):
