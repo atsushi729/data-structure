@@ -62,6 +62,24 @@ class FreqStack3:
         return res
 
 
+class FreqStack4:
+
+    def __init__(self):
+        self.heap = []  # frequency, index, value
+        self.freq_counter = defaultdict(int)
+        self.current_idx = 0
+
+    def push(self, val: int) -> None:
+        self.freq_counter[val] += 1
+        heapq.heappush(self.heap, (-self.freq_counter[val], -self.current_idx, val))
+        self.current_idx += 1
+
+    def pop(self) -> int:
+        _, _, val = heapq.heappop(self.heap)
+        self.freq_counter[val] -= 1
+        return val
+
+
 class TestFreqStackLeetCodeStyle(unittest.TestCase):
 
     @classmethod
@@ -116,6 +134,22 @@ class TestFreqStackLeetCodeStyle(unittest.TestCase):
             with self.subTest(operations=operations):
 
                 fs = FreqStack3()
+                results = []
+
+                for op, arg in zip(operations, inputs):
+                    if op == "push":
+                        fs.push(arg)
+                        results.append(None)
+                    elif op == "pop":
+                        results.append(fs.pop())
+
+                self.assertEqual(results, expected)
+
+    def test_operations_v4(self):
+        for operations, inputs, expected in self.test_cases:
+            with self.subTest(operations=operations):
+
+                fs = FreqStack4()
                 results = []
 
                 for op, arg in zip(operations, inputs):
