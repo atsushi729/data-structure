@@ -25,6 +25,26 @@ class Solution:
 
         return max_area
 
+    def largest_rectangle_area_v2(self, heights: list[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        max_area = 0
+        stack = []
+
+        for i in range(len(heights) + 1):
+            current_height = heights[i] if i < len(heights) else 0
+            start_index = i
+
+            while stack and stack[-1][1] > current_height:
+                index, height = stack.pop()
+                max_area = max(max_area, height * (i - index))
+                start_index = index
+            stack.append((start_index, current_height))
+
+        return max_area
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -43,5 +63,12 @@ class TestSolution(unittest.TestCase):
         for heights, expected in self.test_cases:
             self.assertEqual(
                 self.s.largest_rectangle_area(heights),
+                expected
+            )
+
+    def test_largest_rectangle_area_v2(self):
+        for heights, expected in self.test_cases:
+            self.assertEqual(
+                self.s.largest_rectangle_area_v2(heights),
                 expected
             )
