@@ -45,6 +45,23 @@ class Solution:
 
         return max_area
 
+    def largest_rectangle_area_v3(self, heights: list[int]) -> int:
+        max_area = 0
+        stack = []  # pair: (left_boundary, height)
+
+        for current_index, current_height in enumerate(heights):
+            left_boundary = current_index
+
+            while stack and stack[-1][1] > current_height:
+                prev_index, prev_height = stack.pop()
+                max_area = max(max_area, prev_height * (current_index - prev_index))
+                left_boundary = prev_index
+            stack.append((left_boundary, current_height))
+
+        for i, h in stack:
+            max_area = max(max_area, h * (len(heights) - i))
+        return max_area
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -70,5 +87,12 @@ class TestSolution(unittest.TestCase):
         for heights, expected in self.test_cases:
             self.assertEqual(
                 self.s.largest_rectangle_area_v2(heights),
+                expected
+            )
+
+    def test_largest_rectangle_area_v3(self):
+        for heights, expected in self.test_cases:
+            self.assertEqual(
+                self.s.largest_rectangle_area_v3(heights),
                 expected
             )
