@@ -46,6 +46,10 @@ class Solution:
         return max_area
 
     def largest_rectangle_area_v3(self, heights: list[int]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
         max_area = 0
         stack = []  # pair: (left_boundary, height)
 
