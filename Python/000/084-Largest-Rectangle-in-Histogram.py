@@ -154,28 +154,32 @@ class TestSolution(unittest.TestCase):
 
     def test_largest_rectangle_area(self):
         for heights, expected in self.test_cases:
-            self.assertEqual(
-                self.s.largest_rectangle_area(heights),
-                expected
-            )
+            with self.subTest(heights=heights, expected=expected):
+                self.assertEqual(
+                    self.s.largest_rectangle_area(heights),
+                    expected
+                )
 
     def test_largest_rectangle_area_v2(self):
         for heights, expected in self.test_cases:
-            self.assertEqual(
-                self.s.largest_rectangle_area_v2(heights),
-                expected
-            )
+            with self.subTest(heights=heights, expected=expected):
+                self.assertEqual(
+                    self.s.largest_rectangle_area_v2(heights),
+                    expected
+                )
 
     def test_largest_rectangle_area_v3(self):
         for heights, expected in self.test_cases:
-            self.assertEqual(
-                self.s.largest_rectangle_area_v3(heights),
-                expected
-            )
+            with self.subTest(heights=heights, expected=expected):
+                self.assertEqual(
+                    self.s.largest_rectangle_area_v3(heights),
+                    expected
+                )
 
     def test_largest_rectangle_area_v4(self):
         for heights, expected in self.test_cases:
-            self.assertEqual(
-                self.s.largest_rectangle_area_v4(heights),
-                expected
-            )
+            with self.subTest(heights=heights, expected=expected):
+                self.assertEqual(
+                    self.s.largest_rectangle_area_v4(heights),
+                    expected
+                )
