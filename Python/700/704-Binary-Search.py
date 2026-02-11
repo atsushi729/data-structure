@@ -1,4 +1,5 @@
 import unittest
+from typing import List
 
 
 #################### Solution ####################
@@ -19,6 +20,21 @@ class Solution:
 
         return -1
 
+    def search_v2(self, nums: List[int], target: int) -> int:
+        left, right = 0, len(nums) - 1
+
+        while left <= right:
+            # Avoid overflow for C++/Java
+            mid = left + (right - left) // 2
+
+            if nums[mid] < target:
+                left = mid + 1
+            elif nums[mid] > target:
+                right = mid - 1
+            else:
+                return mid
+        return -1
+
 
 #################### Test Case ####################
 class TestSearch(unittest.TestCase):
@@ -37,3 +53,8 @@ class TestSearch(unittest.TestCase):
         for nums, target, expected in self.test_cases:
             with self.subTest(nums=nums, target=target, expected=expected):
                 self.assertEqual(self.s.search(nums, target), expected)
+
+    def test_search_v2(self):
+        for nums, target, expected in self.test_cases:
+            with self.subTest(nums=nums, target=target, exptected=expected):
+                self.assertEqual(self.s.search_v2(nums, target), expected)
