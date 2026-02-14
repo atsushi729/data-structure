@@ -1,5 +1,4 @@
 import unittest
-from typing import List
 
 
 #################### Solution ####################
@@ -20,7 +19,7 @@ class Solution:
 
         return -1
 
-    def search_v2(self, nums: List[int], target: int) -> int:
+    def search_v2(self, nums: list[int], target: int) -> int:
         left, right = 0, len(nums) - 1
 
         while left <= right:
@@ -35,7 +34,7 @@ class Solution:
                 return mid
         return -1
 
-    def binary_search(self, left: int, right: int, nums: List[int], target: int) -> int:
+    def binary_search(self, left: int, right: int, nums: list[int], target: int) -> int:
         if left > right:
             return -1
         m = left + (right - left) // 2
@@ -46,7 +45,7 @@ class Solution:
             return self.binary_search(m + 1, right, nums, target)
         return self.binary_search(left, m - 1, nums, target)
 
-    def search_v3(self, nums: List[int], target: int) -> int:
+    def search_v3(self, nums: list[int], target: int) -> int:
         return self.binary_search(0, len(nums) - 1, nums, target)
 
 
