@@ -29,7 +29,7 @@ class Solution:
 
         return False
 
-    def model_search_matrix(self, matrix: list[list[int]], target: int) -> bool:
+    def search_matrix_v2(self, matrix: list[list[int]], target: int) -> bool:
         if not matrix or not matrix[0]:
             return False
 
@@ -72,4 +72,4 @@ class TestSearchMatrix(unittest.TestCase):
     def test_model_search_matrix(self):
         for matrix, target, expected in self.test_cases:
             with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.model_search_matrix(matrix, target), expected)
+                self.assertEqual(self.s.search_matrix_v2(matrix, target), expected)
