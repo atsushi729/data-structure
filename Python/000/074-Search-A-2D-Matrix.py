@@ -51,6 +51,22 @@ class Solution:
 
         return False
 
+    def search_matrix_v3(self, matrix: list[list[int]], target: int) -> bool:
+        flatted_matrix = [element for row in matrix for element in row]
+
+        left, right = 0, len(flatted_matrix) - 1
+
+        while left <= right:
+            mid = left + (right - left) // 2
+
+            if flatted_matrix[mid] == target:
+                return True
+            elif flatted_matrix[mid] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+
 
 #################### Test Case ####################
 class TestSearchMatrix(unittest.TestCase):
@@ -73,3 +89,8 @@ class TestSearchMatrix(unittest.TestCase):
         for matrix, target, expected in self.test_cases:
             with self.subTest(matrix=matrix, target=target, expected=expected):
                 self.assertEqual(self.s.search_matrix_v2(matrix, target), expected)
+
+    def test_model_search_matrix_v3(self):
+        for matrix, target, expected in self.test_cases:
+            with self.subTest(matrix=matrix, target=target, expected=expected):
+                self.assertEqual(self.s.search_matrix_v3(matrix, target), expected)
