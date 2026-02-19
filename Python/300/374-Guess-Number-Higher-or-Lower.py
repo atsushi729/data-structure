@@ -28,6 +28,12 @@ class Solution:
                 left = mid + 1
         return -1
 
+    def guess_number_v2(self, n: int, target: int) -> int:
+        for num in range(1, n + 1):
+            if guess(num, target) == 0:
+                return num
+        return -1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -45,3 +51,8 @@ class TestSolution(unittest.TestCase):
         for n, target, expected in self.test_cases:
             with self.subTest(n=n, target=target, expected=expected):
                 self.assertEqual(self.s.guess_number(n, target), expected)
+
+    def test_guess_number_v2(self):
+        for n, target, expected in self.test_cases:
+            with self.subTest(n=n, target=target, expected=expected):
+                self.assertEqual(self.s.guess_number_v2(n, target), expected)
