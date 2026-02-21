@@ -24,25 +24,39 @@ import unittest
 
 
 #################### Solution ####################
-def min_eating_speed(piles: list[int], h: int) -> int:
-    left, right = 1, max(piles)
-    result = right
+class Solution:
+    def min_eating_speed(self, piles: list[int], h: int) -> int:
+        left, right = 1, max(piles)
+        result = right
 
-    while left <= right:
-        k = (left + right) // 2
-        total_time = 0
+        while left <= right:
+            k = (left + right) // 2
+            total_time = 0
 
-        for p in piles:
-            total_time += math.ceil(p / k)
-        if total_time <= h:
-            result = k
-            right = k - 1
-        else:
-            left = k + 1
-    return result
+            for p in piles:
+                total_time += math.ceil(p / k)
+            if total_time <= h:
+                result = k
+                right = k - 1
+            else:
+                left = k + 1
+        return result
 
 
 #################### Test Case ####################
 class TestMinEatingSpeed(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.s = Solution()
+        cls.test_cases = [
+            ([3, 6, 7, 11], 8, 4),
+            ([30, 11, 23, 4, 20], 5, 30),
+            ([30, 11, 23, 4, 20], 6, 23),
+            ([1, 4, 3, 2], 9, 2),
+        ]
+
     def test_min_eating_speed(self):
-        self.assertEqual(min_eating_speed([1, 4, 3, 2], 9), 2)
+        for piles, h, expected in self.test_cases:
+            with self.subTest(piles=piles, h=h):
+                result = self.s.min_eating_speed(piles, h)
+                self.assertEqual(result, expected)
