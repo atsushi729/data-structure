@@ -42,6 +42,19 @@ class Solution:
                 left = k + 1
         return result
 
+    def min_eating_speed_v2(self, piles: list[int], h: int) -> int:
+        slowest, fastest = 1, max(piles)
+
+        while slowest < fastest:
+            eat_speed = (slowest + fastest) // 2
+            total_eat_time = sum((pile + eat_speed - 1) // eat_speed for pile in piles)
+
+            if total_eat_time <= h:
+                fastest = eat_speed
+            else:
+                slowest = eat_speed + 1
+        return slowest
+
 
 #################### Test Case ####################
 class TestMinEatingSpeed(unittest.TestCase):
@@ -59,4 +72,10 @@ class TestMinEatingSpeed(unittest.TestCase):
         for piles, h, expected in self.test_cases:
             with self.subTest(piles=piles, h=h):
                 result = self.s.min_eating_speed(piles, h)
+                self.assertEqual(result, expected)
+
+    def test_min_eating_speed_v2(self):
+        for piles, h, expected in self.test_cases:
+            with self.subTest(piles=piles, h=h):
+                result = self.s.min_eating_speed_v2(piles, h)
                 self.assertEqual(result, expected)
