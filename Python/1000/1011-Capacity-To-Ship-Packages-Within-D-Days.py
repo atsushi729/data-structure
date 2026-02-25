@@ -41,6 +41,31 @@ class Solution:
 
             res += 1
 
+    def ship_within_days_3(self, weights: list[int], days: int) -> int:
+        l, r = max(weights), sum(weights)
+        res = r
+
+        def can_ship(cap):
+            ships, curr_cap = 1, cap
+            for w in weights:
+                if curr_cap - w < 0:
+                    ships += 1
+                    if ships > days:
+                        return False
+                    curr_cap = cap
+
+                curr_cap -= w
+            return True
+
+        while l <= r:
+            cap = (l + r) // 2
+            if can_ship(cap):
+                res = min(res, cap)
+                r = cap - 1
+            else:
+                l = cap + 1
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -61,6 +86,11 @@ class TestSolution(unittest.TestCase):
         for weights, days, expected in self.test_cases:
             with self.subTest(weights=weights, days=days, expected=expected):
                 self.assertEqual(self.s.ship_within_days_2(weights, days), expected)
+
+    def test_solution_3(self):
+        for weights, days, expected in self.test_cases:
+            with self.subTest(weights=weights, days=days, expected=expected):
+                self.assertEqual(self.s.ship_within_days_3(weights, days), expected)
 
 ################### Not working code ###################
 # class Solution:
