@@ -55,6 +55,19 @@ class Solution:
 
         return res
 
+    def find_min_v4(self, nums: list[int]) -> int:
+        left, right = 0, len(nums) - 1
+
+        while left < right:
+            mid = (left + right) // 2
+
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            else:
+                right = mid
+
+        return nums[left]
+
 
 #################### Test Case ####################
 class TestFindMin(unittest.TestCase):
@@ -84,4 +97,10 @@ class TestFindMin(unittest.TestCase):
         for nums, expected in self.test_cases:
             with self.subTest(nums=nums):
                 result = self.s.find_min_v3(nums)
+                self.assertEqual(result, expected)
+
+    def test_find_min_v4(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                result = self.s.find_min_v4(nums)
                 self.assertEqual(result, expected)
