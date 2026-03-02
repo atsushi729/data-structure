@@ -29,6 +29,35 @@ class Solution:
                     l = m + 1
         return -1
 
+    def search_v2(self, nums: list[int], target: int) -> int:
+        """
+        Time complexity: O(log n)
+        Space complexity: O(1)
+        """
+        l, r = 0, len(nums) - 1
+
+        while l <= r:
+            mid = (l + r) // 2
+
+            if nums[mid] == target:
+                return mid
+
+            # Left portion is sorted
+            if nums[l] <= nums[mid]:
+                if nums[l] <= target < nums[mid]:
+                    r = mid - 1
+                else:
+                    l = mid + 1
+
+            # Right portion is sorted
+            else:
+                if nums[mid] < target <= nums[r]:
+                    l = mid + 1
+                else:
+                    r = mid - 1
+
+        return -1
+
 
 #################### Test Case ####################
 class TestSearch(unittest.TestCase):
@@ -46,3 +75,8 @@ class TestSearch(unittest.TestCase):
         for nums, target, expected in self.test_cases:
             with self.subTest(nums=nums, target=target):
                 self.assertEqual(self.s.search(nums, target), expected)
+
+    def test_solution_v2(self):
+        for nums, target, expected in self.test_cases:
+            with self.subTest(nums=nums, target=target):
+                self.assertEqual(self.s.search_v2(nums, target), expected)
