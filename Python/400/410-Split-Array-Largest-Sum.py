@@ -27,6 +27,29 @@ class Solution:
                 l = mid + 1
         return res
 
+    def split_array_v2(self, nums: list[int], k: int) -> int:
+        n = len(nums)
+        dp = [[-1] * (k + 1) for _ in range(n)]
+
+        def dfs(i, m):
+            if i == n:
+                return 0 if m == 0 else float("inf")
+            if m == 0:
+                return float("inf")
+            if dp[i][m] != -1:
+                return dp[i][m]
+
+            res = float("inf")
+            cur_sum = 0
+
+            for j in range(i, n - m + 1):
+                cur_sum += nums[j]
+                res = min(res, max(cur_sum, dfs(j + 1, m - 1)))
+            dp[i][m] = res
+            return res
+
+        return dfs(0, k)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -42,3 +65,8 @@ class TestSolution(unittest.TestCase):
         for nums, k, expected in self.test_cases:
             with self.subTest(nums=nums, k=k, expected=expected):
                 self.assertEqual(self.s.split_array(nums, k), expected)
+
+    def test_split_array_v2(self):
+        for nums, k, expected in self.test_cases:
+            with self.subTest(nums=nums, k=k, expected=expected):
+                self.assertEqual(self.s.split_array_v2(nums, k), expected)
