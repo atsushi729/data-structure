@@ -4,32 +4,37 @@ import unittest
 #################### Solution ####################
 class Solution:
     def find_median_sorted_arrays(self, nums1: list[int], nums2: list[int]) -> float:
-        A, B = nums1, nums2
-        total = len(nums1) + len(nums2)
-        half = total // 2
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
 
-        if len(B) < len(A):
-            A, B = B, A
+        m, n = len(nums1), len(nums2)
 
-        l, r = 0, len(A) - 1
+        left = 0
+        right = m
 
-        while True:
-            i = (l + r) // 2
-            j = half - i - 2
+        while left <= right:
 
-            Aleft = A[i] if i >= 0 else float("-infinity")
-            Aright = A[i + 1] if (i + 1) < len(A) else float("infinity")
-            Bleft = B[j] if j >= 0 else float("-infinity")
-            Bright = B[j + 1] if (j + 1) < len(B) else float("infinity")
+            i = (left + right) // 2
+            j = (m + n + 1) // 2 - i
 
-            if Aleft <= Bright and Bleft <= Aright:
-                if total % 2:
-                    return min(Aright, Bright)
-                return (max(Aleft, Bleft) + min(Aright, Bright)) / 2
-            elif Aleft > Bright:
-                r = i - 1
+            left1 = float('-inf') if i == 0 else nums1[i-1]
+            right1 = float('inf') if i == m else nums1[i]
+
+            left2 = float('-inf') if j == 0 else nums2[j-1]
+            right2 = float('inf') if j == n else nums2[j]
+
+            if left1 <= right2 and left2 <= right1:
+
+                if (m + n) % 2 == 0:
+                    return (max(left1,left2) + min(right1,right2)) / 2
+                else:
+                    return max(left1,left2)
+
+            elif left1 > right2:
+                right = i - 1
+
             else:
-                l = i + 1
+                left = i + 1
 
 
 #################### Test Case ####################
