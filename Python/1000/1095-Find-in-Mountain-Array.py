@@ -38,3 +38,12 @@ class Solution:
             else:
                 return m
         return -1
+
+    def find_in_mountain_array_v2(self, target: int, mountainArr: 'MountainArray') -> int:
+        n = mountainArr.length()
+
+        for i in range(n):
+            if mountainArr.get(i) == target:
+                return i
+
+        return -1
