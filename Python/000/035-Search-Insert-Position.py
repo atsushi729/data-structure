@@ -31,6 +31,21 @@ class Solution:
                 return i
         return len(nums)
 
+    def search_insert_v3(self, nums: [int], target: int) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(1)
+        """
+        left, right = 0, len(nums)
+
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] < target:
+                left = mid + 1
+            else:
+                right = mid
+        return left
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -53,4 +68,10 @@ class TestSolution(unittest.TestCase):
         for nums, target, expected in self.test_cases:
             with self.subTest(nums=nums, target=target):
                 result = self.s.search_insert_v2(nums, target)
+                self.assertEqual(result, expected)
+
+    def test_search_v3(self):
+        for nums, target, expected in self.test_cases:
+            with self.subTest(nums=nums, target=target):
+                result = self.s.search_insert_v3(nums, target)
                 self.assertEqual(result, expected)
