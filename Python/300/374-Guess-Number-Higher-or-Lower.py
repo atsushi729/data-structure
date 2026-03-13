@@ -34,6 +34,19 @@ class Solution:
                 return num
         return -1
 
+    def guess_number_v3(self, n: int, target: int) -> int:
+        left, right = 1, n
+        while True:
+            mid = left + (right - left) // 2
+            guess_result = guess(mid, target)
+
+            if guess_result == 0:
+                return mid
+            elif guess_result == -1:
+                right = mid - 1
+            else:
+                left = mid + 1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -56,3 +69,8 @@ class TestSolution(unittest.TestCase):
         for n, target, expected in self.test_cases:
             with self.subTest(n=n, target=target, expected=expected):
                 self.assertEqual(self.s.guess_number_v2(n, target), expected)
+
+    def test_guess_number_v3(self):
+        for n, target, expected in self.test_cases:
+            with self.subTest(n=n, target=target, expected=expected):
+                self.assertEqual(self.s.guess_number_v3(n, target), expected)
