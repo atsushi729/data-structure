@@ -73,6 +73,26 @@ class Solution:
                 return target in row
         return False
 
+    def search_matrix_v5(self, matrix: list[list[int]], target: int) -> bool:
+        target_row = 0
+
+        for i in range(len(matrix)):
+            if target <= matrix[i][-1]:
+                target_row = i
+                break
+
+        left, right = 0, len(matrix[0]) - 1
+        while left <= right:
+            mid = (left + right) // 2
+
+            if target == matrix[target_row][mid]:
+                return True
+            elif target < matrix[target_row][mid]:
+                right = mid - 1
+            else:
+                left = mid + 1
+        return False
+
 
 #################### Test Case ####################
 class TestSearchMatrix(unittest.TestCase):
@@ -105,3 +125,8 @@ class TestSearchMatrix(unittest.TestCase):
         for matrix, target, expected in self.test_cases:
             with self.subTest(matrix=matrix, target=target, expected=expected):
                 self.assertEqual(self.s.search_matrix_v4(matrix, target), expected)
+
+    def test_model_search_matrix_v5(self):
+        for matrix, target, expected in self.test_cases:
+            with self.subTest(matrix=matrix, target=target, expected=expected):
+                self.assertEqual(self.s.search_matrix_v5(matrix, target), expected)
