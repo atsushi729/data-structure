@@ -93,6 +93,21 @@ class Solution:
                 left = mid + 1
         return False
 
+    def search_matrix_v6(self, matrix: list[list[int]], target: int) -> bool:
+        rows, cols = len(matrix), len(matrix[0])
+        row, col = 0, cols - 1
+
+        while row < rows and col >= 0:
+            current_val = matrix[row][col]
+
+            if current_val == target:
+                return True
+            elif current_val > target:
+                col -= 1
+            else:
+                row += 1
+        return False
+
 
 #################### Test Case ####################
 class TestSearchMatrix(unittest.TestCase):
@@ -130,3 +145,8 @@ class TestSearchMatrix(unittest.TestCase):
         for matrix, target, expected in self.test_cases:
             with self.subTest(matrix=matrix, target=target, expected=expected):
                 self.assertEqual(self.s.search_matrix_v5(matrix, target), expected)
+
+    def test_model_search_matrix_v6(self):
+        for matrix, target, expected in self.test_cases:
+            with self.subTest(matrix=matrix, target=target, expected=expected):
+                self.assertEqual(self.s.search_matrix_v6(matrix, target), expected)
