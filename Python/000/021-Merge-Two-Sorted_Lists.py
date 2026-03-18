@@ -20,7 +20,6 @@ store larger element in the current.next
 import unittest
 
 
-#################### Solution ####################
 class LinkedList:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -41,49 +40,45 @@ class Solution:
                 l2 = l2.next
             current = current.next
 
-        if l1:
-            current.next = l1
-        else:
-            current.next = l2
-
+        current.next = l1 if l1 else l2
         return dummy.next
 
 
-#################### Test Case ####################
 class TestMergeTwoLists(unittest.TestCase):
-    def test_merge_two_lists(self):
-        l1 = LinkedList(1)
-        l1.next = LinkedList(2)
-        l1.next.next = LinkedList(4)
 
-        l2 = LinkedList(1)
-        l2.next = LinkedList(3)
-        l2.next.next = LinkedList(4)
+    def build_list(self, values):
+        dummy = LinkedList(0)
+        current = dummy
+        for v in values:
+            current.next = LinkedList(v)
+            current = current.next
+        return dummy.next
+
+    def list_to_array(self, node):
+        result = []
+        while node:
+            result.append(node.val)
+            node = node.next
+        return result
+
+    def test_merge_two_lists(self):
+        test_cases = [
+            ([1, 2, 4], [1, 3, 4], [1, 1, 2, 3, 4, 4]),
+            ([], [], []),
+            ([1], [], [1]),
+            ([], [0], [0]),
+        ]
 
         solution = Solution()
-        result = solution.merge_two_lists(l1, l2)
 
-        self.assertEqual(result.val, 1)
-        self.assertEqual(result.next.val, 1)
-        self.assertEqual(result.next.next.val, 2)
-        self.assertEqual(result.next.next.next.val, 3)
-        self.assertEqual(result.next.next.next.next.val, 4)
-        self.assertEqual(result.next.next.next.next.next.val, 4)
+        for l1_vals, l2_vals, expected in test_cases:
+            with self.subTest(l1=l1_vals, l2=l2_vals):
+                l1 = self.build_list(l1_vals)
+                l2 = self.build_list(l2_vals)
+
+                result = solution.merge_two_lists(l1, l2)
+                self.assertEqual(self.list_to_array(result), expected)
 
 
 if __name__ == "__main__":
-    # l1 = LinkedList(1)
-    # l1.next = LinkedList(2)
-    # l1.next.next = LinkedList(4)
-    #
-    # l2 = LinkedList(1)
-    # l2.next = LinkedList(3)
-    # l2.next.next = LinkedList(4)
-    #
-    # solution = Solution()
-    # result = solution.merge_two_lists(l1, l2)
-    #
-    # while result:
-    #     print(result.val)
-    #     result = result.next
     unittest.main()
