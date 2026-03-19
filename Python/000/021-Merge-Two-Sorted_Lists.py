@@ -40,7 +40,7 @@ class Solution:
                 l2 = l2.next
             current = current.next
 
-        current.next = l1 if l1 else l2
+        current.next = l1 or l2
         return dummy.next
 
 
