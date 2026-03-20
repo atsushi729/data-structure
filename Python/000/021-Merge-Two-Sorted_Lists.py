@@ -43,6 +43,19 @@ class Solution:
         current.next = l1 or l2
         return dummy.next
 
+    def merge_two_lists_v2(self, l1: LinkedList, l2: LinkedList) -> LinkedList:
+        if not l1:
+            return l2
+        if not l2:
+            return l1
+
+        if l1.val <= l2.val:
+            l1.next = self.merge_two_lists_v2(l1.next, l2)
+            return l1
+        else:
+            l2.next = self.merge_two_lists_v2(l1, l2.next)
+            return l2
+
 
 class TestMergeTwoLists(unittest.TestCase):
 
@@ -61,7 +74,7 @@ class TestMergeTwoLists(unittest.TestCase):
             node = node.next
         return result
 
-    def test_merge_two_lists(self):
+    def run_test(self, func):
         test_cases = [
             ([1, 2, 4], [1, 3, 4], [1, 1, 2, 3, 4, 4]),
             ([], [], []),
@@ -69,15 +82,24 @@ class TestMergeTwoLists(unittest.TestCase):
             ([], [0], [0]),
         ]
 
-        solution = Solution()
-
         for l1_vals, l2_vals, expected in test_cases:
-            with self.subTest(l1=l1_vals, l2=l2_vals):
+            with self.subTest(method=func.__name__, l1=l1_vals, l2=l2_vals):
                 l1 = self.build_list(l1_vals)
                 l2 = self.build_list(l2_vals)
 
-                result = solution.merge_two_lists(l1, l2)
+                result = func(l1, l2)
                 self.assertEqual(self.list_to_array(result), expected)
+
+    def test_all_merge_methods(self):
+        solution = Solution()
+
+        methods = [
+            solution.merge_two_lists,
+            solution.merge_two_lists_v2
+        ]
+
+        for method in methods:
+            self.run_test(method)
 
 
 if __name__ == "__main__":
