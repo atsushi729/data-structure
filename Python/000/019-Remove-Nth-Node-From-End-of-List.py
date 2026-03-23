@@ -2,7 +2,6 @@ from typing import Optional
 import unittest
 
 
-# Definition for singly-linked list.
 #################### Solution ####################
 class ListNode:
     def __init__(self, val=0, next=None):
@@ -31,17 +30,50 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+    def build_list(self, values):
+        dummy = ListNode(0)
+        current = dummy
+        for v in values:
+            current.next = ListNode(v)
+            current = current.next
+        return dummy.next
+
+    def list_to_array(self, head):
+        result = []
+        while head:
+            result.append(head.val)
+            head = head.next
+        return result
+
     def test_removeNthFromEnd(self):
-        head = ListNode(1)
-        head.next = ListNode(2)
-        head.next.next = ListNode(3)
-        head.next.next.next = ListNode(4)
-        head.next.next.next.next = ListNode(5)
-        self.assertEqual(Solution().remove_nth_from_end(head, 2).next.next.next.val, 5)
+        test_cases = [
+            {
+                "input": ([1, 2, 3, 4, 5], 2),
+                "expected": [1, 2, 3, 5],
+            },
+            {
+                "input": ([1], 1),
+                "expected": [],
+            },
+            {
+                "input": ([1, 2], 1),
+                "expected": [1],
+            },
+        ]
 
-        head = ListNode(1)
-        self.assertEqual(Solution().remove_nth_from_end(head, 1), None)
+        for case in test_cases:
+            with self.subTest(case=case):
+                head = self.build_list(case["input"][0])
+                n = case["input"][1]
 
-        head = ListNode(1)
-        head.next = ListNode(2)
-        self.assertEqual(Solution().remove_nth_from_end(head, 1).val, 1)
+                result = self.solution.remove_nth_from_end(head, n)
+                self.assertEqual(self.list_to_array(result), case["expected"])
+
+
+if __name__ == "__main__":
+    unittest.main()
