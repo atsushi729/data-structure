@@ -2,6 +2,7 @@
 # Definition for a Node.
 """
 import unittest
+import collections
 from typing import Optional
 
 
@@ -34,11 +35,28 @@ class Solution:
 
         return old_to_copy[head]
 
+    def copy_random_list_v2(self, head: Optional[Node]) -> Optional[Node]:
+        oldToCopy = collections.defaultdict(lambda: Node(0))
+        oldToCopy[None] = None
+
+        cur = head
+        while cur:
+            oldToCopy[cur].val = cur.val
+            oldToCopy[cur].next = oldToCopy[cur.next]
+            oldToCopy[cur].random = oldToCopy[cur.random]
+            cur = cur.next
+        return oldToCopy[head]
+
 
 #################### Test Case ####################
 class TestCopyRandomList(unittest.TestCase):
-    def test_copy_random_list(self):
-        # Create a list: 1 -> 2 -> 3 -> 4
+
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+    def build_case_1(self):
+        # 1 -> 2 -> 3 -> 4
         head = Node(1)
         head.next = Node(2)
         head.next.next = Node(3)
@@ -48,14 +66,64 @@ class TestCopyRandomList(unittest.TestCase):
         head.next.random = head.next.next.next
         head.next.next.random = head
 
-        solution = Solution()
-        result = solution.copy_random_list(head)
+        return head
 
-        self.assertEqual(result.val, 1)
-        self.assertEqual(result.next.val, 2)
-        self.assertEqual(result.next.next.val, 3)
-        self.assertEqual(result.next.next.next.val, 4)
+    def build_case_2(self):
+        # 単一ノード
+        head = Node(10)
+        head.random = head
+        return head
 
-        self.assertEqual(result.random.val, 3)
-        self.assertEqual(result.next.random.val, 4)
-        self.assertEqual(result.next.next.random.val, 1)
+    def build_case_3(self):
+        # randomが全てNone
+        head = Node(1)
+        head.next = Node(2)
+        head.next.next = Node(3)
+        return head
+
+    def build_case_4(self):
+        # 空リスト
+        return None
+
+    def validate(self, original, copied):
+        if original is None:
+            self.assertIsNone(copied)
+            return
+
+        cur_o, cur_c = original, copied
+
+        while cur_o:
+            # 値チェック
+            self.assertEqual(cur_o.val, cur_c.val)
+
+            # 参照が別であること（ディープコピー）
+            self.assertIsNot(cur_o, cur_c)
+
+            # randomチェック
+            if cur_o.random is None:
+                self.assertIsNone(cur_c.random)
+            else:
+                self.assertEqual(cur_o.random.val, cur_c.random.val)
+
+            cur_o = cur_o.next
+            cur_c = cur_c.next
+
+    def test_all(self):
+        methods = [
+            self.solution.copy_random_list,
+            self.solution.copy_random_list_v2
+        ]
+
+        cases = [
+            ("normal", self.build_case_1),
+            ("single node", self.build_case_2),
+            ("no random", self.build_case_3),
+            ("empty", self.build_case_4),
+        ]
+
+        for method in methods:
+            for name, builder in cases:
+                with self.subTest(method=method.__name__, case=name):
+                    head = builder()
+                    copied = method(head)
+                    self.validate(head, copied)
