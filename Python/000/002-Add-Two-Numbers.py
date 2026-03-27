@@ -4,6 +4,7 @@ from typing import Optional
 
 
 # Definition for singly-linked list.
+#################### Solution ####################
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -67,41 +68,81 @@ class Solution:
 
         return dummy.next
 
+    def add_two_numbers_v3(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        carry = 0
+        dummy = ListNode()
+        current = dummy
+
+        while l1 or l2 or carry:
+            sum = carry
+
+            if l1:
+                sum += l1.val
+                l1 = l1.next
+
+            if l2:
+                sum += l2.val
+                l2 = l2.next
+
+            carry, digit = divmod(sum, 10)
+            current.next = ListNode(digit)
+            current = current.next
+
+        return dummy.next
+
 
 #################### Test Case ####################
-class TestAddTwoNumbers(unittest.TestCase):
+class TestSolution(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+    def build_list(self, values):
+        dummy = ListNode(0)
+        current = dummy
+        for v in values:
+            current.next = ListNode(v)
+            current = current.next
+        return dummy.next
+
+    def list_to_array(self, head):
+        result = []
+        while head:
+            result.append(head.val)
+            head = head.next
+        return result
+
+    def get_test_cases(self):
+        return [
+            {
+                "input": ([2, 4, 3], [5, 6, 4]),
+                "expected": [7, 0, 8],
+            },
+            {
+                "input": ([0], [0]),
+                "expected": [0],
+            },
+            {
+                "input": ([9, 9, 9], [1]),
+                "expected": [0, 0, 0, 1],
+            },
+        ]
+
     def test_add_two_numbers(self):
-        # Create a list: 2 -> 4 -> 3
-        l1 = ListNode(2)
-        l1.next = ListNode(4)
-        l1.next.next = ListNode(3)
-
-        # Create a list: 5 -> 6 -> 4
-        l2 = ListNode(5)
-        l2.next = ListNode(6)
-        l2.next.next = ListNode(4)
-
-        solution = Solution()
-        result = solution.add_two_numbers(l1, l2)
-
-        self.assertEqual(result.val, 7)
-        self.assertEqual(result.next.val, 0)
-        self.assertEqual(result.next.next.val, 8)
+        """ test code for add_two_numbers """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                l1 = self.build_list(case["input"][0])
+                l2 = self.build_list(case["input"][1])
+                result = self.solution.add_two_numbers(l1, l2)
+                self.assertEqual(self.list_to_array(result), case["expected"])
 
     def test_add_two_numbers_v2(self):
-        # Create a list: 2 -> 4 -> 3
-        l1 = ListNode(2)
-        l1.next = ListNode(4)
-        l1.next.next = ListNode(3)
-
-        # Create a list: 5 -> 6 -> 4
-        l2 = ListNode(5)
-        l2.next = ListNode(6)
-        l2.next.next = ListNode(4)
-
-        solution = Solution()
-        result = solution.add_two_numbers_v2(l1, l2)
-
-        self.assertEqual(result.val, 7)
-        self.assertEqual(result.next.val, 0)
-        self.assertEqual(result.next.next.val, 8)
+        """ test code for add_two_numbers_v2 """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                l1 = self.build_list(case["input"][0])
+                l2 = self.build_list(case["input"][1])
+                result = self.solution.add_two_numbers_v2(l1, l2)
+                self.assertEqual(self.list_to_array(result), case["expected"])
