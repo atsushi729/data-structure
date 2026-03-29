@@ -44,17 +44,46 @@ def find_duplicate_v2(nums: list[int]) -> int:
 
 
 #################### Test Case ####################
-class TestFindDuplicate(unittest.TestCase):
+class TestSolution(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = None  # 関数ベースなので不要だが形式統一のため残す
+
+    def get_test_cases(self):
+        return [
+            {
+                "input": [1, 3, 4, 2, 2],
+                "expected": 2,
+            },
+            {
+                "input": [3, 1, 3, 4, 2],
+                "expected": 3,
+            },
+            {
+                "input": [1, 1],
+                "expected": 1,
+            },
+            {
+                "input": [1, 1, 2],
+                "expected": 1,
+            },
+            {
+                "input": [2, 2, 2, 2, 2],
+                "expected": 2,
+            },
+        ]
+
     def test_find_duplicate(self):
-        self.assertEqual(find_duplicate([1, 3, 4, 2, 2]), 2)
-        self.assertEqual(find_duplicate([3, 1, 3, 4, 2]), 3)
-        self.assertEqual(find_duplicate([1, 1]), 1)
-        self.assertEqual(find_duplicate([1, 1, 2]), 1)
-        self.assertEqual(find_duplicate([2, 2, 2, 2, 2]), 2)
+        """ test code for find_duplicate """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                result = find_duplicate(case["input"])
+                self.assertEqual(result, case["expected"])
 
     def test_find_duplicate_v2(self):
-        self.assertEqual(find_duplicate_v2([1, 3, 4, 2, 2]), 2)
-        self.assertEqual(find_duplicate_v2([3, 1, 3, 4, 2]), 3)
-        self.assertEqual(find_duplicate_v2([1, 1]), 1)
-        self.assertEqual(find_duplicate_v2([1, 1, 2]), 1)
-        self.assertEqual(find_duplicate_v2([2, 2, 2, 2, 2]), 2)
+        """ test code for find_duplicate_v2 """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                result = find_duplicate_v2(case["input"])
+                self.assertEqual(result, case["expected"])
