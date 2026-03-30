@@ -42,6 +42,25 @@ class Solution:
 
         return slow
 
+    def find_duplicate_v3(self, nums: list[int]) -> int:
+        """
+        Binary Search
+        Time Complexity: O(n log n)
+        Space Complexity: O(1)
+        """
+        left, right = 1, len(nums) - 1
+
+        while left < right:
+            mid = (left + right) // 2
+            count = sum(num <= mid for num in nums)
+
+            if count > mid:
+                right = mid
+            else:
+                left = mid + 1
+
+        return left
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -86,4 +105,11 @@ class TestSolution(unittest.TestCase):
         for case in self.get_test_cases():
             with self.subTest(case=case):
                 result = self.solution.find_duplicate_v2(case["input"])
+                self.assertEqual(result, case["expected"])
+
+    def test_find_duplicate_v3(self):
+        """ test code for find_duplicate_v3 """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                result = self.solution.find_duplicate_v3(case["input"])
                 self.assertEqual(result, case["expected"])
