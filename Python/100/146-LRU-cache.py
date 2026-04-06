@@ -68,6 +68,34 @@ class LRUCache:
             self.cache.popitem(last=False)
 
 
+class LRUCacheArray:
+
+    def __init__(self, capacity: int):
+        self.cache = []
+        self.capacity = capacity
+
+    def get(self, key: int) -> int:
+        for i in range(len(self.cache)):
+            if self.cache[i][0] == key:
+                tmp = self.cache.pop(i)
+                self.cache.append(tmp)
+                return tmp[1]
+        return -1
+
+    def put(self, key: int, value: int) -> None:
+        for i in range(len(self.cache)):
+            if self.cache[i][0] == key:
+                tmp = self.cache.pop(i)
+                tmp[1] = value
+                self.cache.append(tmp)
+                return
+
+        if self.capacity == len(self.cache):
+            self.cache.pop(0)
+
+        self.cache.append([key, value])
+
+
 #################### Test Case ####################
 class TestLRUCache(unittest.TestCase):
     def test_lru_cache(self):
@@ -84,6 +112,18 @@ class TestLRUCache(unittest.TestCase):
 
     def test_lru_cache_with_ordered_dict(self):
         cache = LRUCache(2)
+        cache.put(1, 1)
+        cache.put(2, 2)
+        self.assertEqual(cache.get(1), 1)
+        cache.put(3, 3)
+        self.assertEqual(cache.get(2), -1)
+        cache.put(4, 4)
+        self.assertEqual(cache.get(1), -1)
+        self.assertEqual(cache.get(3), 3)
+        self.assertEqual(cache.get(4), 4)
+
+    def test_lru_cache_with_array(self):
+        cache = LRUCacheArray(2)
         cache.put(1, 1)
         cache.put(2, 2)
         self.assertEqual(cache.get(1), 1)
