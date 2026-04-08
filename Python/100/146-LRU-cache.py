@@ -18,32 +18,32 @@ class LRUCacheWithLinkedList:
         self.left, self.right = Node(None, None), Node(None, None)
         self.left.next, self.right.prev = self.right, self.left
 
-    def remove(self, node):
+    def _remove(self, node):
         prev, next = node.prev, node.next
         prev.next, next.prev = next, prev
 
-    def insert(self, node):
+    def _insert(self, node):
         prev, next = self.right.prev, self.right
         prev.next = next.prev = node
         node.prev, node.next = prev, next
 
     def get(self, key: int) -> int:
         if key in self.cache:
-            self.remove(self.cache[key])
-            self.insert(self.cache[key])
+            self._remove(self.cache[key])
+            self._insert(self.cache[key])
             return self.cache[key].val
         return -1
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            self.remove(self.cache[key])
+            self._remove(self.cache[key])
         new_node = Node(key, value)
         self.cache[key] = new_node
-        self.insert(self.cache[key])
+        self._insert(self.cache[key])
 
         if len(self.cache) > self.capacity:
             least_node = self.left.next
-            self.remove(least_node)
+            self._remove(least_node)
             del self.cache[least_node.key]
 
 
