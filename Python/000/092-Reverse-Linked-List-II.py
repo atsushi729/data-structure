@@ -45,6 +45,36 @@ class Solution:
         head.next = self.reverse_between_v2(head.next, left - 1, right - 1)
         return head
 
+    def reverse_between_v3(self, head: Optional[ListNode], left: int, right: int) -> Optional[ListNode]:
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy
+        for _ in range(left - 1):
+            prev = prev.next
+
+        sublist_head = prev.next
+        sublist_tail = sublist_head
+        for _ in range(right - left):
+            sublist_tail = sublist_tail.next
+
+        next_node = sublist_tail.next
+        sublist_tail.next = None
+        reversed_sublist = self.reverseList(sublist_head)
+        prev.next = reversed_sublist
+        sublist_head.next = next_node
+
+        return dummy.next
+
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev, curr = None, head
+
+        while curr:
+            temp = curr.next
+            curr.next = prev
+            prev = curr
+            curr = temp
+        return prev
+
 
 class TestSolution(unittest.TestCase):
 
@@ -86,4 +116,11 @@ class TestSolution(unittest.TestCase):
             with self.subTest(values=values, left=left, right=right, expected=expected):
                 head = self.build_list(values)
                 result = self.solution.reverse_between_v2(head, left, right)
+                self.assertEqual(self.list_to_array(result), expected)
+
+    def test_solution_v3(self):
+        for values, left, right, expected in self.get_test_cases():
+            with self.subTest(values=values, left=left, right=right, expected=expected):
+                head = self.build_list(values)
+                result = self.solution.reverse_between_v3(head, left, right)
                 self.assertEqual(self.list_to_array(result), expected)
