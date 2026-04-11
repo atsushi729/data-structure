@@ -1,5 +1,6 @@
 import unittest
 from typing import Optional
+from contextlib import contextmanager
 
 
 #################### Solution ####################
@@ -11,10 +12,6 @@ class ListNode:
 
 class Solution:
     def merge_k_lists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:
-        """
-        Time Complexity: O(n log n) => sorting + O(n) creating new linked list = O(n log n)
-        Space Complexity: O(n)
-        """
         dummy = ListNode()
         current = dummy
         node_lists = []
@@ -35,10 +32,6 @@ class Solution:
 
 class AnotherSolution:
     def merge_k_lists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:
-        """
-        Time complexity: O(nk)
-        Space complexity: O(1)
-        """
         if len(lists) == 0:
             return None
 
@@ -60,80 +53,63 @@ class AnotherSolution:
                 l2 = l2.next
             tail = tail.next
 
-        if l1:
-            tail.next = l1
-        if l2:
-            tail.next = l2
-
+        tail.next = l1 if l1 else l2
         return dummy.next
 
 
 #################### Test Case ####################
 class TestMergeKLists(unittest.TestCase):
-    def test_merge_k_lists(self):
-        # Input: lists = [[1,4,5],[1,3,4],[2,6]]
-        # Output: [1,1,2,3,4,4,5,6]
-        # Explanation: The linked-lists are:
-        # [
-        #   1->4->5,
-        #   1->3->4,
-        #   2->6
-        # ]
-        # merging them into one sorted list:
-        # 1->1->2->3->4->4->5->6
-        node1 = ListNode(1)
-        node1.next = ListNode(4)
-        node1.next.next = ListNode(5)
 
-        node2 = ListNode(1)
-        node2.next = ListNode(3)
-        node2.next.next = ListNode(4)
+    @classmethod
+    def setUpClass(cls):
+        cls.input_values = [
+            [1, 4, 5],
+            [1, 3, 4],
+            [2, 6],
+        ]
+        cls.expected = [1, 1, 2, 3, 4, 4, 5, 6]
 
-        node3 = ListNode(2)
-        node3.next = ListNode(6)
+    @classmethod
+    def _build(cls, values):
+        dummy = ListNode()
+        cur = dummy
+        for v in values:
+            cur.next = ListNode(v)
+            cur = cur.next
+        return dummy.next
 
+    @classmethod
+    def _to_list(cls, node):
+        res = []
+        while node:
+            res.append(node.val)
+            node = node.next
+        return res
+
+    @contextmanager
+    def linked_lists(self):
+        """
+        毎回新しい linked list を生成してスコープ内だけで利用
+        """
+        lists = [self._build(v) for v in self.input_values]
+        try:
+            yield lists
+        finally:
+            # 明示的に参照を切る（GCに任せるが意図を明確にする）
+            lists = None
+
+    def test_solution(self):
         solution = Solution()
-        result = solution.merge_k_lists([node1, node2, node3])
+        with self.linked_lists() as lists:
+            result = solution.merge_k_lists(lists)
+            self.assertEqual(self._to_list(result), self.expected)
 
-        self.assertEqual(result.val, 1)
-        self.assertEqual(result.next.val, 1)
-        self.assertEqual(result.next.next.val, 2)
-        self.assertEqual(result.next.next.next.val, 3)
-        self.assertEqual(result.next.next.next.next.val, 4)
-        self.assertEqual(result.next.next.next.next.next.val, 4)
-        self.assertEqual(result.next.next.next.next.next.next.val, 5)
-        self.assertEqual(result.next.next.next.next.next.next.next.val, 6)
+    def test_another_solution(self):
+        solution = AnotherSolution()
+        with self.linked_lists() as lists:
+            result = solution.merge_k_lists(lists)
+            self.assertEqual(self._to_list(result), self.expected)
 
-    def test_another_solution_merge_k_lists(self):
-        # Input: lists = [[1,4,5],[1,3,4],[2,6]]
-        # Output: [1,1,2,3,4,4,5,6]
-        # Explanation: The linked-lists are:
-        # [
-        #   1->4->5,
-        #   1->3->4,
-        #   2->6
-        # ]
-        # merging them into one sorted list:
-        # 1->1->2->3->4->4->5->6
-        node1 = ListNode(1)
-        node1.next = ListNode(4)
-        node1.next.next = ListNode(5)
 
-        node2 = ListNode(1)
-        node2.next = ListNode(3)
-        node2.next.next = ListNode(4)
-
-        node3 = ListNode(2)
-        node3.next = ListNode(6)
-
-        another_solution = AnotherSolution()
-        result = another_solution.merge_k_lists([node1, node2, node3])
-
-        self.assertEqual(result.val, 1)
-        self.assertEqual(result.next.val, 1)
-        self.assertEqual(result.next.next.val, 2)
-        self.assertEqual(result.next.next.next.val, 3)
-        self.assertEqual(result.next.next.next.next.val, 4)
-        self.assertEqual(result.next.next.next.next.next.val, 4)
-        self.assertEqual(result.next.next.next.next.next.next.val, 5)
-        self.assertEqual(result.next.next.next.next.next.next.next.val, 6)
+if __name__ == "__main__":
+    unittest.main()
