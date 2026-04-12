@@ -29,6 +29,21 @@ class Solution:
 
         return dummy.next
 
+    def merge_k_lists_v2(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:
+        nodes = []
+        for node in lists:
+            while node:
+                nodes.append(node.val)
+                node = node.next
+        nodes.sort()
+
+        res = ListNode(0)
+        cur = res
+        for node in nodes:
+            cur.next = ListNode(node)
+            cur = cur.next
+        return res.next
+
 
 class AnotherSolution:
     def merge_k_lists(self, lists: list[Optional[ListNode]]) -> Optional[ListNode]:
@@ -108,6 +123,12 @@ class TestMergeKLists(unittest.TestCase):
         solution = AnotherSolution()
         with self.linked_lists() as lists:
             result = solution.merge_k_lists(lists)
+            self.assertEqual(self._to_list(result), self.expected)
+
+    def test_solution_v2(self):
+        solution = Solution()
+        with self.linked_lists() as lists:
+            result = solution.merge_k_lists_v2(lists)
             self.assertEqual(self._to_list(result), self.expected)
 
 
