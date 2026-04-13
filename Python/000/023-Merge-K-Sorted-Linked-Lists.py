@@ -37,12 +37,12 @@ class Solution:
                 node = node.next
         nodes.sort()
 
-        res = ListNode(0)
-        cur = res
+        dummy = ListNode(0)
+        cur = dummy
         for node in nodes:
             cur.next = ListNode(node)
             cur = cur.next
-        return res.next
+        return dummy.next
 
 
 class AnotherSolution:
