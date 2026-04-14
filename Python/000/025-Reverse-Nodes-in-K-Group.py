@@ -39,9 +39,28 @@ class Solution:
             k -= 1
         return curr
 
+    def reverse_k_group_v2(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        cur = head
+        group = 0
+        while cur and group < k:
+            cur = cur.next
+            group += 1
+
+        if group == k:
+            cur = self.reverse_k_group_v2(cur, k)
+            while group > 0:
+                tmp = head.next
+                head.next = cur
+                cur = head
+                head = tmp
+                group -= 1
+            head = cur
+        return head
+
 
 #################### Test Case ####################
 class TestMergeKLists(unittest.TestCase):
+
     def test_merge_k_lists(self):
         node1 = ListNode(1)
         node1.next = ListNode(2)
