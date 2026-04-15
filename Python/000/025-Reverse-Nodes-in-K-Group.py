@@ -27,6 +27,7 @@ class Solution:
                 curr.next = prev
                 prev = curr
                 curr = tmp
+
             tmp = group_prev.next
             group_prev.next = kth
             group_prev = tmp
@@ -59,20 +60,73 @@ class Solution:
 
 
 #################### Test Case ####################
-class TestMergeKLists(unittest.TestCase):
+class TestSolution(unittest.TestCase):
 
-    def test_merge_k_lists(self):
-        node1 = ListNode(1)
-        node1.next = ListNode(2)
-        node1.next.next = ListNode(3)
-        node1.next.next.next = ListNode(4)
-        node1.next.next.next.next = ListNode(5)
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
 
-        solution = Solution()
-        result = solution.reverse_k_group(node1, 2)
-        self.assertEqual(result.val, 2)
-        self.assertEqual(result.next.val, 1)
-        self.assertEqual(result.next.next.val, 4)
-        self.assertEqual(result.next.next.next.val, 3)
-        self.assertEqual(result.next.next.next.next.val, 5)
-        self.assertEqual(result.next.next.next.next.next, None)
+    def build_list(self, values):
+        dummy = ListNode(0)
+        current = dummy
+        for v in values:
+            current.next = ListNode(v)
+            current = current.next
+        return dummy.next
+
+    def list_to_array(self, head):
+        result = []
+        while head:
+            result.append(head.val)
+            head = head.next
+        return result
+
+    def get_test_cases(self):
+        return [
+            {
+                "input": ([1, 2, 3, 4, 5], 2),
+                "expected": [2, 1, 4, 3, 5],
+            },
+            {
+                "input": ([1, 2, 3, 4, 5], 3),
+                "expected": [3, 2, 1, 4, 5],
+            },
+            {
+                "input": ([1, 2, 3, 4], 2),
+                "expected": [2, 1, 4, 3],
+            },
+            {
+                "input": ([1, 2, 3], 1),
+                "expected": [1, 2, 3],
+            },
+            {
+                "input": ([1, 2, 3], 5),
+                "expected": [1, 2, 3],
+            },
+            {
+                "input": ([], 2),
+                "expected": [],
+            },
+        ]
+
+    def test_reverse_k_group(self):
+        """ test code for reverse_k_group """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                values, k = case["input"]
+                head = self.build_list(values)
+                result = self.solution.reverse_k_group(head, k)
+                self.assertEqual(self.list_to_array(result), case["expected"])
+
+    def test_reverse_k_group_v2(self):
+        """ test code for reverse_k_group_v2 """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                values, k = case["input"]
+                head = self.build_list(values)
+                result = self.solution.reverse_k_group_v2(head, k)
+                self.assertEqual(self.list_to_array(result), case["expected"])
+
+
+if __name__ == "__main__":
+    unittest.main()
