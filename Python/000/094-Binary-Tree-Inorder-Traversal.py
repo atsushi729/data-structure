@@ -23,16 +23,27 @@ class Solution:
         inorder(root)
         return res
 
+    def inorder_traversal_v2(self, root: Optional[TreeNode]) -> list[int]:
+        res = []
+        stack = []
+        current = root
+
+        while current or stack:
+            while current:
+                stack.append(current)
+                current = current.left
+            current = stack.pop()
+            res.append(current.val)
+            current = current.right
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.sol = Solution()
-
-    def test_inorder_traversal(self):
-        """中順巡回（Inorder Traversal）のテスト"""
-
-        test_cases = [
+        cls.test_cases = [
             # (テスト名, ツリーのルート, 期待される結果)
             ("空の木", None, []),
             ("単一ノード", TreeNode(1), [1]),
@@ -44,9 +55,17 @@ class TestSolution(unittest.TestCase):
              [1, 2, 3, 4, 5, 6, 7]),
         ]
 
-        for name, root, expected in test_cases:
+    def test_inorder_traversal(self):
+        for name, root, expected in self.test_cases:
             with self.subTest(name=name):
                 result = self.sol.inorder_traversal(root)
+                self.assertEqual(result, expected,
+                                 f"Failed for case: {name}. Expected {expected}, got {result}")
+
+    def test_inorder_traversal_v2(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                result = self.sol.inorder_traversal_v2(root)
                 self.assertEqual(result, expected,
                                  f"Failed for case: {name}. Expected {expected}, got {result}")
 
