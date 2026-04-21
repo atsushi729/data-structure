@@ -1,5 +1,6 @@
-from typing import Optional
 import unittest
+from typing import Optional
+from collections import deque
 
 
 #################### Solution ####################
@@ -16,7 +17,6 @@ class Solution:
         Time complexity: O(n)
         Space complexity: O(n)
         """
-        # base case
         if not root:
             return None
 
@@ -32,12 +32,10 @@ class Solution:
         Time complexity: O(n)
         Space complexity: O(n)
         """
-        # base case
         if not root:
             return None
 
         root.left, root.right = self.invert_tree_v2(root.right), self.invert_tree_v2(root.left)
-
         return root
 
     def invert_binary_tree_bfs(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
@@ -87,82 +85,97 @@ class Solution:
 
 #################### Test Case ####################
 class TestInvertTree(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            # (テスト名, 入力ツリー, 期待される反転後のlevel order)
+            ("空の木", None, []),
+
+            ("単一ノード",
+             TreeNode(1),
+             [1]),
+
+            ("標準例",
+             TreeNode(4,
+                      TreeNode(2, TreeNode(1), TreeNode(3)),
+                      TreeNode(7, TreeNode(6), TreeNode(9))),
+             [4, 7, 2, 9, 6, 3, 1]),
+
+            ("左寄りの木",
+             TreeNode(1, TreeNode(2, TreeNode(3))),
+             [1, None, 2, None, 3]),
+
+            ("右寄りの木",
+             TreeNode(1, None, TreeNode(2, None, TreeNode(3))),
+             [1, 2, None, 3]),
+
+            ("バランスの取れた木",
+             TreeNode(4,
+                      TreeNode(2, TreeNode(1), TreeNode(3)),
+                      TreeNode(6, TreeNode(5), TreeNode(7))),
+             [4, 6, 2, 7, 5, 3, 1]),
+        ]
+
+    def tree_to_list(self, root: Optional[TreeNode]) -> list:
+        if not root:
+            return []
+
+        result = []
+        queue = deque([root])
+
+        while queue:
+            node = queue.popleft()
+
+            if node:
+                result.append(node.val)
+                queue.append(node.left)
+                queue.append(node.right)
+            else:
+                result.append(None)
+
+        while result and result[-1] is None:
+            result.pop()
+
+        return result
+
+    def clone_tree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        if not root:
+            return None
+        return TreeNode(
+            root.val,
+            self.clone_tree(root.left),
+            self.clone_tree(root.right)
+        )
+
     def test_invert_tree(self):
-        root = TreeNode(4)
-        root.left = TreeNode(2)
-        root.right = TreeNode(7)
-        root.left.left = TreeNode(1)
-        root.left.right = TreeNode(3)
-        root.right.left = TreeNode(6)
-        root.right.right = TreeNode(9)
+        for name, root, expected in self.test_cases:
+            with self.subTest(method="invert_tree", name=name):
+                copied_root = self.clone_tree(root)
+                result = self.solution.invert_tree(copied_root)
+                self.assertEqual(self.tree_to_list(result), expected)
 
-        solution = Solution()
-        result = solution.invert_tree(root)
-
-        self.assertEqual(result.val, 4)
-        self.assertEqual(result.left.val, 7)
-        self.assertEqual(result.right.val, 2)
-        self.assertEqual(result.left.left.val, 9)
-        self.assertEqual(result.left.right.val, 6)
-        self.assertEqual(result.right.left.val, 3)
-        self.assertEqual(result.right.right.val, 1)
-
-    def test_inverse_tree_v2(self):
-        root = TreeNode(4)
-        root.left = TreeNode(2)
-        root.right = TreeNode(7)
-        root.left.left = TreeNode(1)
-        root.left.right = TreeNode(3)
-        root.right.left = TreeNode(6)
-        root.right.right = TreeNode(9)
-
-        solution = Solution()
-        result = solution.invert_tree_v2(root)
-
-        self.assertEqual(result.val, 4)
-        self.assertEqual(result.left.val, 7)
-        self.assertEqual(result.right.val, 2)
-        self.assertEqual(result.left.left.val, 9)
-        self.assertEqual(result.left.right.val, 6)
-        self.assertEqual(result.right.left.val, 3)
-        self.assertEqual(result.right.right.val, 1)
+    def test_invert_tree_v2(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(method="invert_tree_v2", name=name):
+                copied_root = self.clone_tree(root)
+                result = self.solution.invert_tree_v2(copied_root)
+                self.assertEqual(self.tree_to_list(result), expected)
 
     def test_invert_binary_tree_bfs(self):
-        root = TreeNode(4)
-        root.left = TreeNode(2)
-        root.right = TreeNode(7)
-        root.left.left = TreeNode(1)
-        root.left.right = TreeNode(3)
-        root.right.left = TreeNode(6)
-        root.right.right = TreeNode(9)
-
-        solution = Solution()
-        result = solution.invert_binary_tree_bfs(root)
-
-        self.assertEqual(result.val, 4)
-        self.assertEqual(result.left.val, 7)
-        self.assertEqual(result.right.val, 2)
-        self.assertEqual(result.left.left.val, 9)
-        self.assertEqual(result.left.right.val, 6)
-        self.assertEqual(result.right.left.val, 3)
-        self.assertEqual(result.right.right.val, 1)
+        for name, root, expected in self.test_cases:
+            with self.subTest(method="invert_binary_tree_bfs", name=name):
+                copied_root = self.clone_tree(root)
+                result = self.solution.invert_binary_tree_bfs(copied_root)
+                self.assertEqual(self.tree_to_list(result), expected)
 
     def test_invert_binary_tree_stack(self):
-        root = TreeNode(4)
-        root.left = TreeNode(2)
-        root.right = TreeNode(7)
-        root.left.left = TreeNode(1)
-        root.left.right = TreeNode(3)
-        root.right.left = TreeNode(6)
-        root.right.right = TreeNode(9)
+        for name, root, expected in self.test_cases:
+            with self.subTest(method="invert_binary_tree_stack", name=name):
+                copied_root = self.clone_tree(root)
+                result = self.solution.invert_binary_tree_stack(copied_root)
+                self.assertEqual(self.tree_to_list(result), expected)
 
-        solution = Solution()
-        result = solution.invert_binary_tree_stack(root)
 
-        self.assertEqual(result.val, 4)
-        self.assertEqual(result.left.val, 7)
-        self.assertEqual(result.right.val, 2)
-        self.assertEqual(result.left.left.val, 9)
-        self.assertEqual(result.left.right.val, 6)
-        self.assertEqual(result.right.left.val, 3)
-        self.assertEqual(result.right.right.val, 1)
+if __name__ == "__main__":
+    unittest.main()
