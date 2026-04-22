@@ -48,22 +48,21 @@ class Solution:
 
 #################### Test Case ####################
 class TestMaxDepth(unittest.TestCase):
+    @classmethod
+    def setUp(cls):
+        cls.solution = Solution()
+        cls.tests = [
+            ("Balanced Tree", TreeNode(1, TreeNode(2), TreeNode(3)), 2),
+            ("Left Tree", TreeNode(1, TreeNode(2, TreeNode(1)), TreeNode(3)), 3),
+            ("Right Tree", TreeNode(1, TreeNode(2), TreeNode(3, TreeNode(4))), 3),
+        ]
+
     def test_max_depth(self):
-        root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        self.assertEqual(Solution().max_depth(root), 3)
-
-        root = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().max_depth(root), 2)
-
-        root = None
-        self.assertEqual(Solution().max_depth(root), 0)
+        for name, tree, expected in self.tests:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.max_depth(tree), expected)
 
     def test_max_depth_v2(self):
-        root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        self.assertEqual(Solution().max_depth_v2(root), 3)
-
-        root = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().max_depth_v2(root), 2)
-
-        root = None
-        self.assertEqual(Solution().max_depth_v2(root), 0)
+        for name, tree, expected in self.tests:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.max_depth_v2(tree), expected)
