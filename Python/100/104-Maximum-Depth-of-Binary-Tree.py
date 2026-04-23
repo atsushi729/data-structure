@@ -45,6 +45,24 @@ class Solution:
 
         return 1 + max(self.max_depth_v2(root.left), self.max_depth_v2(root.right))
 
+    def max_depth_3(self, root: Optional[TreeNode]) -> int:
+        max_depth = 0
+
+        def dfs(node, cur_val):
+            nonlocal max_depth
+            if not node:
+                return
+
+            cur_val += 1
+            max_depth = max(max_depth, cur_val)
+
+            dfs(node.left, cur_val)
+            dfs(node.right, cur_val)
+
+        dfs(root, max_depth)
+
+        return max_depth
+
 
 #################### Test Case ####################
 class TestMaxDepth(unittest.TestCase):
@@ -66,3 +84,8 @@ class TestMaxDepth(unittest.TestCase):
         for name, tree, expected in self.tests:
             with self.subTest(name=name):
                 self.assertEqual(self.solution.max_depth_v2(tree), expected)
+
+    def test_max_depth_3(self):
+        for name, tree, expected in self.tests:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.max_depth_3(tree), expected)
