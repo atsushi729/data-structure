@@ -81,38 +81,35 @@ class Solution:
 
 #################### Test Case ####################
 class TestDiameterOfBinaryTree(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.sol = Solution()
+        cls.test_cases = [
+            # (テスト名, ツリーのルート, 期待される結果)
+            ("空の木", None, 0),
+            ("単一ノード", TreeNode(1), 0),
+            ("標準例",
+             TreeNode(1, TreeNode(2, TreeNode(4), TreeNode(5)), TreeNode(3)),
+             3),
+            ("左寄りの木",
+             TreeNode(1, TreeNode(2, TreeNode(3))),
+             2),
+            ("右寄りの木",
+             TreeNode(1, None, TreeNode(2, None, TreeNode(3))),
+             2),
+        ]
+
     def test_diameter_of_binary_tree(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.left.left = TreeNode(4)
-        root.left.right = TreeNode(5)
-
-        solution = Solution()
-        result = solution.diameter_of_binary_tree(root)
-
-        self.assertEqual(result, 3)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.diameter_of_binary_tree(root), expected)
 
     def test_diameter_of_binary_tree_v2(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.left.left = TreeNode(4)
-        root.left.right = TreeNode(5)
-
-        solution = Solution()
-        result = solution.diameter_of_binary_tree_v2(root)
-
-        self.assertEqual(result, 3)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.diameter_of_binary_tree_v2(root), expected)
 
     def test_diameter_of_binary_tree_v3(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.left.left = TreeNode(4)
-        root.left.right = TreeNode(5)
-
-        solution = Solution()
-        result = solution.diameter_of_binary_tree_v3(root)
-
-        self.assertEqual(result, 3)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.diameter_of_binary_tree_v2(root), expected)
