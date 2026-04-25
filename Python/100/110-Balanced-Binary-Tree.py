@@ -49,36 +49,27 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def test_isBalanced(self):
-        root = TreeNode(3)
-        root.left = TreeNode(9)
-        root.right = TreeNode(20)
-        root.right.left = TreeNode(15)
-        root.right.right = TreeNode(7)
-        self.assertEqual(Solution().is_balanced(root), True)
+    @classmethod
+    def setUpClass(cls):
+        cls.sol = Solution()
+        cls.test_cases = [
+            # (テスト名, ツリーのルート, 期待される結果)
+            ("空の木", None, True),
+            ("単一ノード", TreeNode(1), True),
+            ("バランスの取れた木",
+             TreeNode(4, TreeNode(2, TreeNode(1), TreeNode(3)), TreeNode(6, TreeNode(5), TreeNode(7))),
+             True),
+            ("バランスの取れていない木",
+             TreeNode(1, None, TreeNode(2, None, TreeNode(3))),
+             False),
+        ]
 
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(2)
-        root.left.left = TreeNode(3)
-        root.left.right = TreeNode(3)
-        root.left.left.left = TreeNode(4)
-        root.left.left.right = TreeNode(4)
-        self.assertEqual(Solution().is_balanced(root), False)
+    def test_solution(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.is_balanced(root), expected)
 
-    def test_isBalancedV2(self):
-        root = TreeNode(3)
-        root.left = TreeNode(9)
-        root.right = TreeNode(20)
-        root.right.left = TreeNode(15)
-        root.right.right = TreeNode(7)
-        self.assertEqual(Solution().is_balanced_v2(root), True)
-
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(2)
-        root.left.left = TreeNode(3)
-        root.left.right = TreeNode(3)
-        root.left.left.left = TreeNode(4)
-        root.left.left.right = TreeNode(4)
-        self.assertEqual(Solution().is_balanced_v2(root), False)
+    def test_solution_v2(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.is_balanced(root), expected)
