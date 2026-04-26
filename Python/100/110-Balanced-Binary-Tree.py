@@ -1,6 +1,6 @@
 # Definition for a binary tree node.
-from typing import Optional
 import unittest
+from typing import Optional
 
 
 #################### Solution ####################
@@ -46,6 +46,26 @@ class Solution:
 
         return 1 + max(self.height(root.left), self.height(root.right))
 
+    def is_balanced_v3(self, root: Optional[TreeNode]) -> bool:
+        def check_height(node):
+            if not node:
+                return 0
+
+            left = check_height(node.left)
+            if left == -1:
+                return -1
+
+            right = check_height(node.right)
+            if right == -1:
+                return -1
+
+            if abs(left - right) > 1:
+                return -1
+
+            return max(left, right) + 1
+
+        return check_height(root) != -1
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -70,6 +90,11 @@ class TestSolution(unittest.TestCase):
                 self.assertEqual(self.sol.is_balanced(root), expected)
 
     def test_solution_v2(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.sol.is_balanced(root), expected)
+
+    def test_solution_v3(self):
         for name, root, expected in self.test_cases:
             with self.subTest(name=name):
                 self.assertEqual(self.sol.is_balanced(root), expected)
