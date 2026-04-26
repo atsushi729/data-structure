@@ -73,3 +73,27 @@ class TestSolution(unittest.TestCase):
         for name, root, expected in self.test_cases:
             with self.subTest(name=name):
                 self.assertEqual(self.sol.is_balanced(root), expected)
+
+
+#################### Not Working ####################
+# This solution only check from root node, so it cannot check from child node.
+class NotSolution:
+    def is_balanced(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+
+        def max_height(node):
+            if not node:
+                return 0
+
+            left = max_height(node.left)
+            right = max_height(node.right)
+            return max(left, right) + 1
+
+        left_height = max_height(root.left)
+        right_height = max_height(root.right)
+        diff = abs(left_height - right_height)
+
+        if diff > 1:
+            return False
+        return True
