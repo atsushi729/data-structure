@@ -49,30 +49,71 @@ class Solution:
         return True
 
 
+#################### Helper ####################
+def build_tree(values):
+    """
+    values: List形式（level-order）
+    Noneはノードなしを表す
+    """
+    if not values:
+        return None
+
+    root = TreeNode(values[0])
+    queue = deque([root])
+    i = 1
+
+    while queue and i < len(values):
+        node = queue.popleft()
+
+        if i < len(values) and values[i] is not None:
+            node.left = TreeNode(values[i])
+            queue.append(node.left)
+        i += 1
+
+        if i < len(values) and values[i] is not None:
+            node.right = TreeNode(values[i])
+            queue.append(node.right)
+        i += 1
+
+    return root
+
+
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            # 空
+            ("空の木", None, None, True),
+
+            # 単一ノード
+            ("単一ノード一致", build_tree([1]), build_tree([1]), True),
+            ("単一ノード不一致", build_tree([1]), build_tree([2]), False),
+
+            # 同一構造・同一値
+            ("完全一致", build_tree([1, 2, 3]), build_tree([1, 2, 3]), True),
+
+            # 同一構造・異なる値
+            ("値が異なる", build_tree([1, 2, 3]), build_tree([1, 2, 4]), False),
+
+            # 構造が異なる
+            ("構造不一致", build_tree([1, 2]), build_tree([1, None, 2]), False),
+
+            # 片方だけ存在
+            ("片方None", build_tree([1]), None, False),
+
+            # 深いツリー
+            ("深い一致", build_tree([1, 2, 3, 4, 5]), build_tree([1, 2, 3, 4, 5]), True),
+            ("深い不一致", build_tree([1, 2, 3, 4, 5]), build_tree([1, 2, 3, 4, 6]), False),
+        ]
+
     def test_is_same_tree(self):
-        p = TreeNode(1, TreeNode(2), TreeNode(3))
-        q = TreeNode(1, TreeNode(2), TreeNode(3))
-        self.assertEqual(Solution().is_same_tree(p, q), True)
-
-        p = TreeNode(1, TreeNode(2))
-        q = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().is_same_tree(p, q), False)
-
-        p = TreeNode(1, TreeNode(2), TreeNode(1))
-        q = TreeNode(1, TreeNode(1), TreeNode(2))
-        self.assertEqual(Solution().is_same_tree(p, q), False)
+        for name, p, q, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.is_same_tree(p, q))
 
     def test_is_same_tree_bfs(self):
-        p = TreeNode(1, TreeNode(2), TreeNode(3))
-        q = TreeNode(1, TreeNode(2), TreeNode(3))
-        self.assertEqual(Solution().is_same_tree_bfs(p, q), True)
-
-        p = TreeNode(1, TreeNode(2))
-        q = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().is_same_tree_bfs(p, q), False)
-
-        p = TreeNode(1, TreeNode(2), TreeNode(1))
-        q = TreeNode(1, TreeNode(1), TreeNode(2))
-        self.assertEqual(Solution().is_same_tree_bfs(p, q), False)
+        for name, p, q, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.is_same_tree_bfs(p, q))
