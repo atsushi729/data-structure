@@ -48,6 +48,15 @@ class Solution:
 
         return True
 
+    def is_same_tree_v2(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        if p.val != q.val:
+            return False
+        return self.is_same_tree_v2(p.left, q.left) and self.is_same_tree_v2(p.right, q.right)
+
 
 #################### Helper ####################
 def build_tree(values):
@@ -117,3 +126,8 @@ class TestSolution(unittest.TestCase):
         for name, p, q, expected in self.test_cases:
             with self.subTest(name=name):
                 self.assertEqual(expected, self.solution.is_same_tree_bfs(p, q))
+
+    def test_is_same_tree_v2(self):
+        for name, p, q, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.is_same_tree_v2(p, q))
