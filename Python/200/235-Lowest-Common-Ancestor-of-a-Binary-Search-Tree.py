@@ -17,7 +17,7 @@ class Solution:
         space complexity: O(h)
         """
         if not root or not p or not q:
-            return None
+            raise ValueError("root and p and q cannot be both None")
 
         if max(p.val, q.val) < root.val:
             return self.lowest_common_ancestor(root.left, p, q)
@@ -32,7 +32,7 @@ class Solution:
         space complexity: O(1)
         """
         if not root or not p or not q:
-            return None
+            raise ValueError("root and p and q must both be non-empty")
 
         while root:
             if p.val < root.val and q.val < root.val:
@@ -42,7 +42,7 @@ class Solution:
             else:
                 return root
 
-        return None
+        raise ValueError("LCA does not exist")
 
 
 #################### Test Case ####################
