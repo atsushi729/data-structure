@@ -42,7 +42,7 @@ class Solution:
             else:
                 return root
 
-        raise ValueError("LCA does not exist")
+        return None
 
     def lowest_common_ancestor_v3(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         if not root or not p or not q:
