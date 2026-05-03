@@ -64,6 +64,22 @@ class Solution:
         # If both are None, this will return None
         return left or right
 
+    def lowest_common_ancestor_v4(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
+        if not root or not p or not q:
+            return None
+
+        node = root
+        lowest, highest = sorted([p.val, q.val])
+
+        while node:
+            if node.val > highest:
+                node = node.left
+            elif node.val < lowest:
+                node = node.right
+            else:
+                return node
+        return None
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -135,6 +151,14 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.lowest_common_ancestor_v3(root, p, q),
+                    expected
+                )
+
+    def test_lowest_common_ancestor_v4(self):
+        for name, root, p, q, expected in self.cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.lowest_common_ancestor_v4(root, p, q),
                     expected
                 )
 
