@@ -41,6 +41,24 @@ class Solution:
 
         return root
 
+    def insert_into_bst_v3(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        if root is None:
+            return TreeNode(val)
+
+        node = root
+
+        while True:
+            if val < node.val:
+                if node.left is None:
+                    node.left = TreeNode(val)
+                    return root
+                node = node.left
+            else:
+                if node.right is None:
+                    node.right = TreeNode(val)
+                    return root
+                node = node.right
+
 
 def tree_to_tuple(root: Optional[TreeNode]):
     if not root:
@@ -101,6 +119,28 @@ class TestSolution(unittest.TestCase):
                 else:
                     root = create_tree(root_val)
                     root = self.solution.insert_int_bst_v2(root, val)
+
+                self.assertEqual(expected_tuple, tree_to_tuple(root))
+
+    def test_insert_into_bst_v3(self):
+        test_cases = [
+            ("Insert in empty tree", None, 5, (5, None, None)),
+            ("Insert in left subtree", 10, 5, (10, (5, None, None), None)),
+            ("Insert in right subtree", 10, 15, (10, None, (15, None, None))),
+            ("Insert in multiple values", 10, [5, 15, 3, 7],
+             (10, (5, (3, None, None), (7, None, None)), (15, None, None))),
+        ]
+        for name, root_val, val, expected_tuple in test_cases:
+            with self.subTest(name=name):
+                # Create a copy of the tree for each test case to avoid side effects
+                if isinstance(val, list):
+                    # If val is a list, we need to insert each value into the tree
+                    root = create_tree(root_val)
+                    for v in val:
+                        root = self.solution.insert_into_bst_v3(root, v)
+                else:
+                    root = create_tree(root_val)
+                    root = self.solution.insert_into_bst_v3(root, val)
 
                 self.assertEqual(expected_tuple, tree_to_tuple(root))
 
