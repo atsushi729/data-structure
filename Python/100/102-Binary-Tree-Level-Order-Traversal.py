@@ -52,22 +52,86 @@ class Solution:
 
 
 class TestLevelOrder(unittest.TestCase):
+
+    def setUp(self):
+        self.solution = Solution()
+
+        self.test_cases = [
+            (
+                "Empty Tree",
+                None,
+                []
+            ),
+            (
+                "Single Node",
+                TreeNode(1),
+                [[1]]
+            ),
+            (
+                "Complete Binary Tree",
+                TreeNode(
+                    3,
+                    TreeNode(9),
+                    TreeNode(20, TreeNode(15), TreeNode(7))
+                ),
+                [[3], [9, 20], [15, 7]]
+            ),
+            (
+                "Right Skewed Tree",
+                TreeNode(
+                    1,
+                    None,
+                    TreeNode(
+                        2,
+                        None,
+                        TreeNode(3)
+                    )
+                ),
+                [[1], [2], [3]]
+            ),
+            (
+                "Left Skewed Tree",
+                TreeNode(
+                    1,
+                    TreeNode(
+                        2,
+                        TreeNode(3)
+                    )
+                ),
+                [[1], [2], [3]]
+            ),
+            (
+                "Sparse Tree",
+                TreeNode(
+                    1,
+                    TreeNode(2, None, TreeNode(4)),
+                    TreeNode(3, TreeNode(5), None)
+                ),
+                [[1], [2, 3], [4, 5]]
+            ),
+            (
+                "Negative Values",
+                TreeNode(
+                    -1,
+                    TreeNode(-2),
+                    TreeNode(3, TreeNode(-4), TreeNode(5))
+                ),
+                [[-1], [-2, 3], [-4, 5]]
+            ),
+        ]
+
     def test_level_order(self):
-        root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        self.assertEqual(Solution().level_order(root), [[3], [9, 20], [15, 7]])
-
-        root = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().level_order(root), [[1], [2]])
-
-        root = None
-        self.assertEqual(Solution().level_order(root), [])
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.level_order(root),
+                    expected
+                )
 
     def test_level_order_v2(self):
-        root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        self.assertEqual(Solution().level_order_v2(root), [[3], [9, 20], [15, 7]])
-
-        root = TreeNode(1, None, TreeNode(2))
-        self.assertEqual(Solution().level_order_v2(root), [[1], [2]])
-
-        root = None
-        self.assertEqual(Solution().level_order_v2(root), [])
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.level_order_v2(root),
+                    expected
+                )
