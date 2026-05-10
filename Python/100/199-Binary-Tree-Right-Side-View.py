@@ -36,12 +36,57 @@ class Solution:
 
 #################### Test Case ####################
 class TestRightSideView(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+        cls.test_cases = [
+            ("Empty Tree", None, []),
+            (
+                "Single Node",
+                TreeNode(1),
+                [1],
+            ),
+            (
+                "Example 1",
+                TreeNode(
+                    1,
+                    TreeNode(2, None, TreeNode(5)),
+                    TreeNode(3, None, TreeNode(4)),
+                ),
+                [1, 3, 4],
+            ),
+            (
+                "Left Skewed Tree",
+                TreeNode(
+                    1,
+                    TreeNode(
+                        2,
+                        TreeNode(3),
+                    ),
+                ),
+                [1, 2, 3],
+            ),
+            (
+                "Right Skewed Tree",
+                TreeNode(
+                    1,
+                    None,
+                    TreeNode(
+                        2,
+                        None,
+                        TreeNode(3),
+                    ),
+                ),
+                [1, 2, 3],
+            ),
+        ]
+
     def test_right_side_view(self):
-        root = TreeNode(1, TreeNode(2, None, TreeNode(5)), TreeNode(3, None, TreeNode(4)))
-        self.assertEqual(Solution().right_side_view(root), [1, 3, 4])
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.right_side_view(root), expected)
 
-        root = TreeNode(1, None, TreeNode(3))
-        self.assertEqual(Solution().right_side_view(root), [1, 3])
 
-        root = None
-        self.assertEqual(Solution().right_side_view(root), [])
+if __name__ == "__main__":
+    unittest.main()
