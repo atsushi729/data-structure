@@ -1,6 +1,7 @@
 import collections
 import unittest
 from typing import Optional, List
+from collections import deque
 
 
 #################### Solution ####################
@@ -30,6 +31,29 @@ class Solution:
 
             if right_node:
                 result.append(right_node.val)
+
+        return result
+
+    def right_side_view_2(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        queue = deque([root])
+        result = []
+
+        while queue:
+            level_size = len(queue)
+
+            for i in range(level_size):
+                node = queue.popleft()
+
+                if i == level_size - 1:
+                    result.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
 
         return result
 
@@ -86,6 +110,11 @@ class TestRightSideView(unittest.TestCase):
         for name, root, expected in self.test_cases:
             with self.subTest(name=name):
                 self.assertEqual(self.solution.right_side_view(root), expected)
+
+    def test_right_side_view_2(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.right_side_view_2(root), expected)
 
 
 if __name__ == "__main__":
