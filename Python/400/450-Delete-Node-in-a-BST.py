@@ -42,6 +42,27 @@ class Solution:
             node = node.left
         return node
 
+    def delete_node_v2(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
+        if root is None:
+            return None
+
+        if key < root.val:
+            root.left = self.delete_node_v2(root.left, key)
+        elif key > root.val:
+            root.right = self.delete_node_v2(root.right, key)
+        else:
+            if root.left is None:
+                return root.right
+            if root.right is None:
+                return root.left
+
+            node = root.right
+            while node.left:
+                node = node.left
+            root.val = node.val
+            root.right = self.delete_node_v2(root.right, node.val)
+        return root
+
 
 def tree_to_list(root):
     """Convert binary tree to level-order list."""
@@ -203,6 +224,12 @@ class TestSolution(unittest.TestCase):
         for name, root, key, expected in self.test_cases:
             with self.subTest(name=name):
                 result = self.solution.delete_node(root, key)
+                self.assertEqual(tree_to_list(result), expected)
+
+    def test_delete_node_v2(self):
+        for name, root, key, expected in self.test_cases:
+            with self.subTest(name=name):
+                result = self.solution.delete_node_v2(root, key)
                 self.assertEqual(tree_to_list(result), expected)
 
 
