@@ -52,6 +52,36 @@ class Solution:
 
         return dfs(len(grid), 0, 0)
 
+    def construct_v2(self, grid: list[list[int]]) -> 'Node':
+        def build_tree(size, row, col):
+            base_value = grid[row][col]
+            is_uniform = True
+
+            for i in range(size):
+                for j in range(size):
+                    if grid[row + i][col + j] != base_value:
+                        is_uniform = False
+                        break
+            if is_uniform:
+                return Node(base_value, True)
+
+            half_size = size // 2
+            top_left = build_tree(half_size, row, col)
+            top_right = build_tree(half_size, row, col + half_size)
+            bottom_left = build_tree(half_size, row + half_size, col)
+            bottom_right = build_tree(half_size, row + half_size, col + half_size)
+
+            return Node(
+                0,
+                False,
+                top_left,
+                top_right,
+                bottom_left,
+                bottom_right
+            )
+
+        return build_tree(len(grid), 0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -140,6 +170,14 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 result = self.solution.construct(grid)
 
+                self.assertTrue(
+                    self.is_same_tree(result, expected)
+                )
+
+    def test_construct_v2(self):
+        for name, grid, expected in self.test_cases:
+            with self.subTest(name=name):
+                result = self.solution.construct_v2(grid)
                 self.assertTrue(
                     self.is_same_tree(result, expected)
                 )
