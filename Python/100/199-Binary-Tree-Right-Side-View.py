@@ -57,6 +57,29 @@ class Solution:
 
         return result
 
+    def right_side_view_3(self, root: Optional[TreeNode]) -> List[int]:
+        if not root:
+            return []
+
+        queue = deque([root])
+        result = []
+
+        while queue:
+            level_size = len(queue)
+
+            for i in range(level_size):
+                node = queue.popleft()
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+                if i == level_size - 1:
+                    result.append(node.val)
+
+        return result
+
 
 #################### Test Case ####################
 class TestRightSideView(unittest.TestCase):
@@ -115,6 +138,11 @@ class TestRightSideView(unittest.TestCase):
         for name, root, expected in self.test_cases:
             with self.subTest(name=name):
                 self.assertEqual(self.solution.right_side_view_2(root), expected)
+
+    def test_right_side_view_3(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(self.solution.right_side_view_3(root), expected)
 
 
 if __name__ == "__main__":
