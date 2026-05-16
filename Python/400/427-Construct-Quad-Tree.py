@@ -82,6 +82,31 @@ class Solution:
 
         return build_tree(len(grid), 0, 0)
 
+    def construct_v3(self, grid: list[list[int]]) -> 'Node':
+        leafNodes = {
+            0: Node(False, True),
+            1: Node(True, True)
+        }
+
+        def dfs(n, r, c):
+            if n == 1:
+                return leafNodes[grid[r][c]]
+
+            n //= 2
+            topLeft = dfs(n, r, c)
+            topRight = dfs(n, r, c + n)
+            bottomLeft = dfs(n, r + n, c)
+            bottomRight = dfs(n, r + n, c + n)
+
+            if (topLeft.isLeaf and topRight.isLeaf and
+                    bottomLeft.isLeaf and bottomRight.isLeaf and
+                    topLeft.val == topRight.val == bottomLeft.val == bottomRight.val):
+                return topLeft
+
+            return Node(False, False, topLeft, topRight, bottomLeft, bottomRight)
+
+        return dfs(len(grid), 0, 0)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -178,6 +203,14 @@ class TestSolution(unittest.TestCase):
         for name, grid, expected in self.test_cases:
             with self.subTest(name=name):
                 result = self.solution.construct_v2(grid)
+                self.assertTrue(
+                    self.is_same_tree(result, expected)
+                )
+
+    def test_construct_v3(self):
+        for name, grid, expected in self.test_cases:
+            with self.subTest(name=name):
+                result = self.solution.construct_v3(grid)
                 self.assertTrue(
                     self.is_same_tree(result, expected)
                 )
