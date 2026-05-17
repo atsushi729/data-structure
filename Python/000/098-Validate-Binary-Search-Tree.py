@@ -44,6 +44,20 @@ class Solution:
 
         return True
 
+    def is_valid_bst3(self, root: Optional[TreeNode]) -> bool:
+        def validate_bst(node, lower, upper):
+            if not node:
+                return True
+            if not lower < node.val < upper:
+                return False
+
+            return (
+                    validate_bst(node.left, lower, node.val)
+                    and validate_bst(node.right, node.val, upper)
+            )
+
+        return validate_bst(root, float("-inf"), float("inf"))
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -66,3 +80,13 @@ class TestSolution(unittest.TestCase):
 
         root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
         self.assertEqual(Solution().is_valid_bst2(root), False)
+
+    def test_is_valid_bst3(self):
+        root = TreeNode(2, TreeNode(1), TreeNode(3))
+        self.assertEqual(Solution().is_valid_bst3(root), True)
+
+        root = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
+        self.assertEqual(Solution().is_valid_bst3(root), False)
+
+        root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
+        self.assertEqual(Solution().is_valid_bst3(root), False)
