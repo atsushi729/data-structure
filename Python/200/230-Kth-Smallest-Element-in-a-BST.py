@@ -45,6 +45,28 @@ class Solution:
 
             node = node.right
 
+    def kth_smallest_2(self, root: Optional[TreeNode], k: int) -> int:
+        count = 0
+        result = None
+
+        def inorder(node):
+            nonlocal count, result
+
+            if not node:
+                return
+
+            inorder(node.left)
+
+            count += 1
+            if count == k:
+                result = node.val
+                return
+
+            inorder(node.right)
+
+        inorder(root)
+        return result
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -61,3 +83,10 @@ class TestSolution(unittest.TestCase):
 
         root = TreeNode(5, TreeNode(3, TreeNode(2, TreeNode(1)), TreeNode(4)), TreeNode(6))
         self.assertEqual(Solution().kth_smallest2(root, 3), 3)
+
+    def test_kth_smallest_2(self):
+        root = TreeNode(3, TreeNode(1, None, TreeNode(2)), TreeNode(4))
+        self.assertEqual(Solution().kth_smallest_2(root, 1), 1)
+
+        root = TreeNode(5, TreeNode(3, TreeNode(2, TreeNode(1)), TreeNode(4)), TreeNode(6))
+        self.assertEqual(Solution().kth_smallest_2(root, 3), 3)
