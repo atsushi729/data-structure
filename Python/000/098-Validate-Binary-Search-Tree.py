@@ -61,32 +61,77 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+        cls.test_cases = [
+            (
+                "Valid BST",
+                TreeNode(2, TreeNode(1), TreeNode(3)),
+                True,
+            ),
+            (
+                "Invalid right subtree",
+                TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6))),
+                False,
+            ),
+            (
+                "Invalid lower bound in right subtree",
+                TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7))),
+                False,
+            ),
+            (
+                "Single node",
+                TreeNode(1),
+                True,
+            ),
+            (
+                "Empty tree",
+                None,
+                True,
+            ),
+            (
+                "Duplicate value on left",
+                TreeNode(2, TreeNode(2), TreeNode(3)),
+                False,
+            ),
+            (
+                "Duplicate value on right",
+                TreeNode(2, TreeNode(1), TreeNode(2)),
+                False,
+            ),
+            (
+                "Valid negative values",
+                TreeNode(0, TreeNode(-3), TreeNode(9)),
+                True,
+            ),
+        ]
+
     def test_is_valid_bst(self):
-        root = TreeNode(2, TreeNode(1), TreeNode(3))
-        self.assertEqual(Solution().is_valid_bst(root), True)
-
-        root = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
-        self.assertEqual(Solution().is_valid_bst(root), False)
-
-        root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
-        self.assertEqual(Solution().is_valid_bst(root), False)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.is_valid_bst(root),
+                    expected,
+                )
 
     def test_is_valid_bst2(self):
-        root = TreeNode(2, TreeNode(1), TreeNode(3))
-        self.assertEqual(Solution().is_valid_bst2(root), True)
-
-        root = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
-        self.assertEqual(Solution().is_valid_bst2(root), False)
-
-        root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
-        self.assertEqual(Solution().is_valid_bst2(root), False)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.is_valid_bst2(root),
+                    expected,
+                )
 
     def test_is_valid_bst3(self):
-        root = TreeNode(2, TreeNode(1), TreeNode(3))
-        self.assertEqual(Solution().is_valid_bst3(root), True)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.is_valid_bst3(root),
+                    expected,
+                )
 
-        root = TreeNode(5, TreeNode(1), TreeNode(4, TreeNode(3), TreeNode(6)))
-        self.assertEqual(Solution().is_valid_bst3(root), False)
 
-        root = TreeNode(5, TreeNode(4), TreeNode(6, TreeNode(3), TreeNode(7)))
-        self.assertEqual(Solution().is_valid_bst3(root), False)
+if __name__ == "__main__":
+    unittest.main()
