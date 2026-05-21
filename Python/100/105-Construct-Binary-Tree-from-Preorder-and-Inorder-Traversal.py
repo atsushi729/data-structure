@@ -54,25 +54,66 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def compareTrees(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+    @classmethod
+    def setUpClass(cls):
+        cls.test_cases = [
+            (
+                "Basic tree",
+                [3, 9, 20, 15, 7],
+                [9, 3, 15, 20, 7],
+                TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7))),
+            ),
+            (
+                "Single node",
+                [1],
+                [1],
+                TreeNode(1),
+            ),
+            (
+                "Left skewed tree",
+                [3, 2, 1],
+                [1, 2, 3],
+                TreeNode(3, TreeNode(2, TreeNode(1))),
+            ),
+            (
+                "Right skewed tree",
+                [1, 2, 3],
+                [1, 2, 3],
+                TreeNode(1, None, TreeNode(2, None, TreeNode(3))),
+            ),
+            (
+                "Empty tree",
+                [],
+                [],
+                None,
+            ),
+        ]
+
+    def compare_trees(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
         if not p and not q:
             return True
+
         if not p or not q:
             return False
-        if p.val != q.val:
-            return False
-        return self.compareTrees(p.left, q.left) and self.compareTrees(p.right, q.right)
 
-    def test_buildTree(self):
-        preorder = [3, 9, 20, 15, 7]
-        inorder = [9, 3, 15, 20, 7]
-        expected_root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        result_root = Solution().build_tree(preorder, inorder)
-        self.assertTrue(self.compareTrees(result_root, expected_root))
+        return (
+                p.val == q.val
+                and self.compare_trees(p.left, q.left)
+                and self.compare_trees(p.right, q.right)
+        )
 
-    def test_buildTree_v2(self):
-        preorder = [3, 9, 20, 15, 7]
-        inorder = [9, 3, 15, 20, 7]
-        expected_root = TreeNode(3, TreeNode(9), TreeNode(20, TreeNode(15), TreeNode(7)))
-        result_root = Solution().build_tree_v2(preorder, inorder)
-        self.assertTrue(self.compareTrees(result_root, expected_root))
+    def test_build_tree(self):
+        for name, preorder, inorder, expected_root in self.test_cases:
+            with self.subTest(name=name):
+                result_root = Solution().build_tree(preorder, inorder)
+                self.assertTrue(self.compare_trees(result_root, expected_root))
+
+    def test_build_tree_v2(self):
+        for name, preorder, inorder, expected_root in self.test_cases:
+            with self.subTest(name=name):
+                result_root = Solution().build_tree_v2(preorder, inorder)
+                self.assertTrue(self.compare_trees(result_root, expected_root))
+
+
+if __name__ == "__main__":
+    unittest.main()
