@@ -51,6 +51,27 @@ class Solution:
 
         return helper(0, len(preorder) - 1)
 
+    def build_tree_v3(self, preorder: List[int], inorder: List[int]) -> Optional[TreeNode]:
+        head = TreeNode(None)
+        cur = head
+        i, j, n = 0, 0, len(preorder)
+
+        while i < n and j < n:
+            cur.right = TreeNode(preorder[i], right=cur.right)
+            cur = cur.right
+            i += 1
+            while i < n and cur.val != inorder[j]:
+                cur.left = TreeNode(preorder[i], right=cur)
+                cur = cur.left
+                i += 1
+            j += 1
+            while cur.right and j < n and cur.right.val == inorder[j]:
+                prev = cur.right
+                cur.right = None
+                cur = prev
+                j += 1
+        return head.right
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -109,6 +130,12 @@ class TestSolution(unittest.TestCase):
                 self.assertTrue(self.compare_trees(result_root, expected_root))
 
     def test_build_tree_v2(self):
+        for name, preorder, inorder, expected_root in self.test_cases:
+            with self.subTest(name=name):
+                result_root = Solution().build_tree_v2(preorder, inorder)
+                self.assertTrue(self.compare_trees(result_root, expected_root))
+
+    def test_build_tree_v3(self):
         for name, preorder, inorder, expected_root in self.test_cases:
             with self.subTest(name=name):
                 result_root = Solution().build_tree_v2(preorder, inorder)
