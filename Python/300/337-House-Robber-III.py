@@ -24,6 +24,24 @@ class Solution:
 
         return max(dfs(root))
 
+    def rob_v2(self, root: Optional[TreeNode]) -> int:
+        cache = {None: 0}
+
+        def dfs(root):
+            if root in cache:
+                return cache[root]
+
+            cache[root] = root.val
+            if root.left:
+                cache[root] += dfs(root.left.left) + dfs(root.left.right)
+            if root.right:
+                cache[root] += dfs(root.right.left) + dfs(root.right.right)
+
+            cache[root] = max(cache[root], dfs(root.left) + dfs(root.right))
+            return cache[root]
+
+        return dfs(root)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -110,7 +128,7 @@ class TestSolution(unittest.TestCase):
                         TreeNode(10),
                     ),
                 ),
-                30,
+                31,
             ),
         ]
 
@@ -119,5 +137,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.rob(tree),
+                    expected,
+                )
+
+    def test_rob_v2(self):
+        for name, tree, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.rob_v2(tree),
                     expected,
                 )
