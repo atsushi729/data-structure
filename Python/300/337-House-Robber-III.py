@@ -42,6 +42,19 @@ class Solution:
 
         return dfs(root)
 
+    def rob_v3(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+
+        res = root.val
+        if root.left:
+            res += self.rob(root.left.left) + self.rob(root.left.right)
+        if root.right:
+            res += self.rob(root.right.left) + self.rob(root.right.right)
+
+        res = max(res, self.rob(root.left) + self.rob(root.right))
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -145,5 +158,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.rob_v2(tree),
+                    expected,
+                )
+
+    def test_rob_v3(self):
+        for name, tree, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.rob_v3(tree),
                     expected,
                 )
