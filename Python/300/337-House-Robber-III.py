@@ -1,5 +1,5 @@
 import unittest
-from typing import Optional
+from typing import Optional, Tuple
 
 
 class TreeNode:
@@ -54,6 +54,21 @@ class Solution:
 
         res = max(res, self.rob(root.left) + self.rob(root.right))
         return res
+
+    def rob_v4(self, root: Optional[TreeNode]) -> int:
+        def dfs(node: Optional[TreeNode]) -> Tuple[int, int]:
+            if node is None:
+                return 0, 0
+
+            left_with, left_without = dfs(node.left)
+            right_with, right_without = dfs(node.right)
+
+            rob_current = node.val + left_without + right_without
+            skip_current = max(left_with, left_without) + max(right_with, right_without)
+
+            return rob_current, skip_current
+
+        return max(dfs(root))
 
 
 class TestSolution(unittest.TestCase):
@@ -166,5 +181,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.rob_v3(tree),
+                    expected,
+                )
+
+    def test_rob_v4(self):
+        for name, tree, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.rob_v4(tree),
                     expected,
                 )
