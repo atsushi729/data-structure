@@ -10,12 +10,12 @@ class TreeNode:
 
 
 class Solution:
-    def removeLeafNodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
+    def remove_leaf_nodes(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
         if not root:
             return None
 
-        root.left = self.removeLeafNodes(root.left, target)
-        root.right = self.removeLeafNodes(root.right, target)
+        root.left = self.remove_leaf_nodes(root.left, target)
+        root.right = self.remove_leaf_nodes(root.right, target)
 
         if not root.left and not root.right and root.val == target:
             return None
@@ -78,5 +78,5 @@ class TestSolution(unittest.TestCase):
 
         for name, root, target, expected in test_cases:
             with self.subTest(name=name):
-                result = self.solution.removeLeafNodes(root, target)
+                result = self.solution.remove_leaf_nodes(root, target)
                 self.assertEqual(self.tree_to_list(result), expected)
