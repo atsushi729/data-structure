@@ -22,6 +22,43 @@ class Solution:
 
         return root
 
+    def remove_leaf_nodes_v2(self, root: Optional[TreeNode], target: int) -> Optional[TreeNode]:
+        if not root:
+            return None
+
+        stack = [root]
+        visit = set()
+        parents = {root: None}
+
+        while stack:
+            node = stack.pop()
+
+            if node in visit:
+                if not node.left and not node.right and node.val == target:
+                    parent = parents[node]
+
+                    if parent is None:
+                        return None
+
+                    if parent.left is node:
+                        parent.left = None
+                    elif parent.right is node:
+                        parent.right = None
+                continue
+
+            visit.add(node)
+            stack.append(node)
+
+            if node.left:
+                parents[node.left] = node
+                stack.append(node.left)
+
+            if node.right:
+                parents[node.right] = node
+                stack.append(node.right)
+
+        return root
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -79,4 +116,49 @@ class TestSolution(unittest.TestCase):
         for name, root, target, expected in test_cases:
             with self.subTest(name=name):
                 result = self.solution.remove_leaf_nodes(root, target)
+                self.assertEqual(self.tree_to_list(result), expected)
+
+    def test_remove_leaf_nodes_v2(self):
+        test_cases = [
+            (
+                "remove target leaf",
+                TreeNode(1, TreeNode(2), TreeNode(3)),
+                2,
+                [1, None, [3, None, None]]
+            ),
+            (
+                "remove multiple target leaves",
+                TreeNode(1, TreeNode(2), TreeNode(2)),
+                2,
+                [1, None, None]
+            ),
+            (
+                "remove newly created leaf",
+                TreeNode(1, TreeNode(2, TreeNode(2), None), TreeNode(3)),
+                2,
+                [1, None, [3, None, None]]
+            ),
+            (
+                "root removed",
+                TreeNode(1),
+                1,
+                None
+            ),
+            (
+                "no removal",
+                TreeNode(1, TreeNode(2), TreeNode(3)),
+                4,
+                [1, [2, None, None], [3, None, None]]
+            ),
+            (
+                "empty tree",
+                None,
+                1,
+                None
+            ),
+        ]
+
+        for name, root, target, expected in test_cases:
+            with self.subTest(name=name):
+                result = self.solution.remove_leaf_nodes_v2(root, target)
                 self.assertEqual(self.tree_to_list(result), expected)
