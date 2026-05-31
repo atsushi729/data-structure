@@ -60,26 +60,58 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+
+        # Case 1
+        tree1 = TreeNode(
+            1,
+            TreeNode(2),
+            TreeNode(3)
+        )
+
+        # Case 2
+        tree2 = TreeNode(
+            -10,
+            TreeNode(9),
+            TreeNode(
+                20,
+                TreeNode(15),
+                TreeNode(7)
+            )
+        )
+
+        # Case 3: single node
+        tree3 = TreeNode(5)
+
+        # Case 4: all negative
+        tree4 = TreeNode(
+            -3,
+            TreeNode(-2),
+            TreeNode(-5)
+        )
+
+        cls.test_cases = [
+            ("Simple tree", tree1, 6),
+            ("LeetCode example", tree2, 42),
+            ("Single node", tree3, 5),
+            ("All negative", tree4, -2),
+        ]
+
     def test_max_path_sum(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        self.assertEqual(Solution().max_path_sum(root), 6)
-        root = TreeNode(-10)
-        root.left = TreeNode(9)
-        root.right = TreeNode(20)
-        root.right.left = TreeNode(15)
-        root.right.right = TreeNode(7)
-        self.assertEqual(Solution().max_path_sum(root), 42)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.max_path_sum(root),
+                    expected
+                )
 
     def test_max_path_sum_v2(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        self.assertEqual(Solution().max_path_sum_v2(root), 6)
-        root = TreeNode(-10)
-        root.left = TreeNode(9)
-        root.right = TreeNode(20)
-        root.right.left = TreeNode(15)
-        root.right.right = TreeNode(7)
-        self.assertEqual(Solution().max_path_sum_v2(root), 42)
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.max_path_sum_v2(root),
+                    expected
+                )
