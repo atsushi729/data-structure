@@ -29,24 +29,24 @@ class Solution:
         return res
 
     def max_path_sum_v2(self, root: Optional[TreeNode]) -> int:
-        res = float("-inf")
+        max_sum = root.val
 
-        def dfs(node):
-            nonlocal res
+        def get_max_sum(node):
+            nonlocal max_sum
             if not node:
                 return 0
             # 左右の子ノードからの最大一方向パス和を計算（負になる場合は0を返す）
-            left = max(dfs(node.left), 0)
-            right = max(dfs(node.right), 0)
+            left = max(get_max_sum(node.left), 0)
+            right = max(get_max_sum(node.right), 0)
 
-            # このノードを通るパスの最大値でresを更新
-            res = max(res, node.val + left + right)
+            # このノードを通るパスの最大値でmax_sumを更新
+            max_sum = max(max_sum, node.val + left + right)
 
             # 親ノードに返すのは、一方向最大パス和
             return node.val + max(left, right)
 
-        dfs(root)
-        return res
+        get_max_sum(root)
+        return max_sum
 
     def get_max(self, root: Optional[TreeNode]) -> int:
         if not root:
