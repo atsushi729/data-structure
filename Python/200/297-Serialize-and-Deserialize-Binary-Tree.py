@@ -1,10 +1,9 @@
 import unittest
-from typing import Optional
 from collections import deque
 
 
 #################### Solution ####################
-class TreeNode(object):
+class TreeNode:
     def __init__(self, x):
         self.val = x
         self.left = None
@@ -13,10 +12,6 @@ class TreeNode(object):
 
 class Codec:
     def serialize(self, root):
-        """Encodes a tree to a single string.
-        :type root: TreeNode
-        :rtype: str
-        """
         res = []
 
         def dfs(node):
@@ -32,10 +27,6 @@ class Codec:
         return ",".join(res)
 
     def deserialize(self, data):
-        """Decodes your encoded data to tree.
-        :type data: str
-        :rtype: TreeNode
-        """
         vals = data.split(",")
         self.i = 0
 
@@ -46,151 +37,228 @@ class Codec:
 
             node = TreeNode(int(vals[self.i]))
             self.i += 1
+
             node.left = dfs()
             node.right = dfs()
+
             return node
 
         return dfs()
 
     def serialize_v2(self, root):
-        """Encodes a tree to a single string.
-        :type root: TreeNode
-        :rtype: str
-        """
-        serialized_values = []
+        values = []
 
-        def preorder_traversal(node: Optional[TreeNode]):
+        def preorder(node):
             if node is None:
-                serialized_values.append("N")
+                values.append("N")
                 return
-            serialized_values.append(str(node.val))
-            preorder_traversal(node.left)
-            preorder_traversal(node.right)
 
-        preorder_traversal(root)
-        return ",".join(serialized_values)
+            values.append(str(node.val))
+            preorder(node.left)
+            preorder(node.right)
+
+        preorder(root)
+
+        return ",".join(values)
 
     def deserialize_v2(self, data):
-        """Decodes your encoded data to tree.
-        :type data: str
-        :rtype: TreeNode
-        """
         values = iter(data.split(","))
 
-        def build_tree() -> Optional[TreeNode]:
-            try:
-                val = next(values)
-            except StopIteration:
+        def build():
+            value = next(values)
+
+            if value == "N":
                 return None
 
-            if val == "N":
-                return None
-            node = TreeNode(int(val))
-            node.left = build_tree()
-            node.right = build_tree()
+            node = TreeNode(int(value))
+            node.left = build()
+            node.right = build()
+
             return node
 
-        return build_tree()
+        return build()
 
-    def serialize_v3(self, root: Optional[TreeNode]) -> str:
-        """Encodes a tree to a single string.
-        :type root: TreeNode
-        :rtype: str
-        """
+    def serialize_v3(self, root):
         if not root:
             return "N"
-        res = []
+
+        result = []
         queue = deque([root])
+
         while queue:
             node = queue.popleft()
-            if not node:
-                res.append("N")
-            else:
-                res.append(str(node.val))
+
+            if node:
+                result.append(str(node.val))
                 queue.append(node.left)
                 queue.append(node.right)
-        return ",".join(res)
+            else:
+                result.append("N")
 
-    def deserialize_v3(self, data: str) -> Optional[TreeNode]:
-        """Decodes your encoded data to tree.
-        :type data: str
-        :rtype: TreeNode
-        """
+        return ",".join(result)
+
+    def deserialize_v3(self, data):
         if data == "N":
             return None
+
         values = data.split(",")
+
         root = TreeNode(int(values[0]))
         queue = deque([root])
+
         i = 1
+
         while queue:
             node = queue.popleft()
+
             if values[i] != "N":
                 node.left = TreeNode(int(values[i]))
                 queue.append(node.left)
+
             i += 1
+
             if values[i] != "N":
                 node.right = TreeNode(int(values[i]))
                 queue.append(node.right)
+
             i += 1
 
         return root
 
 
-#################### Test Case ####################
+#################### Test ####################
+
 class TestCodec(unittest.TestCase):
-    def test_serialize(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.right.left = TreeNode(4)
-        root.right.right = TreeNode(5)
-        codec = Codec()
-        self.assertEqual(codec.serialize(root), "1,2,N,N,3,4,N,N,5,N,N")
 
-    def test_deserialize(self):
-        data = "1,2,N,N,3,4,N,N,5,N,N"
-        codec = Codec()
-        root = codec.deserialize(data)
-        self.assertEqual(root.val, 1)
-        self.assertEqual(root.left.val, 2)
-        self.assertEqual(root.right.val, 3)
-        self.assertEqual(root.right.left.val, 4)
-        self.assertEqual(root.right.right.val, 5)
+    @classmethod
+    def build_tree(cls, values):
+        if not values:
+            return None
 
-    def test_serialize_v2(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.right.left = TreeNode(4)
-        root.right.right = TreeNode(5)
-        codec = Codec()
-        self.assertEqual(codec.serialize_v2(root), "1,2,N,N,3,4,N,N,5,N,N")
+        root = TreeNode(values[0])
 
-    def test_deserialize_v2(self):
-        data = "1,2,N,N,3,4,N,N,5,N,N"
-        codec = Codec()
-        root = codec.deserialize_v2(data)
-        self.assertEqual(root.val, 1)
-        self.assertEqual(root.left.val, 2)
-        self.assertEqual(root.right.val, 3)
-        self.assertEqual(root.right.left.val, 4)
-        self.assertEqual(root.right.right.val, 5)
+        queue = deque([root])
+        index = 1
 
-    def test_serialize_v3(self):
-        root = TreeNode(1)
-        root.left = TreeNode(2)
-        root.right = TreeNode(3)
-        root.right.left = TreeNode(4)
-        root.right.right = TreeNode(5)
-        codec = Codec()
-        self.assertEqual(codec.serialize_v3(root), "1,2,3,N,N,4,5,N,N,N,N")
+        while queue and index < len(values):
+            node = queue.popleft()
 
-    def test_deserialize_v3(self):
-        data = "1,2,3,N,N,4,5,N,N,N,N,N"
-        codec = Codec()
-        root = codec.deserialize_v3(data)
-        self.assertEqual(root.val, 1)
-        self.assertEqual(root.left.val, 2)
-        self.assertEqual(root.right.val, 3)
-        self.assertEqual(root.right.left.val, 4)
-        self.assertEqual(root.right.right.val, 5)
+            if index < len(values) and values[index] is not None:
+                node.left = TreeNode(values[index])
+                queue.append(node.left)
+
+            index += 1
+
+            if index < len(values) and values[index] is not None:
+                node.right = TreeNode(values[index])
+                queue.append(node.right)
+
+            index += 1
+
+        return root
+
+    @classmethod
+    def setUpClass(cls):
+        cls.codec = Codec()
+
+        cls.test_cases = [
+            {
+                "name": "empty tree",
+                "root": None,
+            },
+            {
+                "name": "single node",
+                "root": TreeNode(1),
+            },
+            {
+                "name": "balanced tree",
+                "root": cls.build_tree(
+                    [1, 2, 3, 4, 5]
+                ),
+            },
+            {
+                "name": "left skewed",
+                "root": cls.build_tree(
+                    [1, 2, None, 3, None, 4]
+                ),
+            },
+            {
+                "name": "right skewed",
+                "root": cls.build_tree(
+                    [1, None, 2, None, 3, None, 4]
+                ),
+            },
+            {
+                "name": "negative values",
+                "root": cls.build_tree(
+                    [-1, -2, -3]
+                ),
+            },
+            {
+                "name": "duplicate values",
+                "root": cls.build_tree(
+                    [1, 1, 1, 1, 1]
+                ),
+            },
+            {
+                "name": "large values",
+                "root": cls.build_tree(
+                    [1000000, 999999, 888888]
+                ),
+            },
+            {
+                "name": "mixed tree",
+                "root": cls.build_tree(
+                    [10, 5, 15, None, 8, 12, 20]
+                ),
+            },
+        ]
+
+    def test_serialize_deserialize(self):
+        """
+        serialize -> deserialize -> serialize
+        """
+
+        for case in self.test_cases:
+            with self.subTest(case=case["name"]):
+                serialized = self.codec.serialize(case["root"])
+                restored = self.codec.deserialize(serialized)
+
+                self.assertEqual(
+                    serialized,
+                    self.codec.serialize(restored)
+                )
+
+    def test_serialize_deserialize_v2(self):
+        """
+        serialize_v2 -> deserialize_v2 -> serialize_v2
+        """
+
+        for case in self.test_cases:
+            with self.subTest(case=case["name"]):
+                serialized = self.codec.serialize_v2(case["root"])
+                restored = self.codec.deserialize_v2(serialized)
+
+                self.assertEqual(
+                    serialized,
+                    self.codec.serialize_v2(restored)
+                )
+
+    def test_serialize_deserialize_v3(self):
+        """
+        serialize_v3 -> deserialize_v3 -> serialize_v3
+        """
+
+        for case in self.test_cases:
+            with self.subTest(case=case["name"]):
+                serialized = self.codec.serialize_v3(case["root"])
+                restored = self.codec.deserialize_v3(serialized)
+
+                self.assertEqual(
+                    serialized,
+                    self.codec.serialize_v3(restored)
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()
