@@ -48,12 +48,28 @@ class Solution:
         get_max_sum(root)
         return max_sum
 
-    def get_max(self, root: Optional[TreeNode]) -> int:
+    def max_path_sum_v3(self, root: Optional[TreeNode]) -> int:
+        res = -float('inf')
+
+        def dfs(root):
+            nonlocal res
+            if not root:
+                return
+            left = self.getMax(root.left)
+            right = self.getMax(root.right)
+            res = max(res, root.val + left + right)
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        return res
+
+    def getMax(self, root: Optional[TreeNode]) -> int:
         if not root:
             return 0
 
-        left = self.get_max(root.left)
-        right = self.get_max(root.right)
+        left = self.getMax(root.left)
+        right = self.getMax(root.right)
         path = root.val + max(left, right)
         return max(0, path)
 
@@ -113,5 +129,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.max_path_sum_v2(root),
+                    expected
+                )
+
+    def test_max_path_sum_v3(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.max_path_sum_v3(root),
                     expected
                 )
