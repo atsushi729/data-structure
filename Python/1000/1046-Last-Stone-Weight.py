@@ -24,6 +24,19 @@ class Solution:
 
         return -stones[0] if stones else 0
 
+    def last_stone_weight_v3(self, stones: List[int]) -> int:
+        stones = [-s for s in stones]
+        heapq.heapify(stones)
+
+        while len(stones) > 1:
+            first = heapq.heappop(stones)
+            second = heapq.heappop(stones)
+
+            if second > first:
+                heapq.heappush(stones, first - second)
+
+        return abs(stones[0]) if stones else 0
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -51,6 +64,14 @@ class TestSolution(unittest.TestCase):
             with self.subTest(stones=stones, expected=expected):
                 self.assertEqual(
                     self.solution.last_stone_weight_v2(stones[:]),
+                    expected
+                )
+
+    def test_last_stone_weight_v3(self):
+        for stones, expected in self.test_cases:
+            with self.subTest(stones=stones, expected=expected):
+                self.assertEqual(
+                    self.solution.last_stone_weight_v3(stones[:]),
                     expected
                 )
 
