@@ -32,7 +32,7 @@ class Solution:
             first = heapq.heappop(stones)
             second = heapq.heappop(stones)
 
-            if second > first:
+            if second != first:
                 heapq.heappush(stones, first - second)
 
         return abs(stones[0]) if stones else 0
