@@ -49,22 +49,34 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            ("base case", [3, 2, 1, 5, 6, 4], 2, 5),
+            ("with duplicates", [3, 2, 3, 1, 2, 4, 5, 5, 6], 4, 4),
+            ("k is 1", [3, 2, 1, 5, 6, 4], 1, 6),
+            ("k is len(nums)", [3, 2, 1, 5, 6, 4], 6, 1),
+            ("single element", [1], 1, 1),
+            ("negative numbers", [-1, -2, -3, -4], 2, -2),
+        ]
+
     def test_find_kth_largest(self):
-        solution = Solution()
-        self.assertEqual(solution.find_kth_largest([3, 2, 1, 5, 6, 4], 2), 5)
-        self.assertEqual(solution.find_kth_largest([3, 2, 3, 1, 2, 4, 5, 5, 6], 4), 4)
+        for name, nums, k, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.find_kth_largest(nums[:], k))
 
     def test_find_kth_largest_v2(self):
-        solution = Solution()
-        self.assertEqual(solution.find_kth_largest_v2([3, 2, 1, 5, 6, 4], 2), 5)
-        self.assertEqual(solution.find_kth_largest_v2([3, 2, 3, 1, 2, 4, 5, 5, 6], 4), 4)
+        for name, nums, k, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.find_kth_largest_v2(nums[:], k))
 
     def test_find_kth_largest_v3(self):
-        solution = Solution()
-        self.assertEqual(solution.find_kth_largest_v3([3, 2, 1, 5, 6, 4], 2), 5)
-        self.assertEqual(solution.find_kth_largest_v3([3, 2, 3, 1, 2, 4, 5, 5, 6], 4), 4)
+        for name, nums, k, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.find_kth_largest_v3(nums[:], k))
 
     def test_find_kth_largest_v4(self):
-        solution = Solution()
-        self.assertEqual(solution.find_kth_largest_v4([3, 2, 3, 1, 2, 4, 5, 5, 6], 2), 5)
-        self.assertEqual(solution.find_kth_largest_v4([3, 2, 3, 1, 2, 4, 5, 5, 6], 4), 4)
+        for name, nums, k, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(expected, self.solution.find_kth_largest_v4(nums[:], k))
