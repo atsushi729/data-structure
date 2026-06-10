@@ -55,11 +55,124 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            # name, tasks, n, expected
+
+            # Basic example from the problem statement
+            (
+                "Base case",
+                ["A", "A", "A", "B", "B", "B"],
+                2,
+                8,
+            ),
+
+            # No cooldown period
+            (
+                "No cooldown",
+                ["A", "A", "A", "B", "B", "B"],
+                0,
+                6,
+            ),
+
+            # Idle slots are required
+            (
+                "Idle required",
+                ["A", "A", "A", "B", "B", "B"],
+                3,
+                10,
+            ),
+
+            # Only one task
+            (
+                "Single task",
+                ["A"],
+                2,
+                1,
+            ),
+
+            # All tasks are unique
+            (
+                "All unique tasks",
+                ["A", "B", "C", "D"],
+                3,
+                4,
+            ),
+
+            # Only one type of task
+            (
+                "Single task type",
+                ["A", "A", "A", "A"],
+                2,
+                10,
+            ),
+
+            # Multiple tasks share the maximum frequency
+            (
+                "Two max frequency tasks",
+                ["A", "A", "A", "B", "B", "B", "C", "C"],
+                2,
+                8,
+            ),
+
+            # Three tasks share the maximum frequency
+            (
+                "Three max frequency tasks",
+                ["A", "A", "A", "B", "B", "B", "C", "C", "C"],
+                2,
+                9,
+            ),
+
+            # Enough tasks exist to fill all idle slots
+            (
+                "No idle slots needed",
+                ["A", "A", "A", "B", "B", "B", "C", "C", "D", "D"],
+                2,
+                10,
+            ),
+
+            # Large cooldown period
+            (
+                "Large cooldown",
+                ["A", "A", "B"],
+                50,
+                52,
+            ),
+
+            # Official LeetCode example
+            (
+                "LeetCode example",
+                [
+                    "A", "A", "A", "A", "A", "A",
+                    "B", "C", "D", "E", "F", "G"
+                ],
+                2,
+                16,
+            ),
+        ]
+
     def test_least_interval(self):
-        self.assertEqual(Solution().least_interval(["A", "A", "A", "B", "B", "B"], 2), 8)
+        for name, tasks, n, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.least_interval(tasks, n),
+                    expected,
+                )
 
     def test_least_interval_v2(self):
-        self.assertEqual(Solution().least_interval_v2(["A", "A", "A", "B", "B", "B"], 2), 8)
+        for name, tasks, n, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.least_interval_v2(tasks, n),
+                    expected,
+                )
 
     def test_least_interval_v3(self):
-        self.assertEqual(Solution().least_interval_v3(["A", "A", "A", "B", "B", "B"], 2), 8)
+        for name, tasks, n, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.least_interval_v3(tasks, n),
+                    expected,
+                )
