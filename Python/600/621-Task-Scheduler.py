@@ -52,6 +52,33 @@ class Solution:
             idle -= min(maxf - 1, count[i])
         return max(0, idle) + len(tasks)
 
+    def least_interval_v4(self, tasks: List[str], n: int) -> int:
+        task_counts = Counter(tasks)
+
+        max_heap = [-count for count in task_counts.values()]
+        heapq.heapify(max_heap)
+
+        current_time = 0
+        cooldown_queue = deque()  # (remaining_count, available_time)
+
+        while max_heap or cooldown_queue:
+            current_time += 1
+
+            if max_heap:
+                remaining_count = heapq.heappop(max_heap) + 1
+
+                if remaining_count < 0:
+                    cooldown_queue.append((remaining_count, current_time + n))
+
+            elif cooldown_queue:
+                current_time = cooldown_queue[0][1]
+
+            while cooldown_queue and cooldown_queue[0][1] <= current_time:
+                remaining_count, _ = cooldown_queue.popleft()
+                heapq.heappush(max_heap, remaining_count)
+
+        return current_time
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -174,5 +201,13 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.least_interval_v3(tasks, n),
+                    expected,
+                )
+
+    def test_least_interval_v4(self):
+        for name, tasks, n, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.least_interval_v4(tasks, n),
                     expected,
                 )
