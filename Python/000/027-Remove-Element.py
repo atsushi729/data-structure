@@ -12,6 +12,16 @@ class Solution:
 
         return write_index
 
+    def remove_element_v2(self, nums: list[int], val: int) -> int:
+        current_index = len(nums) - 1
+
+        while current_index >= 0:
+            if nums[current_index] == val:
+                nums.pop(current_index)
+            current_index -= 1
+
+        return len(nums)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -28,8 +38,21 @@ class TestSolution(unittest.TestCase):
     def test_remove_element(self):
         for nums, val, expected in self.test_cases:
             with self.subTest(nums=nums, val=val):
-                length = self.solution.remove_element(nums, val)
-                self.assertEqual(nums[:length], expected)
+                nums_copy = nums.copy()
+
+                length = self.solution.remove_element(nums_copy, val)
+
+                self.assertEqual(nums_copy[:length], expected)
+                self.assertEqual(length, len(expected))
+
+    def test_remove_element_v2(self):
+        for nums, val, expected in self.test_cases:
+            with self.subTest(nums=nums, val=val):
+                nums_copy = nums.copy()
+
+                length = self.solution.remove_element_v2(nums_copy, val)
+
+                self.assertEqual(nums_copy[:length], expected)
                 self.assertEqual(length, len(expected))
 
 
