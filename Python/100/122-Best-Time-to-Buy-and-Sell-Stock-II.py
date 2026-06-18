@@ -20,7 +20,6 @@ class Solution:
         Time complexity: O(n^2)
         Space complexity: O(n)
         """
-
         def rec(i, bought):
             if i == len(prices):
                 return 0
@@ -88,6 +87,21 @@ class Solution:
             next_sell = cur_sell
         return cur_buy
 
+    def max_profit_v6(self, prices: List[int]) -> int:
+        """"
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        l, r = 0, 0
+        total = 0
+
+        while r < len(prices):
+            if prices[r] > prices[l]:
+                total += prices[r] - prices[l]
+            l = r
+            r += 1
+        return total
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -129,3 +143,12 @@ class TestSolution(unittest.TestCase):
         for prices, expected in self.test_cases:
             with self.subTest(prices=prices, expected=expected):
                 self.assertEqual(self.s.max_profit_v5(prices), expected)
+
+    def test_max_profit_v6(self):
+        for prices, expected in self.test_cases:
+            with self.subTest(prices=prices, expected=expected):
+                self.assertEqual(self.s.max_profit_v6(prices), expected)
+
+
+if __name__ == '__main__':
+    unittest.main()
