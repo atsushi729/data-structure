@@ -40,10 +40,55 @@ class RandomizedSet:
         return random.choice(self.hash_list)
 
 
+class RandomizedSetV2:
+
+    def __init__(self):
+        self.values = []  # list of values [1, 2, 3, 4]
+        self.indices = {}  # value: index  {1:0, 2:1, 3:2, 4:3}
+
+    def insert(self, val: int) -> bool:
+        if val in self.indices:
+            return False
+
+        self.indices[val] = len(self.values)
+        self.values.append(val)
+        return True
+
+    def remove(self, val: int) -> bool:
+        if val not in self.indices:
+            return False
+
+        remove_index = self.indices[val]
+        last_value = self.values[-1]
+
+        self.values[remove_index] = last_value
+        self.indices[last_value] = remove_index
+
+        self.values.pop()
+        del self.indices[val]
+
+        return True
+
+    def getRandom(self) -> int:
+        return random.choice(self.values)
+
+
 #################### Test Case ####################
 class TestRandomizedSet(unittest.TestCase):
     def test_randomized_set(self):
         randomized_set = RandomizedSet()
+        self.assertEqual(randomized_set.insert(1), True)
+        self.assertEqual(randomized_set.remove(2), False)
+        self.assertEqual(randomized_set.insert(2), True)
+        self.assertIn(randomized_set.getRandom(), [1, 2])
+        self.assertEqual(randomized_set.remove(1), True)
+        self.assertEqual(randomized_set.insert(2), False)
+        self.assertEqual(randomized_set.getRandom(), 2)
+
+
+class TestRandomizedSetV2(unittest.TestCase):
+    def test_randomized_set(self):
+        randomized_set = RandomizedSetV2()
         self.assertEqual(randomized_set.insert(1), True)
         self.assertEqual(randomized_set.remove(2), False)
         self.assertEqual(randomized_set.insert(2), True)
