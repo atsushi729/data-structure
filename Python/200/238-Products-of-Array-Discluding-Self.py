@@ -55,6 +55,22 @@ def model_product_except_self(nums: list[int]) -> list[int]:
     return answer
 
 
+def product_except_self_v3(nums: list[int]) -> list[int]:
+    n = len(nums)
+    res = [1] * n
+
+    prefix = 1
+    for i in range(n):
+        res[i] *= prefix
+        prefix *= nums[i]
+
+    suffix = 1
+    for i in range(n - 1, -1, -1):
+        res[i] *= suffix
+        suffix *= nums[i]
+    return res
+
+
 ################### Test case ####################
 class TestProductExceptSelf(unittest.TestCase):
     def test_product_except_self(self):
@@ -62,3 +78,6 @@ class TestProductExceptSelf(unittest.TestCase):
 
     def test_product_except_self_v2(self):
         self.assertEqual(product_except_self_v2([1, 2, 3, 4]), [24, 12, 8, 6])
+
+    def test_product_except_self_v3(self):
+        self.assertEqual(product_except_self_v3([1, 2, 3, 4]), [24, 12, 8, 6])
