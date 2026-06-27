@@ -39,16 +39,21 @@ class Solution:
 
 ###################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.test_cases = [
+            ("AAB", 2, "ABA"),
+            ("AAAAB", 3, "ABAAA"),
+            ("AABAAB", 4, "AABBAA"),
+        ]
+
     def test_convert(self):
-        solution = Solution()
-        self.assertEqual(solution.convert("PAYPALISHIRING", 3), "PAHNAPLSIIGYIR")
-        self.assertEqual(solution.convert("PAYPALISHIRING", 4), "PINALSIGYAHRPI")
-        self.assertEqual(solution.convert("A", 1), "A")
+        for s, numRows, expectet in self.test_cases:
+            with self.subTest(s=s, numRows=numRows):
+                self.assertEqual(self.solution.convert(s, numRows), expectet)
 
     def test_convert_v2(self):
-        solution = Solution()
-        self.assertEqual(solution.convert_v2("PAYPALISHIRING", 3), "PAHNAPLSIIGYIR")
-        self.assertEqual(solution.convert_v2("PAYPALISHIRING", 4), "PINALSIGYAHRPI")
-        self.assertEqual(solution.convert_v2("A", 1), "A")
-        self.assertEqual(solution.convert_v2("A", 3), "A")
-        self.assertEqual(solution.convert_v2("AA", 3), "AA")
+        for s, numRows, expectet in self.test_cases:
+            with self.subTest(s=s, numRows=numRows):
+                self.assertEqual(self.solution.convert_v2(s, numRows), expectet)
