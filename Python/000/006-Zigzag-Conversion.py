@@ -36,6 +36,21 @@ class Solution:
 
         return "".join(rows)
 
+    def convert_v3(self, s: str, numRows: int) -> str:
+        if numRows == 1:
+            return s
+
+        res = []
+        for r in range(numRows):
+            increment = 2 * (numRows - 1)
+
+            for i in range(r, len(s), increment):
+                res.append(s[i])
+                if 0 < r < numRows - 1 and i + increment - 2 * r < len(s):
+                    res.append(s[i + increment - 2 * r])
+
+        return "".join(res)
+
 
 ###################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -57,3 +72,8 @@ class TestSolution(unittest.TestCase):
         for s, numRows, expectet in self.test_cases:
             with self.subTest(s=s, numRows=numRows):
                 self.assertEqual(self.solution.convert_v2(s, numRows), expectet)
+
+    def test_convert_v3(self):
+        for s, numRows, expectet in self.test_cases:
+            with self.subTest(s=s, numRows=numRows):
+                self.assertEqual(self.solution.convert_v3(s, numRows), expectet)
