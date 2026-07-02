@@ -17,6 +17,12 @@ class Solution:
                     return i
         return -1
 
+    def str_str2(self, haystack: str, needle: str) -> int:
+        if not needle in haystack:
+            return -1
+        else:
+            return haystack.index(needle)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -31,3 +37,8 @@ class TestSolution(unittest.TestCase):
         for haystack, needle, expected in self.test_cases:
             with self.subTest(haystack=haystack, needle=needle):
                 self.assertEqual(self.solution.str_str(haystack, needle), expected)
+
+    def test_convert(self):
+        for haystack, needle, expected in self.test_cases:
+            with self.subTest(haystack=haystack, needle=needle):
+                self.assertEqual(self.solution.str_str2(haystack, needle), expected)
