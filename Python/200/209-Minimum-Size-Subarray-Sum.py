@@ -63,6 +63,22 @@ class Solution:
                 res = min(res, l - i + 1)
         return res % (n + 1)
 
+    def min_sub_array_len_v4(self, target: int, nums: List[int]) -> int:
+        left = 0
+        window_sum = 0
+        min_length = float("inf")
+
+        for right in range(len(nums)):
+            window_sum += nums[right]
+
+            while window_sum >= target:
+                current_length = right - left + 1
+                min_length = min(min_length, current_length)
+                window_sum -= nums[left]
+                left += 1
+
+        return 0 if min_length == float("inf") else min_length
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -89,3 +105,8 @@ class TestSolution(unittest.TestCase):
         for target, nums, expected in self.test_cases:
             with self.subTest(target=target, nums=nums, expected=expected):
                 self.assertEqual(self.s.min_sub_array_len_v3(target, nums), expected)
+
+    def test_minSubArrayLen_v4(self):
+        for target, nums, expected in self.test_cases:
+            with self.subTest(target=target, nums=nums, expected=expected):
+                self.assertEqual(self.s.min_sub_array_len_v4(target, nums), expected)
