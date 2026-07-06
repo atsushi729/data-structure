@@ -22,6 +22,17 @@ class Solution:
 
         return len(nums)
 
+    def remove_element_v3(self, nums: list[int], val: int) -> int:
+        i = 0
+        n = len(nums)
+        while i < n:
+            if nums[i] == val:
+                n -= 1
+                nums[i] = nums[n]
+            else:
+                i += 1
+        return n
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -39,7 +50,6 @@ class TestSolution(unittest.TestCase):
         for nums, val, expected in self.test_cases:
             with self.subTest(nums=nums, val=val):
                 nums_copy = nums.copy()
-
                 length = self.solution.remove_element(nums_copy, val)
 
                 self.assertEqual(nums_copy[:length], expected)
@@ -49,11 +59,20 @@ class TestSolution(unittest.TestCase):
         for nums, val, expected in self.test_cases:
             with self.subTest(nums=nums, val=val):
                 nums_copy = nums.copy()
-
                 length = self.solution.remove_element_v2(nums_copy, val)
 
                 self.assertEqual(nums_copy[:length], expected)
                 self.assertEqual(length, len(expected))
+
+    def test_remove_element_v3(self):
+        for nums, val, expected in self.test_cases:
+            with self.subTest(nums=nums, val=val):
+                nums_copy = nums.copy()
+                length = self.solution.remove_element_v3(nums_copy, val)
+
+                self.assertEqual(length, len(expected))
+                self.assertCountEqual(nums_copy[:length], expected)
+                self.assertTrue(all(num != val for num in nums_copy[:length]))
 
 
 if __name__ == "__main__":
