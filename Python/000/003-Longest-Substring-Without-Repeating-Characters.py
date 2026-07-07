@@ -62,6 +62,20 @@ class Solution:
             res = max(res, r - l + 1)
         return res
 
+    def length_of_longest_substring_v5(self, s: str) -> int:
+        if not s:
+            return 0
+
+        l = 0
+        max_len = 0
+        list_s = list(s)
+
+        for i, char in enumerate(list_s):
+            while char in list_s[l:i]:
+                l += 1
+            max_len = max(max_len, len(list_s[l:i]))
+        return max_len + 1
+
 
 #################### Test Case ####################
 class TestLengthOfLongestSubstring(unittest.TestCase):
@@ -100,4 +114,10 @@ class TestLengthOfLongestSubstring(unittest.TestCase):
         for s, expected in self.test_cases:
             with self.subTest(s=s):
                 result = self.solution.length_of_longest_substring_v4(s)
+                self.assertEqual(result, expected)
+
+    def test_length_of_longest_substring_v5(self):
+        for s, expected in self.test_cases:
+            with self.subTest(s=s):
+                result = self.solution.length_of_longest_substring_v5(s)
                 self.assertEqual(result, expected)
