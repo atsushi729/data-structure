@@ -20,6 +20,15 @@ class Solution:
 
         return True
 
+    def can_construct_v2(self, ransomNote: str, magazine: str) -> bool:
+        magazine_count = Counter(magazine)
+
+        for c in ransomNote:
+            if magazine_count[c] == 0:
+                return False
+            magazine_count[c] -= 1
+        return True
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -36,6 +45,14 @@ class TestSolution(unittest.TestCase):
             with self.subTest(test_name=test_name):
                 self.assertEqual(
                     self.solution.can_construct(ransomNote, magazine),
+                    expected
+                )
+
+    def test_can_construct_v2(self):
+        for test_name, ransomNote, magazine, expected in self.test_cases:
+            with self.subTest(test_name=test_name):
+                self.assertEqual(
+                    self.solution.can_construct_v2(ransomNote, magazine),
                     expected
                 )
 
