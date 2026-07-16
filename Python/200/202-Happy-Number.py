@@ -100,6 +100,27 @@ class Solution:
 
         return fast == 1
 
+    def is_happy6(self, n: int) -> bool:
+        if n <= 0:
+            return False
+
+        seen = set()
+
+        while n != 1 and n not in seen:
+            seen.add(n)
+            n = self.get_digit_square_sum(n)
+
+        return n == 1
+
+    def get_digit_square_sum(self, val: int) -> int:
+        total = 0
+
+        while val:
+            val, digit = divmod(val, 10)
+            total += digit * digit
+
+        return total
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -112,6 +133,7 @@ class TestSolution(unittest.TestCase):
             cls.solution.is_happy3,
             cls.solution.is_happy4,
             cls.solution.is_happy5,
+            cls.solution.is_happy6,
         ]
 
         cls.test_cases = [
