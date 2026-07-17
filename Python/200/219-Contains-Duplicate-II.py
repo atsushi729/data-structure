@@ -1,9 +1,8 @@
 import unittest
-from typing import List
 
 
 class Solution:
-    def contains_nearby_duplicate(self, nums: List[int], k: int) -> bool:
+    def contains_nearby_duplicate(self, nums: list[int], k: int) -> bool:
         """
         Time complexity: O(n)
         Space complexity: O(n)
@@ -18,7 +17,7 @@ class Solution:
             seen[n] = i
         return False
 
-    def contains_nearby_duplicate_v2(self, nums: List[int], k: int) -> bool:
+    def contains_nearby_duplicate_v2(self, nums: list[int], k: int) -> bool:
         """
         Time complexity: O(n)
         Space complexity: O(min(n, k))
@@ -33,6 +32,21 @@ class Solution:
 
             if len(seen) > k:
                 seen.remove(nums[i - k])
+
+        return False
+
+    def contains_nearby_duplicate_v3(self, nums: list[int]) -> list[int]:
+        """
+        Time complexity: O(n)
+        Space complexity: O(n)
+        """
+        last_seen = {}
+
+        for i, num in enumerate(nums):
+            if num in last_seen and i - last_seen[num] <= k:
+                return True
+
+            last_seen[num] = i
 
         return False
 
@@ -59,4 +73,10 @@ class TestSolution(unittest.TestCase):
         for nums, k, expected in self.test_cases:
             with self.subTest(nums=nums, k=k, expected=expected):
                 result = self.s.contains_nearby_duplicate_v2(nums, k)
+                self.assertEqual(result, expected)
+
+    def test_contains_nearby_duplicate_v3(self):
+        for nums, k, expected in self.test_cases:
+            with self.subTest(nums=nums, k=k, expected=expected):
+                result = self.s.contains_nearby_duplicate_v3(nums, k)
                 self.assertEqual(result, expected)
