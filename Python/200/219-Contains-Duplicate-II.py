@@ -35,7 +35,7 @@ class Solution:
 
         return False
 
-    def contains_nearby_duplicate_v3(self, nums: list[int]) -> list[int]:
+    def contains_nearby_duplicate_v3(self, nums: list[int], k: int) -> list[int]:
         """
         Time complexity: O(n)
         Space complexity: O(n)
