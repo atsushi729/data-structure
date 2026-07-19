@@ -1,3 +1,6 @@
+import unittest
+
+
 def longestConsecutive(nums: list[int]) -> int:
     sorted_nums = sorted(set(nums))
     if not sorted_nums:
@@ -13,5 +16,26 @@ def longestConsecutive(nums: list[int]) -> int:
             max_consecutive = max(max_consecutive, current_consecutive)
             current_consecutive = 1
 
-    max_consecutive = max(max_consecutive, current_consecutive)
-    return max_consecutive
+    return max(max_consecutive, current_consecutive)
+
+
+class TestLongestConsecutive(unittest.TestCase):
+    def setUp(self):
+        self.test_cases = [
+            ([100, 4, 200, 1, 3, 2], 4),
+            ([0, 3, 7, 2, 5, 8, 4, 6, 0, 1], 9),
+            ([], 0),
+            ([1], 1),
+            ([1, 2, 0, 1], 3),
+            ([10, 10, 10], 1),
+        ]
+
+    def test_longest_consecutive(self):
+        for nums, expected in self.test_cases:
+            with self.subTest(nums=nums):
+                actual = longestConsecutive(nums)
+                self.assertEqual(actual, expected)
+
+
+if __name__ == "__main__":
+    unittest.main()
