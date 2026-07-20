@@ -109,6 +109,24 @@ class Solution:
             l2 = l2.next if l2 else None
         return dummy.next
 
+    def add_two_numbers_v5(self, l1: Optional[ListNode], l2: Optional[ListNode]) -> Optional[ListNode]:
+        dummy = ListNode()
+        cur = dummy
+        carry = 0
+
+        while l1 or l2 or carry:
+            v1 = l1.val if l1 else 0
+            v2 = l2.val if l2 else 0
+
+            carry, val = divmod(v1 + v2 + carry, 10)
+            cur.next = ListNode(val)
+
+            cur = cur.next
+            l1 = l1.next if l1 else None
+            l2 = l2.next if l2 else None
+
+        return dummy.next
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -182,4 +200,13 @@ class TestSolution(unittest.TestCase):
                 l1 = self.build_list(case["input"][0])
                 l2 = self.build_list(case["input"][1])
                 result = self.solution.add_two_numbers_v4(l1, l2)
+                self.assertEqual(self.list_to_array(result), case["expected"])
+
+    def test_add_two_numbers_v5(self):
+        """ test code for add_two_numbers_v5 """
+        for case in self.get_test_cases():
+            with self.subTest(case=case):
+                l1 = self.build_list(case["input"][0])
+                l2 = self.build_list(case["input"][1])
+                result = self.solution.add_two_numbers_v5(l1, l2)
                 self.assertEqual(self.list_to_array(result), case["expected"])
