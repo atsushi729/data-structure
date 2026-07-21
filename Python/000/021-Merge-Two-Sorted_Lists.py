@@ -56,6 +56,24 @@ class Solution:
             l2.next = self.merge_two_lists_v2(l1, l2.next)
             return l2
 
+    def merge_two_lists_v3(self, l1: LinkedList, l2: LinkedList) -> LinkedList:
+        dummy = LinkedList()
+        current = dummy
+
+        while l1 and l2:
+            if l1.val <= l2.val:
+                current.next = l1
+                l1 = l1.next
+            else:
+                current.next = l2
+                l2 = l2.next
+
+            current = current.next
+
+        current.next = l1 if l1 else l2
+
+        return dummy.next
+
 
 class TestMergeTwoLists(unittest.TestCase):
 
@@ -95,7 +113,8 @@ class TestMergeTwoLists(unittest.TestCase):
 
         methods = [
             solution.merge_two_lists,
-            solution.merge_two_lists_v2
+            solution.merge_two_lists_v2,
+            solution.merge_two_lists_v3
         ]
 
         for method in methods:
