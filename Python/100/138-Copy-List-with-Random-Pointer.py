@@ -15,6 +15,9 @@ class Node:
 
 
 class Solution:
+    def __init__(self):
+        self.map = {}
+
     def copy_random_list(self, head: Optional[Node]) -> Optional[Node]:
         old_to_copy = {None: None}
 
@@ -46,6 +49,18 @@ class Solution:
             oldToCopy[cur].random = oldToCopy[cur.random]
             cur = cur.next
         return oldToCopy[head]
+
+    def copy_random_list_v3(self, head: Optional[Node]) -> Optional[Node]:
+        if head is None:
+            return None
+        if head in self.map:
+            return self.map[head]
+
+        copy = Node(head.val)
+        self.map[head] = copy
+        copy.next = self.copy_random_list_v3(head.next)
+        copy.random = self.map.get(head.random)
+        return copy
 
 
 #################### Test Case ####################
@@ -111,7 +126,8 @@ class TestCopyRandomList(unittest.TestCase):
     def test_all(self):
         methods = [
             self.solution.copy_random_list,
-            self.solution.copy_random_list_v2
+            self.solution.copy_random_list_v2,
+            self.solution.copy_random_list_v3
         ]
 
         cases = [
