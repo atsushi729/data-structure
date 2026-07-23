@@ -78,49 +78,88 @@ class Solution:
 
 class TestSolution(unittest.TestCase):
 
-    @classmethod
-    def setUpClass(cls):
-        cls.solution = Solution()
+    def setUp(self):
+        self.solution = Solution()
 
-    def build_list(self, values):
-        dummy = ListNode(0)
+    @staticmethod
+    def build_list(values: list[int]) -> Optional[ListNode]:
+        dummy = ListNode()
         current = dummy
-        for v in values:
-            current.next = ListNode(v)
+
+        for value in values:
+            current.next = ListNode(value)
             current = current.next
+
         return dummy.next
 
-    def list_to_array(self, head):
-        arr = []
+    @staticmethod
+    def list_to_array(head: Optional[ListNode]) -> list[int]:
+        result = []
+
         while head:
-            arr.append(head.val)
+            result.append(head.val)
             head = head.next
-        return arr
+
+        return result
 
     def get_test_cases(self):
         return [
+            # Reverse a middle section
             ([1, 2, 3, 4, 5], 2, 4, [1, 4, 3, 2, 5]),
+
+            # Single-node list
             ([5], 1, 1, [5]),
+
+            # Reverse a section starting from the head
             ([1, 2, 3], 1, 2, [2, 1, 3]),
+
+            # Reverse the entire list
+            ([1, 2, 3, 4, 5], 1, 5, [5, 4, 3, 2, 1]),
+
+            # Reverse a section ending at the tail
+            ([1, 2, 3, 4, 5], 3, 5, [1, 2, 5, 4, 3]),
+
+            # Reverse a single node in the middle
+            ([1, 2, 3, 4, 5], 3, 3, [1, 2, 3, 4, 5]),
+
+            # Reverse a two-node list
+            ([1, 2], 1, 2, [2, 1]),
+
+            # Reverse two adjacent nodes
+            ([1, 2, 3, 4], 2, 3, [1, 3, 2, 4]),
+
+            # Reverse the last two nodes
+            ([1, 2, 3, 4], 3, 4, [1, 2, 4, 3]),
+
+            # Reverse a section containing duplicate values
+            ([1, 2, 2, 3, 4], 2, 4, [1, 3, 2, 2, 4]),
         ]
 
-    def test_solution(self):
-        for values, left, right, expected in self.get_test_cases():
-            with self.subTest(values=values, left=left, right=right, expected=expected):
-                head = self.build_list(values)
-                result = self.solution.reverse_between(head, left, right)
-                self.assertEqual(self.list_to_array(result), expected)
+    def test_reverse_between(self):
+        methods = [
+            self.solution.reverse_between,
+            self.solution.reverse_between_v2,
+            self.solution.reverse_between_v3,
+        ]
 
-    def test_solution_v2(self):
-        for values, left, right, expected in self.get_test_cases():
-            with self.subTest(values=values, left=left, right=right, expected=expected):
-                head = self.build_list(values)
-                result = self.solution.reverse_between_v2(head, left, right)
-                self.assertEqual(self.list_to_array(result), expected)
+        for method in methods:
+            for values, left, right, expected in self.get_test_cases():
+                with self.subTest(
+                        method=method.__name__,
+                        values=values,
+                        left=left,
+                        right=right,
+                ):
+                    # Build a fresh list because each method modifies it in place
+                    head = self.build_list(values)
 
-    def test_solution_v3(self):
-        for values, left, right, expected in self.get_test_cases():
-            with self.subTest(values=values, left=left, right=right, expected=expected):
-                head = self.build_list(values)
-                result = self.solution.reverse_between_v3(head, left, right)
-                self.assertEqual(self.list_to_array(result), expected)
+                    result = method(head, left, right)
+
+                    self.assertEqual(
+                        self.list_to_array(result),
+                        expected,
+                    )
+
+
+if __name__ == "__main__":
+    unittest.main()
