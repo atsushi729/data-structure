@@ -79,45 +79,73 @@ class Solution:
 
 #################### Test Case ####################
 class TestLengthOfLongestSubstring(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.solution = Solution()
-        cls.test_cases = [
+    def setUp(self):
+        self.solution = Solution()
+
+        self.methods = [
+            self.solution.length_of_longest_substring,
+            self.solution.length_of_longest_substring_v2,
+            self.solution.length_of_longest_substring_v3,
+            self.solution.length_of_longest_substring_v4,
+            self.solution.length_of_longest_substring_v5,
+        ]
+
+        self.test_cases = [
+            # Standard cases
             ("abcabcbb", 3),
             ("bbbbb", 1),
             ("pwwkew", 3),
+
+            # Empty string
             ("", 0),
+
+            # Single character
+            ("a", 1),
+
+            # Two unique characters
             ("au", 2),
+
+            # Duplicate character inside the window
             ("dvdf", 3),
+            ("abba", 2),
+            ("tmmzuxt", 5),
+
+            # Longest substring appears at the end
             ("anviaj", 5),
+
+            # All characters are unique
+            ("abcdef", 6),
+
+            # Repeated pattern
+            ("abcabc", 3),
+
+            # Whitespace characters
+            (" ", 1),
+            ("a b c", 3),
+            ("  ", 1),
+
+            # Numeric characters
+            ("12345123", 5),
+
+            # Case-sensitive characters
+            ("aA", 2),
+            ("aAaA", 2),
+
+            # Unicode characters
+            ("あいうあえ", 4),
         ]
 
     def test_length_of_longest_substring(self):
-        for s, expected in self.test_cases:
-            with self.subTest(s=s):
-                result = self.solution.length_of_longest_substring(s)
-                self.assertEqual(result, expected)
+        for method in self.methods:
+            for s, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        input=s,
+                        expected=expected,
+                ):
+                    result = method(s)
+                    self.assertEqual(result, expected)
 
-    def test_length_of_longest_substring_v2(self):
-        for s, expected in self.test_cases:
-            with self.subTest(s=s):
-                result = self.solution.length_of_longest_substring_v2(s)
-                self.assertEqual(result, expected)
 
-    def test_length_of_longest_substring_v3(self):
-        for s, expected in self.test_cases:
-            with self.subTest(s=s):
-                result = self.solution.length_of_longest_substring_v3(s)
-                self.assertEqual(result, expected)
-
-    def test_length_of_longest_substring_v4(self):
-        for s, expected in self.test_cases:
-            with self.subTest(s=s):
-                result = self.solution.length_of_longest_substring_v4(s)
-                self.assertEqual(result, expected)
-
-    def test_length_of_longest_substring_v5(self):
-        for s, expected in self.test_cases:
-            with self.subTest(s=s):
-                result = self.solution.length_of_longest_substring_v5(s)
-                self.assertEqual(result, expected)
+if __name__ == "__main__":
+    unittest.main()
