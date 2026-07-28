@@ -1,8 +1,8 @@
-# Definition for singly-linked list.
 import unittest
 from typing import Optional
 
 
+# Definition for singly-linked list.
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -10,7 +10,10 @@ class ListNode:
 
 
 class Solution:
-    def delete_duplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def delete_duplicates(
+            self,
+            head: Optional[ListNode],
+    ) -> Optional[ListNode]:
         dummy = ListNode(0, head)
         prev, cur = dummy, head
 
@@ -28,31 +31,53 @@ class Solution:
 
         return dummy.next
 
-    def delete_duplicates2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def delete_duplicates2(
+            self,
+            head: Optional[ListNode],
+    ) -> Optional[ListNode]:
         if not head or not head.next:
             return head
 
-        # 先頭ノードが次のノードと重複している場合
         if head.val == head.next.val:
             duplicated_val = head.val
 
-            # 同じ値を持つノードをすべて読み飛ばす
             while head and head.val == duplicated_val:
                 head = head.next
 
-            # 重複グループの次から再帰的に処理する
-            return self.delete_duplicates(head)
+            return self.delete_duplicates2(head)
 
-        # 先頭ノードが重複していない場合は残す
-        head.next = self.delete_duplicates(head.next)
+        head.next = self.delete_duplicates2(head.next)
         return head
 
 
 class TestSolution(unittest.TestCase):
+
     def setUp(self):
         self.solution = Solution()
 
-        self.test_cases = [
+    @staticmethod
+    def build_list(values: list[int]) -> Optional[ListNode]:
+        dummy = ListNode()
+        current = dummy
+
+        for value in values:
+            current.next = ListNode(value)
+            current = current.next
+
+        return dummy.next
+
+    @staticmethod
+    def list_to_array(head: Optional[ListNode]) -> list[int]:
+        result = []
+
+        while head:
+            result.append(head.val)
+            head = head.next
+
+        return result
+
+    def get_test_cases(self):
+        return [
             # Duplicates in the middle
             ([1, 2, 3, 3, 4, 4, 5], [1, 2, 5]),
 
@@ -96,38 +121,28 @@ class TestSolution(unittest.TestCase):
             ([1, 1], []),
         ]
 
-    @staticmethod
-    def build_list(values: list[int]) -> Optional[ListNode]:
-        dummy = ListNode()
-        current = dummy
-
-        for value in values:
-            current.next = ListNode(value)
-            current = current.next
-
-        return dummy.next
-
-    @staticmethod
-    def list_to_array(head: Optional[ListNode]) -> list[int]:
-        result = []
-
-        while head:
-            result.append(head.val)
-            head = head.next
-
-        return result
-
     def test_delete_duplicates(self):
-        for values, expected in self.test_cases:
-            with self.subTest(values=values, expected=expected):
-                head = self.build_list(values)
+        methods = [
+            self.solution.delete_duplicates,
+            self.solution.delete_duplicates2,
+        ]
 
-                result = self.solution.delete_duplicates(head)
+        for method in methods:
+            for values, expected in self.get_test_cases():
+                with self.subTest(
+                        method=method.__name__,
+                        values=values,
+                        expected=expected,
+                ):
+                    # 各メソッドがリストを直接変更するため、毎回新しく生成する
+                    head = self.build_list(values)
 
-                self.assertEqual(
-                    self.list_to_array(result),
-                    expected,
-                )
+                    result = method(head)
+
+                    self.assertEqual(
+                        self.list_to_array(result),
+                        expected,
+                    )
 
 
 if __name__ == "__main__":
