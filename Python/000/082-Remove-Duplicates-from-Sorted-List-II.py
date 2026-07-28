@@ -28,6 +28,25 @@ class Solution:
 
         return dummy.next
 
+    def delete_duplicates2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head or not head.next:
+            return head
+
+        # 先頭ノードが次のノードと重複している場合
+        if head.val == head.next.val:
+            duplicated_val = head.val
+
+            # 同じ値を持つノードをすべて読み飛ばす
+            while head and head.val == duplicated_val:
+                head = head.next
+
+            # 重複グループの次から再帰的に処理する
+            return self.delete_duplicates(head)
+
+        # 先頭ノードが重複していない場合は残す
+        head.next = self.delete_duplicates(head.next)
+        return head
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
