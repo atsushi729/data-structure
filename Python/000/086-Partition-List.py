@@ -33,6 +33,23 @@ class Solution:
 
         return dummy.next
 
+    def partition_v2(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        left, right = ListNode(), ListNode()
+        ltail, rtail = left, right
+
+        while head:
+            if head.val < x:
+                ltail.next = head
+                ltail = ltail.next
+            else:
+                rtail.next = head
+                rtail = rtail.next
+            head = head.next
+
+        ltail.next = right.next
+        rtail.next = None
+        return left.next
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -93,18 +110,25 @@ class TestSolution(unittest.TestCase):
 
     def test_partition(self):
         for values, x, expected in self.test_cases:
-            with self.subTest(
-                    values=values,
-                    x=x,
-                    expected=expected,
-            ):
-                head = self.build_list(values)
-                result = self.solution.partition(head, x)
+            methods = [
+                self.solution.partition,
+                self.solution.partition_v2
+            ]
 
-                self.assertEqual(
-                    self.list_to_array(result),
-                    expected,
-                )
+            for method in methods:
+                with self.subTest(
+                        method=method.__name__,
+                        values=values,
+                        x=x,
+                        expected=expected,
+                ):
+                    head = self.build_list(values)
+                    result = self.solution.partition(head, x)
+
+                    self.assertEqual(
+                        self.list_to_array(result),
+                        expected,
+                    )
 
 
 if __name__ == "__main__":
