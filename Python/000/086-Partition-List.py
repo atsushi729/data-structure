@@ -50,6 +50,24 @@ class Solution:
         rtail.next = None
         return left.next
 
+    def partition_v3(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
+        left_dummy, right_dummy = ListNode(), ListNode()
+        left_tail, right_tail = left_dummy, right_dummy
+
+        while head:
+            if head.val < x:
+                left_tail.next = head
+                left_tail = left_tail.next
+            else:
+                right_tail.next = head
+                right_tail = right_tail.next
+            head = head.next
+
+        left_tail.next = right_dummy.next  # connected with real right node
+        right_tail.next = None  # end linked list
+
+        return left_dummy.next
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -112,7 +130,8 @@ class TestSolution(unittest.TestCase):
         for values, x, expected in self.test_cases:
             methods = [
                 self.solution.partition,
-                self.solution.partition_v2
+                self.solution.partition_v2,
+                self.solution.partition_v3
             ]
 
             for method in methods:
