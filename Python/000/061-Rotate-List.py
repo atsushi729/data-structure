@@ -33,6 +33,28 @@ class Solution:
 
         return new_head
 
+    def rotate_right_v2(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head:
+            return None
+
+        arr, cur = [], head
+        while cur:
+            arr.append(cur.val)
+            cur = cur.next
+
+        n = len(arr)
+        k %= n
+        cur = head
+        for i in range(n - k, n):
+            cur.val = arr[i]
+            cur = cur.next
+
+        for i in range(n - k):
+            cur.val = arr[i]
+            cur = cur.next
+
+        return head
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -96,15 +118,24 @@ class TestSolution(unittest.TestCase):
 
     def test_rotate_right(self):
         for values, k, expected in self.test_cases:
-            with self.subTest(values=values, k=k, expected=expected):
-                head = self.build_list(values)
+            methods = [
+                self.solution.rotate_right,
+                self.solution.rotate_right_v2,
+            ]
+            for method in methods:
+                with self.subTest(
+                        method=method.__name__,
+                        values=values,
+                        k=k,
+                        expected=expected
+                ):
+                    head = self.build_list(values)
+                    result = self.solution.rotate_right(head, k)
 
-                result = self.solution.rotate_right(head, k)
-
-                self.assertEqual(
-                    self.list_to_array(result),
-                    expected,
-                )
+                    self.assertEqual(
+                        self.list_to_array(result),
+                        expected,
+                    )
 
 
 if __name__ == "__main__":
