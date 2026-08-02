@@ -55,6 +55,24 @@ class Solution:
 
         return head
 
+    def rotate_right_v3(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
+        if not head:
+            return head
+
+        cur, n = head, 1
+        while cur.next:
+            n += 1
+            cur = cur.next
+
+        cur.next = head
+        k %= n
+        for i in range(n - k):
+            cur = cur.next
+
+        head = cur.next
+        cur.next = None
+        return head
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -121,6 +139,7 @@ class TestSolution(unittest.TestCase):
             methods = [
                 self.solution.rotate_right,
                 self.solution.rotate_right_v2,
+                self.solution.rotate_right_v3,
             ]
             for method in methods:
                 with self.subTest(
