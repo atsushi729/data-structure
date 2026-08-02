@@ -24,7 +24,7 @@ class Solution:
             return head
 
         cur = head
-        for i in range(length - k - 1):
+        for _ in range(length - k - 1):
             cur = cur.next
 
         new_head = cur.next
@@ -49,7 +49,7 @@ class Solution:
             cur.val = arr[i]
             cur = cur.next
 
-        for i in range(n - k):
+        for _ in range(n - k):
             cur.val = arr[i]
             cur = cur.next
 
@@ -66,7 +66,7 @@ class Solution:
 
         cur.next = head
         k %= n
-        for i in range(n - k):
+        for _ in range(n - k):
             cur = cur.next
 
         head = cur.next
