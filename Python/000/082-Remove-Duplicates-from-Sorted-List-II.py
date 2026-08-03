@@ -1,5 +1,6 @@
 import unittest
 from typing import Optional
+from collections import Counter
 
 
 # Definition for singly-linked list.
@@ -48,6 +49,37 @@ class Solution:
 
         head.next = self.delete_duplicates2(head.next)
         return head
+
+    def delete_duplicates3(
+            self,
+            head: Optional[ListNode],
+    ) -> Optional[ListNode]:
+        value_counts = Counter()
+        current = head
+
+        # First pass: count the occurrences of each value
+        while current:
+            value_counts[current.val] += 1
+            current = current.next
+
+        dummy = ListNode()
+        tail = dummy
+        current = head
+
+        # Second pass: keep only values that appear once
+        while current:
+            next_node = current.next
+
+            if value_counts[current.val] == 1:
+                tail.next = current
+                tail = current
+
+            current = next_node
+
+        # Disconnect the result list from removed nodes
+        tail.next = None
+
+        return dummy.next
 
 
 class TestSolution(unittest.TestCase):
@@ -125,6 +157,7 @@ class TestSolution(unittest.TestCase):
         methods = [
             self.solution.delete_duplicates,
             self.solution.delete_duplicates2,
+            self.solution.delete_duplicates3,
         ]
 
         for method in methods:
