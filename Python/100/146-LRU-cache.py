@@ -98,38 +98,124 @@ class LRUCacheArray:
 
 #################### Test Case ####################
 class TestLRUCache(unittest.TestCase):
-    def test_lru_cache(self):
-        cache = LRUCacheWithLinkedList(2)
-        cache.put(1, 1)
-        cache.put(2, 2)
-        self.assertEqual(cache.get(1), 1)
-        cache.put(3, 3)
-        self.assertEqual(cache.get(2), -1)
-        cache.put(4, 4)
-        self.assertEqual(cache.get(1), -1)
-        self.assertEqual(cache.get(3), 3)
-        self.assertEqual(cache.get(4), 4)
+    cache_classes = [
+        LRUCacheWithLinkedList,
+        LRUCache,
+        LRUCacheArray,
+    ]
 
-    def test_lru_cache_with_ordered_dict(self):
-        cache = LRUCache(2)
-        cache.put(1, 1)
-        cache.put(2, 2)
-        self.assertEqual(cache.get(1), 1)
-        cache.put(3, 3)
-        self.assertEqual(cache.get(2), -1)
-        cache.put(4, 4)
-        self.assertEqual(cache.get(1), -1)
-        self.assertEqual(cache.get(3), 3)
-        self.assertEqual(cache.get(4), 4)
+    def test_basic_lru_behavior(self):
+        """
+        Verify that the least recently used item is evicted.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(2)
 
-    def test_lru_cache_with_array(self):
-        cache = LRUCacheArray(2)
-        cache.put(1, 1)
-        cache.put(2, 2)
-        self.assertEqual(cache.get(1), 1)
-        cache.put(3, 3)
-        self.assertEqual(cache.get(2), -1)
-        cache.put(4, 4)
-        self.assertEqual(cache.get(1), -1)
-        self.assertEqual(cache.get(3), 3)
-        self.assertEqual(cache.get(4), 4)
+                cache.put(1, 1)
+                cache.put(2, 2)
+
+                # Accessing key 1 makes key 2 the least recently used item.
+                self.assertEqual(cache.get(1), 1)
+
+                # Key 2 should be evicted.
+                cache.put(3, 3)
+                self.assertEqual(cache.get(2), -1)
+
+                # Key 1 should now be evicted.
+                cache.put(4, 4)
+                self.assertEqual(cache.get(1), -1)
+
+                self.assertEqual(cache.get(3), 3)
+                self.assertEqual(cache.get(4), 4)
+
+    def test_get_missing_key(self):
+        """
+        Verify that getting a missing key returns -1.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(2)
+
+                self.assertEqual(cache.get(999), -1)
+
+    def test_update_existing_key(self):
+        """
+        Verify that updating an existing key changes its value
+        and marks it as recently used.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(2)
+
+                cache.put(1, 1)
+                cache.put(2, 2)
+                cache.put(1, 100)
+
+                self.assertEqual(cache.get(1), 100)
+
+                # Key 2 should be evicted because key 1 was updated recently.
+                cache.put(3, 3)
+
+                self.assertEqual(cache.get(2), -1)
+                self.assertEqual(cache.get(1), 100)
+                self.assertEqual(cache.get(3), 3)
+
+    def test_get_marks_key_as_recently_used(self):
+        """
+        Verify that get() updates the usage order.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(2)
+
+                cache.put(1, 1)
+                cache.put(2, 2)
+
+                self.assertEqual(cache.get(1), 1)
+
+                # Since key 1 was accessed, key 2 should be evicted.
+                cache.put(3, 3)
+
+                self.assertEqual(cache.get(1), 1)
+                self.assertEqual(cache.get(2), -1)
+                self.assertEqual(cache.get(3), 3)
+
+    def test_capacity_one(self):
+        """
+        Verify eviction behavior when capacity is one.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(1)
+
+                cache.put(1, 1)
+                self.assertEqual(cache.get(1), 1)
+
+                cache.put(2, 2)
+
+                self.assertEqual(cache.get(1), -1)
+                self.assertEqual(cache.get(2), 2)
+
+    def test_repeated_update_does_not_increase_size(self):
+        """
+        Verify that updating the same key does not create duplicate entries.
+        """
+        for cache_class in self.cache_classes:
+            with self.subTest(cache_class=cache_class.__name__):
+                cache = cache_class(2)
+
+                cache.put(1, 1)
+                cache.put(1, 10)
+                cache.put(1, 100)
+                cache.put(2, 2)
+                cache.put(3, 3)
+
+                # Key 1 is older than key 2 and should be evicted.
+                self.assertEqual(cache.get(1), -1)
+                self.assertEqual(cache.get(2), 2)
+                self.assertEqual(cache.get(3), 3)
+
+
+if __name__ == "__main__":
+    unittest.main()
