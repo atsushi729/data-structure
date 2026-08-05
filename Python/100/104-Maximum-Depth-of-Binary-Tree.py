@@ -38,7 +38,7 @@ class Solution:
     def max_depth_v2(self, root: Optional[TreeNode]) -> int:
         """
         Time complexity: O(n)
-        Space complexity: O(n)
+        Space complexity: O(h) where h is the height of tree
         """
         if not root:
             return 0
@@ -46,6 +46,10 @@ class Solution:
         return 1 + max(self.max_depth_v2(root.left), self.max_depth_v2(root.right))
 
     def max_depth_3(self, root: Optional[TreeNode]) -> int:
+        """
+        Time complexity: O(n)
+        Space complexity: O(h) where h is the height of tree
+        """
         max_depth = 0
 
         def dfs(node, cur_val):
