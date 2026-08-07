@@ -40,6 +40,26 @@ class Solution:
 
         return dfs(root.left, root.right)
 
+    def is_symmetric_v2(self, root: Optional[TreeNode]) -> bool:
+        if not root:
+            return True
+
+        stack = [(root.left, root.right)]
+
+        while stack:
+            left, right = stack.pop()
+
+            if not left and not right:
+                continue
+
+            if not left or not right or left.val != right.val:
+                return False
+
+            stack.append((left.left, right.right))
+            stack.append((left.right, right.left))
+
+        return True
+
 
 class TestSolution(unittest.TestCase):
 
@@ -138,6 +158,7 @@ class TestSolution(unittest.TestCase):
     def test_is_symmetric(self):
         methods = [
             self.solution.is_symmetric,
+            self.solution.is_symmetric_v2,
         ]
 
         for method in methods:
