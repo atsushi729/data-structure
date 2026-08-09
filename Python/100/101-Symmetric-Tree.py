@@ -1,4 +1,5 @@
 import unittest
+from collections import deque
 from typing import Optional
 
 
@@ -57,6 +58,34 @@ class Solution:
 
             stack.append((left.left, right.right))
             stack.append((left.right, right.left))
+
+        return True
+
+    def is_symmetric_v3(
+            self,
+            root: Optional[TreeNode],
+    ) -> bool:
+        if not root:
+            return True
+
+        queue = deque([
+            (root.left, root.right),
+        ])
+
+        while queue:
+            left, right = queue.popleft()
+
+            if not left and not right:
+                continue
+
+            if not left or not right:
+                return False
+
+            if left.val != right.val:
+                return False
+
+            queue.append((left.left, right.right))
+            queue.append((left.right, right.left))
 
         return True
 
@@ -159,6 +188,7 @@ class TestSolution(unittest.TestCase):
         methods = [
             self.solution.is_symmetric,
             self.solution.is_symmetric_v2,
+            self.solution.is_symmetric_v3,
         ]
 
         for method in methods:
