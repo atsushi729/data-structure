@@ -36,6 +36,24 @@ class Solution:
 
         return dfs(root, 0)
 
+    def has_path_sum_v2(
+            self,
+            root: Optional[TreeNode],
+            targetSum: int,
+    ) -> bool:
+        if not root:
+            return False
+
+        if not root.left and not root.right:
+            return targetSum == root.val
+
+        remaining = targetSum - root.val
+
+        return (
+                self.has_path_sum_v2(root.left, remaining)
+                or self.has_path_sum_v2(root.right, remaining)
+        )
+
 
 #################### Test ####################
 class TestSolution(unittest.TestCase):
@@ -44,6 +62,7 @@ class TestSolution(unittest.TestCase):
 
         self.methods = [
             self.solution.has_path_sum,
+            self.solution.has_path_sum_v2,
         ]
 
     def test_has_path_sum(self):
