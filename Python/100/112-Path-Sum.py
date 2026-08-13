@@ -54,6 +54,31 @@ class Solution:
                 or self.has_path_sum_v2(root.right, remaining)
         )
 
+    def has_path_sum_v3(
+            self,
+            root: Optional[TreeNode],
+            targetSum: int,
+    ) -> bool:
+        if not root:
+            return False
+
+        stack = [(root, root.val)]
+
+        while stack:
+            node, cur_sum = stack.pop()
+
+            if not node.left and not node.right:
+                if cur_sum == targetSum:
+                    return True
+
+            if node.right:
+                stack.append((node.right, cur_sum + node.right.val))
+
+            if node.left:
+                stack.append((node.left, cur_sum + node.left.val))
+
+        return False
+
 
 #################### Test ####################
 class TestSolution(unittest.TestCase):
@@ -63,6 +88,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.solution.has_path_sum,
             self.solution.has_path_sum_v2,
+            self.solution.has_path_sum_v3,
         ]
 
     def test_has_path_sum(self):
