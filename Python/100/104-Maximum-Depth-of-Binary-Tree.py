@@ -1,12 +1,16 @@
-# Definition for a binary tree node.
 from collections import deque
-from typing import Optional
+from typing import Callable, Optional
 import unittest
 
 
 #################### Solution ####################
 class TreeNode:
-    def __init__(self, val=0, left=None, right=None):
+    def __init__(
+            self,
+            val: int = 0,
+            left: Optional["TreeNode"] = None,
+            right: Optional["TreeNode"] = None,
+    ):
         self.val = val
         self.left = left
         self.right = right
@@ -15,81 +19,161 @@ class TreeNode:
 class Solution:
     def max_depth(self, root: Optional[TreeNode]) -> int:
         """
-        Time complexity: O(n)
-        Space complexity: O(n)
-        """
-        q = deque()
-        if root:
-            q.append(root)
+        BFS
 
-        level = 0
-
-        while q:
-            for _ in range(len(q)):
-                node = q.popleft()
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-            level += 1
-
-        return level
-
-    def max_depth_v2(self, root: Optional[TreeNode]) -> int:
-        """
-        Time complexity: O(n)
-        Space complexity: O(h) where h is the height of tree
+        Time Complexity: O(n)
+        Space Complexity: O(w)
+        where w is the maximum width of the tree.
         """
         if not root:
             return 0
 
-        return 1 + max(self.max_depth_v2(root.left), self.max_depth_v2(root.right))
+        queue = deque([root])
+        depth = 0
 
-    def max_depth_3(self, root: Optional[TreeNode]) -> int:
+        while queue:
+            for _ in range(len(queue)):
+                node = queue.popleft()
+
+                if node.left:
+                    queue.append(node.left)
+
+                if node.right:
+                    queue.append(node.right)
+
+            depth += 1
+
+        return depth
+
+    def max_depth_v2(self, root: Optional[TreeNode]) -> int:
         """
-        Time complexity: O(n)
-        Space complexity: O(h) where h is the height of tree
+        Recursive DFS
+
+        Time Complexity: O(n)
+        Space Complexity: O(h)
+        where h is the height of the tree.
+        """
+        if not root:
+            return 0
+
+        return 1 + max(
+            self.max_depth_v2(root.left),
+            self.max_depth_v2(root.right),
+        )
+
+    def max_depth_v3(self, root: Optional[TreeNode]) -> int:
+        """
+        DFS with explicit depth tracking
+
+        Time Complexity: O(n)
+        Space Complexity: O(h)
+        where h is the height of the tree.
         """
         max_depth = 0
 
-        def dfs(node, cur_val):
+        def dfs(node: Optional[TreeNode], depth: int) -> None:
             nonlocal max_depth
+
             if not node:
                 return
 
-            cur_val += 1
-            max_depth = max(max_depth, cur_val)
+            depth += 1
+            max_depth = max(max_depth, depth)
 
-            dfs(node.left, cur_val)
-            dfs(node.right, cur_val)
+            dfs(node.left, depth)
+            dfs(node.right, depth)
 
-        dfs(root, max_depth)
+        dfs(root, 0)
 
         return max_depth
 
 
-#################### Test Case ####################
+#################### Test ####################
 class TestMaxDepth(unittest.TestCase):
-    @classmethod
-    def setUp(cls):
-        cls.solution = Solution()
-        cls.tests = [
-            ("Balanced Tree", TreeNode(1, TreeNode(2), TreeNode(3)), 2),
-            ("Left Tree", TreeNode(1, TreeNode(2, TreeNode(1)), TreeNode(3)), 3),
-            ("Right Tree", TreeNode(1, TreeNode(2), TreeNode(3, TreeNode(4))), 3),
+    def setUp(self):
+        self.solution = Solution()
+
+        self.methods = [
+            self.solution.max_depth,
+            self.solution.max_depth_v2,
+            self.solution.max_depth_v3,
         ]
 
     def test_max_depth(self):
-        for name, tree, expected in self.tests:
-            with self.subTest(name=name):
-                self.assertEqual(self.solution.max_depth(tree), expected)
+        test_cases: list[
+            tuple[str, Callable[[], Optional[TreeNode]], int]
+        ] = [
+            (
+                "empty tree",
+                lambda: None,
+                0,
+            ),
+            (
+                "single node",
+                lambda: TreeNode(1),
+                1,
+            ),
+            (
+                "balanced tree",
+                lambda: TreeNode(
+                    1,
+                    left=TreeNode(2),
+                    right=TreeNode(3),
+                ),
+                2,
+            ),
+            (
+                "left-skewed tree",
+                lambda: TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(3),
+                    ),
+                ),
+                3,
+            ),
+            (
+                "right-skewed tree",
+                lambda: TreeNode(
+                    1,
+                    right=TreeNode(
+                        2,
+                        right=TreeNode(3),
+                    ),
+                ),
+                3,
+            ),
+            (
+                "unbalanced tree",
+                lambda: TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(
+                            4,
+                            left=TreeNode(5),
+                        ),
+                    ),
+                    right=TreeNode(3),
+                ),
+                4,
+            ),
+        ]
 
-    def test_max_depth_v2(self):
-        for name, tree, expected in self.tests:
-            with self.subTest(name=name):
-                self.assertEqual(self.solution.max_depth_v2(tree), expected)
+        for method in self.methods:
+            for name, build_tree, expected in test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        case=name,
+                        expected=expected,
+                ):
+                    root = build_tree()
 
-    def test_max_depth_3(self):
-        for name, tree, expected in self.tests:
-            with self.subTest(name=name):
-                self.assertEqual(self.solution.max_depth_3(tree), expected)
+                    actual = method(root)
+
+                    self.assertEqual(actual, expected)
+
+
+if __name__ == "__main__":
+    unittest.main()
