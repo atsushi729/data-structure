@@ -74,68 +74,108 @@ class Solution:
         return max(0, path)
 
 
-#################### Test Case ####################
+#################### Test ####################
 class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.solution = Solution()
 
-    @classmethod
-    def setUpClass(cls):
-        cls.solution = Solution()
-
-        # Case 1
-        tree1 = TreeNode(
-            1,
-            TreeNode(2),
-            TreeNode(3)
-        )
-
-        # Case 2
-        tree2 = TreeNode(
-            -10,
-            TreeNode(9),
-            TreeNode(
-                20,
-                TreeNode(15),
-                TreeNode(7)
-            )
-        )
-
-        # Case 3: single node
-        tree3 = TreeNode(5)
-
-        # Case 4: all negative
-        tree4 = TreeNode(
-            -3,
-            TreeNode(-2),
-            TreeNode(-5)
-        )
-
-        cls.test_cases = [
-            ("Simple tree", tree1, 6),
-            ("LeetCode example", tree2, 42),
-            ("Single node", tree3, 5),
-            ("All negative", tree4, -2),
+        self.methods = [
+            self.solution.max_path_sum,
+            self.solution.max_path_sum_v2,
+            self.solution.max_path_sum_v3,
         ]
 
     def test_max_path_sum(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.max_path_sum(root),
-                    expected
-                )
+        test_cases = [
+            {
+                "name": "simple tree",
+                "build_tree": lambda: TreeNode(
+                    1,
+                    left=TreeNode(2),
+                    right=TreeNode(3),
+                ),
+                "expected": 6,
+            },
+            {
+                "name": "LeetCode example",
+                "build_tree": lambda: TreeNode(
+                    -10,
+                    left=TreeNode(9),
+                    right=TreeNode(
+                        20,
+                        left=TreeNode(15),
+                        right=TreeNode(7),
+                    ),
+                ),
+                "expected": 42,
+            },
+            {
+                "name": "single node",
+                "build_tree": lambda: TreeNode(5),
+                "expected": 5,
+            },
+            {
+                "name": "single negative node",
+                "build_tree": lambda: TreeNode(-5),
+                "expected": -5,
+            },
+            {
+                "name": "all negative",
+                "build_tree": lambda: TreeNode(
+                    -3,
+                    left=TreeNode(-2),
+                    right=TreeNode(-5),
+                ),
+                "expected": -2,
+            },
+            {
+                "name": "maximum path does not include root",
+                "build_tree": lambda: TreeNode(
+                    -10,
+                    left=TreeNode(
+                        5,
+                        left=TreeNode(4),
+                        right=TreeNode(6),
+                    ),
+                    right=TreeNode(-20),
+                ),
+                "expected": 15,  # 4 -> 5 -> 6
+            },
+            {
+                "name": "left skewed tree",
+                "build_tree": lambda: TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(3),
+                    ),
+                ),
+                "expected": 6,
+            },
+            {
+                "name": "negative branch should be ignored",
+                "build_tree": lambda: TreeNode(
+                    10,
+                    left=TreeNode(-5),
+                    right=TreeNode(20),
+                ),
+                "expected": 30,
+            },
+        ]
 
-    def test_max_path_sum_v2(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.max_path_sum_v2(root),
-                    expected
-                )
+        for method in self.methods:
+            for case in test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        case=case["name"],
+                        expected=case["expected"],
+                ):
+                    root = case["build_tree"]()
 
-    def test_max_path_sum_v3(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.max_path_sum_v3(root),
-                    expected
-                )
+                    actual = method(root)
+
+                    self.assertEqual(actual, case["expected"])
+
+
+if __name__ == "__main__":
+    unittest.main()
