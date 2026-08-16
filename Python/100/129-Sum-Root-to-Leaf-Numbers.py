@@ -35,6 +35,23 @@ class Solution:
 
         return sum(values)
 
+    def sum_numbers_v2(self, root: Optional[TreeNode]) -> int:
+        def dfs(node, cur_num):
+            if not node:
+                return 0
+
+            cur_num = cur_num * 10 + node.val
+
+            if not node.left and not node.right:
+                return cur_num
+
+            return (
+                    dfs(node.left, cur_num)
+                    + dfs(node.right, cur_num)
+            )
+
+        return dfs(root, 0)
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -42,6 +59,7 @@ class TestSolution(unittest.TestCase):
 
         self.methods = [
             self.solution.sum_numbers,
+            self.solution.sum_numbers_v2,
         ]
 
     def test_sum_numbers(self):
