@@ -19,7 +19,7 @@ class Solution:
             return None
 
         root = TreeNode(postorder[-1])
-        mid = inorder.index(postorder[-1])
+        mid = inorder.index(root.val)
 
         root.left = self.build_tree(
             inorder[:mid],
@@ -32,23 +32,62 @@ class Solution:
 
         return root
 
+    def build_tree_v2(
+            self,
+            inorder: list[int],
+            postorder: list[int],
+    ) -> Optional[TreeNode]:
+        inorder_idx = {
+            val: idx
+            for idx, val in enumerate(inorder)
+        }
+
+        def dfs(l: int, r: int) -> Optional[TreeNode]:
+            if l > r:
+                return None
+
+            root = TreeNode(postorder.pop())
+            mid = inorder_idx[root.val]
+
+            # postorderを後ろから読むため、
+            # root -> right -> left の順で構築する
+            root.right = dfs(mid + 1, r)
+            root.left = dfs(l, mid - 1)
+
+            return root
+
+        return dfs(0, len(inorder) - 1)
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.sol = Solution()
         self.methods = [
             self.sol.build_tree,
+            self.sol.build_tree_v2,
         ]
 
-    def assert_tree_equal(self, actual, expected):
+    def assert_tree_equal(
+            self,
+            actual: Optional[TreeNode],
+            expected: Optional[TreeNode],
+    ):
         if actual is None and expected is None:
             return
 
         self.assertIsNotNone(actual)
         self.assertIsNotNone(expected)
+
         self.assertEqual(actual.val, expected.val)
-        self.assert_tree_equal(actual.left, expected.left)
-        self.assert_tree_equal(actual.right, expected.right)
+
+        self.assert_tree_equal(
+            actual.left,
+            expected.left,
+        )
+        self.assert_tree_equal(
+            actual.right,
+            expected.right,
+        )
 
     def test_case(self):
         test_cases = [
@@ -129,8 +168,8 @@ class TestSolution(unittest.TestCase):
                         case=case["name"],
                 ):
                     actual = method(
-                        case["inorder"],
-                        case["postorder"],
+                        case["inorder"].copy(),
+                        case["postorder"].copy(),
                     )
 
                     self.assert_tree_equal(
