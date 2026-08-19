@@ -58,6 +58,29 @@ class Solution:
 
         return dfs(0, len(inorder) - 1)
 
+    def build_tree_v3(
+            self,
+            inorder: list[int],
+            postorder: list[int],
+    ) -> Optional[TreeNode]:
+        postIdx = inIdx = len(postorder) - 1
+
+        def dfs(limit):
+            nonlocal postIdx, inIdx
+            if postIdx < 0:
+                return None
+            if inorder[inIdx] == limit:
+                inIdx -= 1
+                return None
+
+            root = TreeNode(postorder[postIdx])
+            postIdx -= 1
+            root.right = dfs(root.val)
+            root.left = dfs(limit)
+            return root
+
+        return dfs(float('inf'))
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -65,6 +88,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.sol.build_tree,
             self.sol.build_tree_v2,
+            self.sol.build_tree_v3,
         ]
 
     def assert_tree_equal(
