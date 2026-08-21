@@ -47,12 +47,35 @@ class Solution:
 
         return root
 
+    def connect_v2(
+            self,
+            root: Optional[Node],
+    ) -> Optional[Node]:
+        mp = {}
+
+        def dfs(node, depth):
+            if not node:
+                return
+
+            if depth not in mp:
+                mp[depth] = node
+            else:
+                mp[depth].next = node
+                mp[depth] = node
+
+            dfs(node.left, depth + 1)
+            dfs(node.right, depth + 1)
+
+        dfs(root, 0)
+        return root
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.sol = Solution()
         self.methods = [
             self.sol.connect,
+            self.sol.connect_v2,
         ]
 
     def assert_next_equal(
