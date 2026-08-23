@@ -69,6 +69,23 @@ class Solution:
         dfs(root, 0)
         return root
 
+    def connect_v3(
+            self,
+            root: Optional[Node],
+    ) -> Optional[Node]:
+        if not root:
+            return root
+
+        if root.left:
+            root.left.next = root.right
+            if root.next:
+                root.right.next = root.next.left
+
+            self.connect(root.left)
+            self.connect(root.right)
+
+        return root
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -76,6 +93,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.sol.connect,
             self.sol.connect_v2,
+            self.sol.connect_v3,
         ]
 
     def assert_next_equal(
