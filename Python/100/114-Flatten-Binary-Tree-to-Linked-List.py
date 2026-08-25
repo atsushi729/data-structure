@@ -36,12 +36,36 @@ class Solution:
             current.right = TreeNode(val)
             current = current.right
 
+    def flatten_v2(self, root: Optional[TreeNode]) -> None:
+        if not root:
+            return None
+
+        nodes = []
+
+        def preorder(node):
+            if not node:
+                return None
+
+            nodes.append(node)
+            preorder(node.left)
+            preorder(node.right)
+
+        preorder(root)
+
+        for current, next_node in zip(nodes, nodes[1:]):
+            current.left = None
+            current.right = next_node
+
+        nodes[-1].left = None
+        nodes[-1].right = None
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.sol = Solution()
         self.methods = [
             self.sol.flatten,
+            self.sol.flatten_v2,
         ]
 
     def assert_flattened_tree(
