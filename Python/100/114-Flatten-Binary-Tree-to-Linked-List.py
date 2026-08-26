@@ -59,6 +59,26 @@ class Solution:
         nodes[-1].left = None
         nodes[-1].right = None
 
+    def flatten_v3(self, root: Optional[TreeNode]) -> None:
+        current = root
+
+        while current:
+            if current.left:
+                # Find the rightmost node in the left subtree.
+                predecessor = current.left
+
+                while predecessor.right:
+                    predecessor = predecessor.right
+
+                # Attach the original right subtree to the predecessor.
+                predecessor.right = current.right
+
+                # Move the left subtree to the right.
+                current.right = current.left
+                current.left = None
+
+            current = current.right
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -66,6 +86,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.sol.flatten,
             self.sol.flatten_v2,
+            self.sol.flatten_v3,
         ]
 
     def assert_flattened_tree(
