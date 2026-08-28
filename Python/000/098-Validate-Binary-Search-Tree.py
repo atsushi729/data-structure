@@ -58,6 +58,23 @@ class Solution:
 
         return validate_bst(root, float("-inf"), float("inf"))
 
+    def is_valid_bst4(self, root: Optional[TreeNode]) -> bool:
+        nodes = []
+
+        def inorder(node):
+            if not node:
+                return None
+            inorder(node.left)
+            nodes.append(node.val)
+            inorder(node.right)
+
+        inorder(root)
+
+        for i in range(len(nodes) - 1):
+            if nodes[i] >= nodes[i + 1]:
+                return False
+        return True
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -129,6 +146,14 @@ class TestSolution(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.is_valid_bst3(root),
+                    expected,
+                )
+
+    def test_is_valid_bst4(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.is_valid_bst4(root),
                     expected,
                 )
 
