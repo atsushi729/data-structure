@@ -38,12 +38,42 @@ class Solution:
 
         return min_diff
 
+    def get_minimum_difference_v2(
+            self,
+            root: Optional[TreeNode],
+    ) -> int:
+        prev_val = None
+        min_diff = float("inf")
+
+        def inorder(node):
+            nonlocal prev_val, min_diff
+
+            if not node:
+                return
+
+            inorder(node.left)
+
+            if prev_val is not None:
+                min_diff = min(
+                    min_diff,
+                    node.val - prev_val,
+                )
+
+            prev_val = node.val
+
+            inorder(node.right)
+
+        inorder(root)
+
+        return min_diff
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.sol = Solution()
         self.methods = [
             self.sol.get_minimum_difference,
+            self.sol.get_minimum_difference_v2,
         ]
 
     def test_get_minimum_difference(self):
