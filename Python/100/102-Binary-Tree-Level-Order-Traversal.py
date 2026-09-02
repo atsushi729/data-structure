@@ -1,7 +1,8 @@
 # Definition for a binary tree node.
 import collections
 import unittest
-from typing import Optional, List
+from typing import Optional
+from collections import deque
 
 
 class TreeNode:
@@ -12,7 +13,7 @@ class TreeNode:
 
 
 class Solution:
-    def level_order(self, root: Optional[TreeNode]) -> List[List[int]]:
+    def level_order(self, root: Optional[TreeNode]) -> list[list[int]]:
         level = []
 
         queue = collections.deque()
@@ -35,7 +36,7 @@ class Solution:
 
         return level
 
-    def level_order_v2(self, root: Optional[TreeNode]) -> List[List[int]]:
+    def level_order_v2(self, root: Optional[TreeNode]) -> list[list[int]]:
         res = []
 
         def dfs(node, depth):
@@ -49,6 +50,30 @@ class Solution:
 
         dfs(root, 0)
         return res
+
+    def level_order_v3(self, root: Optional[TreeNode]) -> list[list[int]]:
+        if not root:
+            return []
+
+        queue = deque([root])
+        result = []
+
+        while queue:
+            level_nodes = []
+            level_length = len(queue)
+
+            for _ in range(level_length):
+                node = queue.popleft()
+                level_nodes.append(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+            if level_nodes:
+                result.append(level_nodes)
+
+        return result
 
 
 class TestLevelOrder(unittest.TestCase):
@@ -133,5 +158,13 @@ class TestLevelOrder(unittest.TestCase):
             with self.subTest(name=name):
                 self.assertEqual(
                     self.solution.level_order_v2(root),
+                    expected
+                )
+
+    def test_level_order_v3(self):
+        for name, root, expected in self.test_cases:
+            with self.subTest(name=name):
+                self.assertEqual(
+                    self.solution.level_order_v3(root),
                     expected
                 )
