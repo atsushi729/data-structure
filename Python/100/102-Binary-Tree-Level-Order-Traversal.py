@@ -77,94 +77,145 @@ class Solution:
 
 
 class TestLevelOrder(unittest.TestCase):
-
     def setUp(self):
         self.solution = Solution()
-
-        self.test_cases = [
-            (
-                "Empty Tree",
-                None,
-                []
-            ),
-            (
-                "Single Node",
-                TreeNode(1),
-                [[1]]
-            ),
-            (
-                "Complete Binary Tree",
-                TreeNode(
-                    3,
-                    TreeNode(9),
-                    TreeNode(20, TreeNode(15), TreeNode(7))
-                ),
-                [[3], [9, 20], [15, 7]]
-            ),
-            (
-                "Right Skewed Tree",
-                TreeNode(
-                    1,
-                    None,
-                    TreeNode(
-                        2,
-                        None,
-                        TreeNode(3)
-                    )
-                ),
-                [[1], [2], [3]]
-            ),
-            (
-                "Left Skewed Tree",
-                TreeNode(
-                    1,
-                    TreeNode(
-                        2,
-                        TreeNode(3)
-                    )
-                ),
-                [[1], [2], [3]]
-            ),
-            (
-                "Sparse Tree",
-                TreeNode(
-                    1,
-                    TreeNode(2, None, TreeNode(4)),
-                    TreeNode(3, TreeNode(5), None)
-                ),
-                [[1], [2, 3], [4, 5]]
-            ),
-            (
-                "Negative Values",
-                TreeNode(
-                    -1,
-                    TreeNode(-2),
-                    TreeNode(3, TreeNode(-4), TreeNode(5))
-                ),
-                [[-1], [-2, 3], [-4, 5]]
-            ),
+        self.methods = [
+            self.solution.level_order,
+            self.solution.level_order_v2,
+            self.solution.level_order_v3,
         ]
 
     def test_level_order(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.level_order(root),
-                    expected
-                )
+        test_cases = [
+            {
+                "name": "empty tree",
+                "root": None,
+                "expected": [],
+            },
+            {
+                "name": "single node",
+                "root": TreeNode(1),
+                "expected": [[1]],
+            },
+            {
+                "name": "LeetCode example",
+                "root": TreeNode(
+                    3,
+                    left=TreeNode(9),
+                    right=TreeNode(
+                        20,
+                        left=TreeNode(15),
+                        right=TreeNode(7),
+                    ),
+                ),
+                "expected": [
+                    [3],
+                    [9, 20],
+                    [15, 7],
+                ],
+            },
+            {
+                "name": "complete binary tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(4),
+                        right=TreeNode(5),
+                    ),
+                    right=TreeNode(
+                        3,
+                        left=TreeNode(6),
+                        right=TreeNode(7),
+                    ),
+                ),
+                "expected": [
+                    [1],
+                    [2, 3],
+                    [4, 5, 6, 7],
+                ],
+            },
+            {
+                "name": "right skewed tree",
+                "root": TreeNode(
+                    1,
+                    right=TreeNode(
+                        2,
+                        right=TreeNode(3),
+                    ),
+                ),
+                "expected": [
+                    [1],
+                    [2],
+                    [3],
+                ],
+            },
+            {
+                "name": "left skewed tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(3),
+                    ),
+                ),
+                "expected": [
+                    [1],
+                    [2],
+                    [3],
+                ],
+            },
+            {
+                "name": "sparse tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        right=TreeNode(4),
+                    ),
+                    right=TreeNode(
+                        3,
+                        left=TreeNode(5),
+                    ),
+                ),
+                "expected": [
+                    [1],
+                    [2, 3],
+                    [4, 5],
+                ],
+            },
+            {
+                "name": "negative values",
+                "root": TreeNode(
+                    -1,
+                    left=TreeNode(-2),
+                    right=TreeNode(
+                        3,
+                        left=TreeNode(-4),
+                        right=TreeNode(5),
+                    ),
+                ),
+                "expected": [
+                    [-1],
+                    [-2, 3],
+                    [-4, 5],
+                ],
+            },
+        ]
 
-    def test_level_order_v2(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.level_order_v2(root),
-                    expected
-                )
+        for method in self.methods:
+            for case in test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        case=case["name"],
+                ):
+                    actual = method(case["root"])
 
-    def test_level_order_v3(self):
-        for name, root, expected in self.test_cases:
-            with self.subTest(name=name):
-                self.assertEqual(
-                    self.solution.level_order_v3(root),
-                    expected
-                )
+                    self.assertListEqual(
+                        actual,
+                        case["expected"],
+                    )
+
+
+if __name__ == "__main__":
+    unittest.main()
