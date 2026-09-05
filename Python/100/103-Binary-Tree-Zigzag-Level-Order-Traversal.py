@@ -53,7 +53,110 @@ class TestSolution(unittest.TestCase):
                     ),
                 ),
                 "expected": [[3], [20, 9], [15, 7]]
-            }
+            },
+            {
+                "name": "Empty Tree",
+                "root": None,
+                "expected": []
+            },
+            {
+                "name": "Single Node",
+                "root": TreeNode(1),
+                "expected": [[1]]
+            },
+            {
+                "name": "Complete Binary Tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(4),
+                        right=TreeNode(5)
+                    ),
+                    right=TreeNode(
+                        3,
+                        left=TreeNode(6),
+                        right=TreeNode(7)
+                    )
+                ),
+                "expected": [[1], [3, 2], [4, 5, 6, 7]]
+            },
+            {
+                "name": "Left Skewed Tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(
+                            3,
+                            left=TreeNode(4)
+                        )
+                    )
+                ),
+                "expected": [[1], [2], [3], [4]]
+            },
+            {
+                "name": "Right Skewed Tree",
+                "root": TreeNode(
+                    1,
+                    right=TreeNode(
+                        2,
+                        right=TreeNode(
+                            3,
+                            right=TreeNode(4)
+                        )
+                    )
+                ),
+                "expected": [[1], [2], [3], [4]]
+            },
+            {
+                "name": "Unbalanced Tree",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        right=TreeNode(4)
+                    ),
+                    right=TreeNode(
+                        3,
+                        right=TreeNode(
+                            5,
+                            left=TreeNode(6)
+                        )
+                    )
+                ),
+                "expected": [[1], [3, 2], [4, 5], [6]]
+            },
+            {
+                "name": "Four Levels",
+                "root": TreeNode(
+                    1,
+                    left=TreeNode(
+                        2,
+                        left=TreeNode(
+                            4,
+                            left=TreeNode(8),
+                            right=TreeNode(9)
+                        ),
+                        right=TreeNode(5)
+                    ),
+                    right=TreeNode(
+                        3,
+                        left=TreeNode(6),
+                        right=TreeNode(
+                            7,
+                            left=TreeNode(10),
+                            right=TreeNode(11)
+                        )
+                    )
+                ),
+                "expected": [
+                    [1],
+                    [3, 2],
+                    [4, 5, 6, 7],
+                    [11, 10, 9, 8]
+                ]
+            },
         ]
 
         for method in self.methods:
@@ -61,4 +164,3 @@ class TestSolution(unittest.TestCase):
                 with self.subTest(method=method, case=case["name"]):
                     actual = method(case["root"])
                     self.assertListEqual(actual, case["expected"])
-
