@@ -31,12 +31,42 @@ class Solution:
 
         return res
 
+    def zigzag_level_order_v2(self, root: Optional[TreeNode]) -> list[list[int]]:
+        if not root:
+            return []
+
+        res = []
+        queue = deque([root])
+        left_to_right = True
+
+        while queue:
+            level = deque()
+
+            for _ in range(len(queue)):
+                node = queue.popleft()
+
+                if left_to_right:
+                    level.append(node.val)
+                else:
+                    level.appendleft(node.val)
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            res.append(list(level))
+            left_to_right = not left_to_right
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
         self.methods = [
             self.solution.zigzag_level_order,
+            self.solution.zigzag_level_order_v2,
         ]
 
     def test_zigzag_level_order(self):
