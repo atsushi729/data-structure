@@ -59,6 +59,38 @@ class Solution:
             left_to_right = not left_to_right
 
         return res
+    
+    def zigzag_level_order_v3(self, root: Optional[TreeNode]) -> list[list[int]]:
+        if not root:
+            return []
+
+        res = []
+        queue = deque([root])
+        left_to_right = True
+
+        while queue:
+            size = len(queue)
+            level = [0] * size
+
+            for i in range(size):
+                node = queue.popleft()
+
+                if left_to_right:
+                    index = i
+                else:
+                    index = size - 1 - i
+
+                level[index] = node.val
+
+                if node.left:
+                    queue.append(node.left)
+                if node.right:
+                    queue.append(node.right)
+
+            res.append(level)
+            left_to_right = not left_to_right
+
+        return res
 
 
 class TestSolution(unittest.TestCase):
@@ -67,6 +99,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.solution.zigzag_level_order,
             self.solution.zigzag_level_order_v2,
+            self.solution.zigzag_level_order_v3,
         ]
 
     def test_zigzag_level_order(self):
