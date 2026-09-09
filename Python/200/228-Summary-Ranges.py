@@ -26,12 +26,31 @@ class Solution:
 
         return res
 
+    def summary_ranges_v2(self, nums: list[int]) -> list[str]:
+        res = []
+        i = 0
+
+        while i < len(nums):
+            start = nums[i]
+
+            while i < len(nums) and nums[i] != nums[i - 1] + 1:
+                i += 1
+
+            if start != nums[i]:
+                res.append(str(start))
+            else:
+                res.append(f"{start}->{nums[i]}")
+            i += 1
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
         self.methods = [
-            self.solution.summary_ranges
+            self.solution.summary_ranges,
+            self.solution.summary_ranges_v2
         ]
 
     def generate_test_cases(self):
@@ -77,8 +96,8 @@ class TestSolution(unittest.TestCase):
         for method in self.methods:
             for case in self.generate_test_cases():
                 with self.subTest(
-                    method=method.__name__,
-                    case=case["name"],
+                        method=method.__name__,
+                        case=case["name"],
                 ):
                     result = method(case["nums"])
                     self.assertEqual(result, case["expected"])
