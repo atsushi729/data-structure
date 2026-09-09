@@ -33,25 +33,38 @@ class Solution:
         while i < len(nums):
             start = nums[i]
 
-            while i < len(nums) and nums[i] != nums[i - 1] + 1:
+            while i < len(nums) - 1 and nums[i] + 1 == nums[i + 1]:
                 i += 1
 
-            if start != nums[i]:
+            if start == nums[i]:
+                res.append(str(start))
+            else:
+                res.append(f"{start}->{nums[i]}")
+
+            i += 1
+
+        return res
+
+    def summary_ranges_v3(self, nums: list[int]) -> list[str]:
+        res = []
+        i = 0
+
+        while i < len(nums):
+            start = nums[i]
+
+            while i < len(nums) - 1 and nums[i] + 1 == nums[i + 1]:
+                i += 1
+            if start == nums[i]:
                 res.append(str(start))
             else:
                 res.append(f"{start}->{nums[i]}")
             i += 1
-
         return res
 
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
-        self.methods = [
-            self.solution.summary_ranges,
-            self.solution.summary_ranges_v2
-        ]
 
     def generate_test_cases(self):
         return [
@@ -92,12 +105,43 @@ class TestSolution(unittest.TestCase):
             },
         ]
 
+    def run_test_cases(self, method):
+        for case in self.generate_test_cases():
+            with self.subTest(
+                    method=method.__name__,
+                    case=case["name"],
+                    nums=case["nums"],
+            ):
+                result = method(case["nums"])
+
+                self.assertEqual(
+                    result,
+                    case["expected"],
+                    msg=(
+                        f"\n"
+                        f"Method   : {method.__name__}\n"
+                        f"Case     : {case['name']}\n"
+                        f"Input    : {case['nums']}\n"
+                        f"Expected : {case['expected']}\n"
+                        f"Actual   : {result}\n"
+                    ),
+                )
+
     def test_summary_ranges(self):
-        for method in self.methods:
-            for case in self.generate_test_cases():
-                with self.subTest(
-                        method=method.__name__,
-                        case=case["name"],
-                ):
-                    result = method(case["nums"])
-                    self.assertEqual(result, case["expected"])
+        self.run_test_cases(
+            self.solution.summary_ranges
+        )
+
+    def test_summary_ranges_v2(self):
+        self.run_test_cases(
+            self.solution.summary_ranges_v2
+        )
+
+    def test_summary_ranges_v3(self):
+        self.run_test_cases(
+            self.solution.summary_ranges_v3
+        )
+
+
+if __name__ == "__main__":
+    unittest.main()
