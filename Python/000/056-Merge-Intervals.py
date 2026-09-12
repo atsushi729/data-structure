@@ -82,49 +82,88 @@ class Solution:
         return res
 
 
+import unittest
+import copy
+
+
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.solution = Solution()
+
         cls.test_cases = [
-            (
-                [[1, 3], [2, 6], [8, 10], [15, 18]],
-                [[1, 6], [8, 10], [15, 18]],
-            ),
-            (
-                [[1, 3], [1, 5], [6, 7]],
-                [[1, 5], [6, 7]],
-            ),
-            (
-                [[1, 4], [4, 5]],
-                [[1, 5]],
-            ),
-            (
-                [[1, 4], [0, 2], [3, 5]],
-                [[0, 5]],
-            ),
+            {
+                "name": "Basic Merge",
+                "intervals": [[1, 3], [2, 6], [8, 10], [15, 18]],
+                "expected": [[1, 6], [8, 10], [15, 18]],
+            },
+            {
+                "name": "Same Start",
+                "intervals": [[1, 3], [1, 5], [6, 7]],
+                "expected": [[1, 5], [6, 7]],
+            },
+            {
+                "name": "Touching Intervals",
+                "intervals": [[1, 4], [4, 5]],
+                "expected": [[1, 5]],
+            },
+            {
+                "name": "Unsorted Intervals",
+                "intervals": [[1, 4], [0, 2], [3, 5]],
+                "expected": [[0, 5]],
+            },
+            {
+                "name": "Single Interval",
+                "intervals": [[1, 5]],
+                "expected": [[1, 5]],
+            },
+            {
+                "name": "No Overlap",
+                "intervals": [[1, 2], [3, 4], [5, 6]],
+                "expected": [[1, 2], [3, 4], [5, 6]],
+            },
+            {
+                "name": "Contained Interval",
+                "intervals": [[1, 10], [2, 3], [4, 5]],
+                "expected": [[1, 10]],
+            },
         ]
 
+    def run_test_cases(self, method):
+        for case in self.test_cases:
+            with self.subTest(
+                    method=method.__name__,
+                    case=case["name"],
+            ):
+                intervals = copy.deepcopy(case["intervals"])
+
+                result = method(intervals)
+
+                self.assertEqual(
+                    result,
+                    case["expected"],
+                    msg=(
+                        f"\n"
+                        f"Method   : {method.__name__}\n"
+                        f"Case     : {case['name']}\n"
+                        f"Input    : {case['intervals']}\n"
+                        f"Expected : {case['expected']}\n"
+                        f"Actual   : {result}\n"
+                    ),
+                )
+
     def test_merge(self):
-        for intervals, expected in self.test_cases:
-            with self.subTest(intervals=intervals, expected=expected):
-                result = self.solution.merge(intervals)
-                self.assertEqual(result, expected)
+        self.run_test_cases(self.solution.merge)
 
     def test_merge_v2(self):
-        for intervals, expected in self.test_cases:
-            with self.subTest(intervals=intervals, expected=expected):
-                result = self.solution.merge_v2(intervals)
-                self.assertEqual(result, expected)
+        self.run_test_cases(self.solution.merge_v2)
 
     def test_merge_v3(self):
-        for intervals, expected in self.test_cases:
-            with self.subTest(intervals=intervals, expected=expected):
-                result = self.solution.merge_v3(intervals)
-                self.assertEqual(result, expected)
+        self.run_test_cases(self.solution.merge_v3)
 
     def test_merge_v4(self):
-        for intervals, expected in self.test_cases:
-            with self.subTest(intervals=intervals, expected=expected):
-                result = self.solution.merge_v4(intervals)
-                self.assertEqual(result, expected)
+        self.run_test_cases(self.solution.merge_v4)
+
+
+if __name__ == "__main__":
+    unittest.main()
