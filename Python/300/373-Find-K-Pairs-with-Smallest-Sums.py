@@ -29,12 +29,48 @@ class Solution:
 
         return res
 
+    def k_smallest_pairs_v2(self, nums1: list[int], nums2: list[int], k: int) -> list[list[int]]:
+        if not nums1 or not nums2 or k <= 0:
+            return []
+
+        swapped = False
+
+        if len(nums1) > len(nums2):
+            nums1, nums2 = nums2, nums1
+            swapped = True
+
+        heap = []
+        result = []
+
+        for i in range(min(k, len(nums1))):
+            heapq.heappush(
+                heap,
+                (nums1[i] + nums2[0], i, 0)
+            )
+
+        while heap and len(result) < k:
+            _, i, j = heapq.heappop(heap)
+
+            if swapped:
+                result.append([nums2[j], nums1[i]])
+            else:
+                result.append([nums1[i], nums2[j]])
+
+            if j + 1 < len(nums2):
+                heapq.heappush(
+                    heap,
+                    (nums1[i] + nums2[j + 1], i, j + 1)
+                )
+
+        return result
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
         self.solution = Solution()
         self.methods = [
-            self.solution.k_smallest_pairs
+            self.solution.k_smallest_pairs,
+            self.solution.k_smallest_pairs_v2
         ]
 
     def test_case(self):
