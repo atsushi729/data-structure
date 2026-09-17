@@ -39,6 +39,23 @@ class Solution:
 
         return "/" + "/".join(stack)
 
+    def simplify_path_v4(self, path: str) -> str:
+        split_path = path.split("/")
+        stack = []
+
+        for char in split_path:
+            if not char or char == ".":
+                continue
+
+            if char == "..":
+                if stack:
+                    stack.pop()
+                continue
+            else:
+                stack.append(char)
+
+        return "/" + "/".join(stack)
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -67,3 +84,8 @@ class TestSolution(unittest.TestCase):
         for path, expected in self.test_cases:
             with self.subTest(path=path, expected=expected):
                 self.assertEqual(self.s.simplify_path_v3(path), expected)
+
+    def test_simplify_path_v4(self):
+        for path, expected in self.test_cases:
+            with self.subTest(path=path, expected=expected):
+                self.assertEqual(self.s.simplify_path_v4(path), expected)
