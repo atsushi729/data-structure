@@ -1,4 +1,5 @@
 import unittest
+from functools import lru_cache
 
 
 #################### Solution ####################
@@ -46,6 +47,17 @@ class Solution:
 
         return dfs(0)
 
+    def climb_stairs_v5(self, n: int) -> int:
+        @lru_cache
+        def dfs(i):
+            if i == n:
+                return 1
+            if i > n:
+                return 0
+            return dfs(i + 1) + dfs(i + 2)
+
+        return dfs(0)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -89,3 +101,11 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(Solution().climb_stairs_v4(5), 8)
         self.assertEqual(Solution().climb_stairs_v4(6), 13)
         self.assertEqual(Solution().climb_stairs_v4(7), 21)
+
+    def test_climb_stairs_v5(self):
+        self.assertEqual(Solution().climb_stairs_v5(2), 2)
+        self.assertEqual(Solution().climb_stairs_v5(3), 3)
+        self.assertEqual(Solution().climb_stairs_v5(4), 5)
+        self.assertEqual(Solution().climb_stairs_v5(5), 8)
+        self.assertEqual(Solution().climb_stairs_v5(6), 13)
+        self.assertEqual(Solution().climb_stairs_v5(7), 21)
