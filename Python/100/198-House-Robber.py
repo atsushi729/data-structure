@@ -21,6 +21,24 @@ class Solution:
 
         return dfs(0)
 
+    def rob_v3(self, nums: List[int]) -> int:
+        memo = {}
+
+        def get_max_money(house_index):
+            if house_index >= len(nums):
+                return 0
+            if house_index in memo:
+                return memo[house_index]
+
+            memo[house_index] = max(
+                get_max_money(house_index + 1),
+                nums[house_index] + get_max_money(house_index + 2)
+            )
+
+            return memo[house_index]
+
+        return get_max_money(0)
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -37,3 +55,8 @@ class TestSolution(unittest.TestCase):
         self.assertEqual(self.solution.rob_v2([1, 2, 3, 1]), 4)
         self.assertEqual(self.solution.rob_v2([2, 7, 9, 3, 1]), 12)
         self.assertEqual(self.solution.rob_v2([2, 1, 1, 2]), 4)
+
+    def test_rob_v3(self):
+        self.assertEqual(self.solution.rob_v3([1, 2, 3, 1]), 4)
+        self.assertEqual(self.solution.rob_v3([2, 7, 9, 3, 1]), 12)
+        self.assertEqual(self.solution.rob_v3([2, 1, 1, 2]), 4)
