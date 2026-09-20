@@ -11,7 +11,7 @@ class Solution:
         """
         memo = {}
 
-        def dfs(amount):
+        def count_coin(amount):
             if amount == 0:
                 return 0
 
@@ -22,12 +22,12 @@ class Solution:
 
             for coin in coins:
                 if amount - coin >= 0:
-                    res = min(res, 1 + dfs(amount - coin))
+                    res = min(res, 1 + count_coin(amount - coin))
 
             memo[amount] = res
             return res
 
-        min_coins = dfs(amount)
+        min_coins = count_coin(amount)
         return -1 if min_coins >= 1e9 else min_coins
 
     def coin_change_v2(self, coins: List[int], amount: int) -> int:
