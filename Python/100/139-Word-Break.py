@@ -3,7 +3,7 @@ import unittest
 
 
 class Solution:
-    def wordBreak(self, s: str, wordDict: List[str]) -> bool:
+    def word_break(self, s: str, wordDict: List[str]) -> bool:
 
         def dfs(i):
             if i == len(s):
@@ -19,7 +19,7 @@ class Solution:
 
         return dfs(0)
 
-    def wordBreak_v2(self, s: str, wordDict: List[str]) -> bool:
+    def word_break_v2(self, s: str, wordDict: List[str]) -> bool:
         word_set = set(wordDict)
 
         def dfs(i):
@@ -33,7 +33,7 @@ class Solution:
 
         return dfs(0)
 
-    def wordBreak_v3(self, s: str, wordDict: List[str]) -> bool:
+    def word_break_v3(self, s: str, wordDict: List[str]) -> bool:
         word_set = set(wordDict)
         dp = [False] * (len(s) + 1)
         dp[0] = True
@@ -46,7 +46,7 @@ class Solution:
 
         return dp[-1]
 
-    def wordBreak_v4(self, s: str, wordDict: List[str]) -> bool:
+    def word_break_v4(self, s: str, wordDict: List[str]) -> bool:
         wordSet = set(wordDict)
         t = 0
         for w in wordDict:
@@ -77,21 +77,21 @@ class TestSolution(unittest.TestCase):
         cls.sol = Solution()
 
     def test_wordBreak(self):
-        self.assertTrue(self.sol.wordBreak("leetcode", ["leet", "code"]))
-        self.assertTrue(self.sol.wordBreak("applepenapple", ["apple", "pen"]))
-        self.assertFalse(self.sol.wordBreak("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+        self.assertTrue(self.sol.word_break("leetcode", ["leet", "code"]))
+        self.assertTrue(self.sol.word_break("applepenapple", ["apple", "pen"]))
+        self.assertFalse(self.sol.word_break("catsandog", ["cats", "dog", "sand", "and", "cat"]))
 
     def test_wordBreak_v2(self):
-        self.assertTrue(self.sol.wordBreak_v2("leetcode", ["leet", "code"]))
-        self.assertTrue(self.sol.wordBreak_v2("applepenapple", ["apple", "pen"]))
-        self.assertFalse(self.sol.wordBreak_v2("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+        self.assertTrue(self.sol.word_break_v2("leetcode", ["leet", "code"]))
+        self.assertTrue(self.sol.word_break_v2("applepenapple", ["apple", "pen"]))
+        self.assertFalse(self.sol.word_break_v2("catsandog", ["cats", "dog", "sand", "and", "cat"]))
 
     def test_wordBreak_v3(self):
-        self.assertTrue(self.sol.wordBreak_v3("leetcode", ["leet", "code"]))
-        self.assertTrue(self.sol.wordBreak_v3("applepenapple", ["apple", "pen"]))
-        self.assertFalse(self.sol.wordBreak_v3("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+        self.assertTrue(self.sol.word_break_v3("leetcode", ["leet", "code"]))
+        self.assertTrue(self.sol.word_break_v3("applepenapple", ["apple", "pen"]))
+        self.assertFalse(self.sol.word_break_v3("catsandog", ["cats", "dog", "sand", "and", "cat"]))
 
     def test_wordBreak_v4(self):
-        self.assertTrue(self.sol.wordBreak_v4("leetcode", ["leet", "code"]))
-        self.assertTrue(self.sol.wordBreak_v4("applepenapple", ["apple", "pen"]))
-        self.assertFalse(self.sol.wordBreak_v4("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+        self.assertTrue(self.sol.word_break_v4("leetcode", ["leet", "code"]))
+        self.assertTrue(self.sol.word_break_v4("applepenapple", ["apple", "pen"]))
+        self.assertFalse(self.sol.word_break_v4("catsandog", ["cats", "dog", "sand", "and", "cat"]))
