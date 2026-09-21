@@ -69,6 +69,26 @@ class Solution:
 
         return dfs(0)
 
+    def word_break_v5(self, s: str, wordDict: list[str]) -> bool:
+        memo = {}
+        word_set = set(wordDict)
+
+        def dfs(i):
+            if i == len(s):
+                return True
+            if i in memo:
+                return memo[i]
+
+            for word in word_set:
+                if s.startswith(word, i):
+                    if dfs(i + len(word)):
+                        memo[i] = True
+                        return True
+            memo[i] = False
+            return False
+
+        return dfs(0)
+
 
 class TestSolution(unittest.TestCase):
 
@@ -95,3 +115,8 @@ class TestSolution(unittest.TestCase):
         self.assertTrue(self.sol.word_break_v4("leetcode", ["leet", "code"]))
         self.assertTrue(self.sol.word_break_v4("applepenapple", ["apple", "pen"]))
         self.assertFalse(self.sol.word_break_v4("catsandog", ["cats", "dog", "sand", "and", "cat"]))
+
+    def test_wordBreak_v5(self):
+        self.assertTrue(self.sol.word_break_v5("leetcode", ["leet", "code"]))
+        self.assertTrue(self.sol.word_break_v5("applepenapple", ["apple", "pen"]))
+        self.assertFalse(self.sol.word_break_v5("catsandog", ["cats", "dog", "sand", "and", "cat"]))
