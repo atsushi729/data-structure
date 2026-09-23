@@ -12,15 +12,30 @@ class ListNode:
 
 class Solution:
     def delete_duplicates(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        dummy = head
+        node = head
 
-        while head and head.next:
-            if head.val == head.next.val:
-                head.next = head.next.next
+        while node and node.next:
+            if node.val == node.next.val:
+                node.next = node.next.next
             else:
-                head = head.next
+                node = node.next
 
-        return dummy
+        return head
+
+    def delete_duplicates_v2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        if not head:
+            return None
+
+        seen = {head.val}
+        cur = head
+
+        while cur.next:
+            if cur.next.val in seen:
+                cur.next = cur.next.next
+            else:
+                seen.add(cur.next.val)
+                cur = cur.next
+        return head
 
 
 #################### Test Case ####################
