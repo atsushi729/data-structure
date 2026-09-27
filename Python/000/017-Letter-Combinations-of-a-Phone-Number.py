@@ -30,7 +30,7 @@ class Solution:
 
         return res
 
-    def letter_combinations(self, digits: str) -> List[str]:
+    def letter_combinations_v2(self, digits: str) -> List[str]:
         # Input validation
         if not digits:
             return []
@@ -71,6 +71,6 @@ class TestSolution(unittest.TestCase):
 
     def test_letter_combinations_v2(self):
         solution = Solution()
-        self.assertListEqual(solution.letter_combinations("23"), ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"])
-        self.assertListEqual(solution.letter_combinations(""), [])
-        self.assertListEqual(solution.letter_combinations("2"), ["a", "b", "c"])
+        self.assertListEqual(solution.letter_combinations_v2("23"), ["ad", "ae", "af", "bd", "be", "bf", "cd", "ce", "cf"])
+        self.assertListEqual(solution.letter_combinations_v2(""), [])
+        self.assertListEqual(solution.letter_combinations_v2("2"), ["a", "b", "c"])
