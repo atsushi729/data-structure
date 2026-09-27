@@ -18,6 +18,23 @@ class Solution:
         backtrack(1, [])
         return combinations
 
+    def combine_v2(self, n: int, k: int) -> list[list[int]]:
+        combinations = []
+
+        def backtrack(start, current):
+            if start > n:
+                if len(current) == k:
+                    combinations.append(current.copy())
+                return
+
+            current.append(start)
+            backtrack(start + 1, current)
+            current.pop()
+            backtrack(start + 1, current)
+
+        backtrack(1, [])
+        return combinations
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -25,6 +42,7 @@ class TestSolution(unittest.TestCase):
 
         self.methods = [
             self.solution.combine,
+            self.solution.combine_v2,
         ]
 
     def test_combine(self):
