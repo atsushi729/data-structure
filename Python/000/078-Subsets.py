@@ -58,27 +58,45 @@ class Solution:
 
 
 ##################### Test Case ####################
+##################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.solution = Solution()
+
+    def assertSubsetsEqual(self, actual, expected):
+        actual = {tuple(sorted(subset)) for subset in actual}
+        expected = {tuple(sorted(subset)) for subset in expected}
+        self.assertEqual(actual, expected)
+
     def test_subsets(self):
-        solution = Solution()
-        self.assertListEqual(solution.subsets([1, 2, 3]), [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
-        self.assertListEqual(solution.subsets([0]), [[0], []])
-        self.assertListEqual(solution.subsets([]), [[]])
+        test_cases = [
+            (
+                [1, 2, 3],
+                [[], [1], [2], [3], [1, 2], [1, 3], [2, 3], [1, 2, 3]],
+            ),
+            (
+                [0],
+                [[], [0]],
+            ),
+            (
+                [],
+                [[]],
+            ),
+        ]
 
-    def test_subset_v2(self):
-        solution = Solution()
-        self.assertListEqual(solution.subsets_v2([1, 2, 3]), [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
-        self.assertListEqual(solution.subsets_v2([0]), [[], [0]])
-        self.assertListEqual(solution.subsets_v2([]), [[]])
+        methods = [
+            self.solution.subsets,
+            self.solution.subsets_v2,
+            self.solution.subset_v3,
+            self.solution.subsets_v4,
+        ]
 
-    def test_subset_v3(self):
-        solution = Solution()
-        self.assertListEqual(solution.subset_v3([1, 2, 3]), [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]])
-        self.assertListEqual(solution.subset_v3([0]), [[], [0]])
-        self.assertListEqual(solution.subset_v3([]), [[]])
+        for method in methods:
+            for nums, expected in test_cases:
+                with self.subTest(method=method.__name__, nums=nums):
+                    actual = method(nums)
+                    self.assertSubsetsEqual(actual, expected)
 
-    def test_subset_v4(self):
-        solution = Solution()
-        self.assertListEqual(solution.subsets_v4([1, 2, 3]), [[1, 2, 3], [1, 2], [1, 3], [1], [2, 3], [2], [3], []])
-        self.assertListEqual(solution.subsets_v4([0]), [[0], []])
-        self.assertListEqual(solution.subsets_v4([]), [[]])
+
+if __name__ == "__main__":
+    unittest.main()
