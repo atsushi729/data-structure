@@ -38,6 +38,26 @@ class Solution:
         dfs(0, [], 0)
         return res
 
+    def combination_sum_3(self, candidates: List[int], target: int) -> List[List[int]]:
+        combinations = []
+        current = []
+
+        def backtrack(start, remain):
+            if remain == 0:
+                combinations.append(current[:])
+                return
+
+            if remain < 0:
+                return
+
+            for i in range(start, len(candidates)):
+                current.append(candidates[i])
+                backtrack(i, remain - candidates[i])
+                current.pop()
+
+        backtrack(0, target)
+        return combinations
+
 
 class TestSolution(unittest.TestCase):
     def test_combination_sum(self):
@@ -47,3 +67,7 @@ class TestSolution(unittest.TestCase):
     def test_combination_sum_v2(self):
         self.assertEqual(Solution().combination_sum_v2([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
         self.assertEqual(Solution().combination_sum_v2([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
+
+    def test_combination_sum_v3(self):
+        self.assertEqual(Solution().combination_sum_v3([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
+        self.assertEqual(Solution().combination_sum_v3([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
