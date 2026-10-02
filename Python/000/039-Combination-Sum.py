@@ -38,7 +38,7 @@ class Solution:
         dfs(0, [], 0)
         return res
 
-    def combination_sum_3(self, candidates: List[int], target: int) -> List[List[int]]:
+    def combination_sum_v3(self, candidates: List[int], target: int) -> List[List[int]]:
         combinations = []
         current = []
 
