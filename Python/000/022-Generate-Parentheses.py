@@ -40,6 +40,28 @@ def model_generate_parentheses(n: int) -> list:
     return result
 
 
+def generate_parenthesis_v2(n: int):
+    parentheses = []
+    stack = []
+
+    def backtrack(open_p, close_p):
+        if open_p == close_p == n:
+            parentheses.append("".join(stack))
+            return
+
+        if open_p < n:
+            stack.append("(")
+            backtrack(open_p + 1, close_p)
+            stack.pop()
+        if close_p < open_p:
+            stack.append(")")
+            backtrack(open_p, close_p + 1)
+            stack.pop()
+
+    backtrack(0, 0)
+    return parentheses
+
+
 #################### Test Case ####################
 class TestGenerateParenthesis(unittest.TestCase):
     def test_generate_parenthesis(self):
@@ -49,3 +71,7 @@ class TestGenerateParenthesis(unittest.TestCase):
     def test_model_generate_parentheses(self):
         self.assertEqual(model_generate_parentheses(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
         self.assertEqual(model_generate_parentheses(1), ["()"])
+
+    def test_generate_parenthesis_v2(self):
+        self.assertEqual(generate_parenthesis_v2(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
+        self.assertEqual(generate_parenthesis_v2(1), ["()"])
