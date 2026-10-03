@@ -16,6 +16,7 @@ class Solution:
             cur.append(candidates[i])
             dfs(i, cur, total + candidates[i])
             cur.pop()
+
             dfs(i + 1, cur, total)
 
         dfs(0, [], 0)
@@ -60,14 +61,49 @@ class Solution:
 
 
 class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.solution = Solution()
+
+        self.methods = [
+            self.solution.combination_sum,
+            self.solution.combination_sum_v2,
+            self.solution.combination_sum_v3,
+        ]
+
+        self.test_cases = [
+            (
+                [2, 3, 6, 7],
+                7,
+                [[2, 2, 3], [7]],
+            ),
+            (
+                [2, 3, 5],
+                8,
+                [[2, 2, 2, 2], [2, 3, 3], [3, 5]],
+            ),
+            (
+                [2],
+                1,
+                [],
+            ),
+            (
+                [1],
+                2,
+                [[1, 1]],
+            ),
+        ]
+
     def test_combination_sum(self):
-        self.assertEqual(Solution().combination_sum([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
-        self.assertEqual(Solution().combination_sum([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
+        for method in self.methods:
+            for candidates, target, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        candidates=candidates,
+                        target=target,
+                ):
+                    actual = method(candidates, target)
 
-    def test_combination_sum_v2(self):
-        self.assertEqual(Solution().combination_sum_v2([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
-        self.assertEqual(Solution().combination_sum_v2([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
+                    actual = sorted([sorted(x) for x in actual])
+                    expected_sorted = sorted([sorted(x) for x in expected])
 
-    def test_combination_sum_v3(self):
-        self.assertEqual(Solution().combination_sum_v3([2, 3, 6, 7], 7), [[2, 2, 3], [7]])
-        self.assertEqual(Solution().combination_sum_v3([2, 3, 5], 8), [[2, 2, 2, 2], [2, 3, 3], [3, 5]])
+                    self.assertEqual(actual, expected_sorted)
