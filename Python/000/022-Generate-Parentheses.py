@@ -62,6 +62,19 @@ def generate_parenthesis_v2(n: int):
     return parentheses
 
 
+def generate_parenthesis_v3(n: int):
+    res = [[] for _ in range(n + 1)]
+    res[0] = [""]
+
+    for k in range(1, n + 1):
+        for i in range(k - 1, -1, -1):
+            for left in res[i]:
+                for right in res[k - i - 1]:
+                    res[k].append("(" + left + ")" + right)
+
+    return res[n]
+
+
 #################### Test Case ####################
 class TestGenerateParenthesis(unittest.TestCase):
     def test_generate_parenthesis(self):
@@ -75,3 +88,7 @@ class TestGenerateParenthesis(unittest.TestCase):
     def test_generate_parenthesis_v2(self):
         self.assertEqual(generate_parenthesis_v2(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
         self.assertEqual(generate_parenthesis_v2(1), ["()"])
+
+    def test_generate_parenthesis_v3(self):
+        self.assertEqual(generate_parenthesis_v3(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
+        self.assertEqual(generate_parenthesis_v3(1), ["()"])
