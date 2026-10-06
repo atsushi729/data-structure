@@ -77,18 +77,21 @@ def generate_parenthesis_v3(n: int):
 
 #################### Test Case ####################
 class TestGenerateParenthesis(unittest.TestCase):
+    implementations = [
+        generate_parenthesis,
+        model_generate_parentheses,
+        generate_parenthesis_v2,
+        generate_parenthesis_v3,
+    ]
+
+    test_cases = [
+        (1, ["()"]),
+        (2, ["(())", "()()"]),
+        (3, ["((()))", "(()())", "(())()", "()(())", "()()()"]),
+    ]
+
     def test_generate_parenthesis(self):
-        self.assertEqual(generate_parenthesis(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
-        self.assertEqual(generate_parenthesis(1), ["()"])
-
-    def test_model_generate_parentheses(self):
-        self.assertEqual(model_generate_parentheses(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
-        self.assertEqual(model_generate_parentheses(1), ["()"])
-
-    def test_generate_parenthesis_v2(self):
-        self.assertEqual(generate_parenthesis_v2(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
-        self.assertEqual(generate_parenthesis_v2(1), ["()"])
-
-    def test_generate_parenthesis_v3(self):
-        self.assertEqual(generate_parenthesis_v3(3), ["((()))", "(()())", "(())()", "()(())", "()()()"])
-        self.assertEqual(generate_parenthesis_v3(1), ["()"])
+        for func in self.implementations:
+            for n, expected in self.test_cases:
+                with self.subTest(function=func.__name__, n=n):
+                    self.assertEqual(func(n), expected)
