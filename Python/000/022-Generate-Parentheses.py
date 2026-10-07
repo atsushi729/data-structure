@@ -75,6 +75,28 @@ def generate_parenthesis_v3(n: int):
     return res[n]
 
 
+def generate_parenthesis_v4(n: int):
+    parenthesis = []
+    path = []
+
+    def backtrack(open_count, close_count):
+        if open_count == close_count == n:
+            parenthesis.append("".join(path))
+            return
+
+        if open_count < n:
+            path.append("(")
+            backtrack(open_count + 1, close_count)
+            path.pop()
+        if close_count < open_count:
+            path.append(")")
+            backtrack(open_count, close_count + 1)
+            path.pop()
+
+    backtrack(0, 0)
+    return parenthesis
+
+
 #################### Test Case ####################
 class TestGenerateParenthesis(unittest.TestCase):
     implementations = [
@@ -82,6 +104,7 @@ class TestGenerateParenthesis(unittest.TestCase):
         model_generate_parentheses,
         generate_parenthesis_v2,
         generate_parenthesis_v3,
+        generate_parenthesis_v4,
     ]
 
     test_cases = [
