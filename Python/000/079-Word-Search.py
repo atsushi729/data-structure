@@ -54,12 +54,68 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def test_exist(self):
-        solution = Solution()
-        self.assertEqual(solution.exist([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"),
-                         True)
+    def setUp(self):
+        self.solution = Solution()
+        self.implementations = [
+            self.solution.exist,
+            self.solution.exist_v2,
+        ]
 
-    def test_exist_v2(self):
-        solution = Solution()
-        self.assertEqual(solution.exist_v2([["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"),
-                         True)
+    def test_exist(self):
+        test_cases = [
+            # Basic cases
+            (
+                [["A", "B", "C", "E"],
+                 ["S", "F", "C", "S"],
+                 ["A", "D", "E", "E"]],
+                "ABCCED",
+                True,
+            ),
+            (
+                [["A", "B", "C", "E"],
+                 ["S", "F", "C", "S"],
+                 ["A", "D", "E", "E"]],
+                "SEE",
+                True,
+            ),
+            (
+                [["A", "B", "C", "E"],
+                 ["S", "F", "C", "S"],
+                 ["A", "D", "E", "E"]],
+                "ABCB",
+                False,
+            ),
+
+            # Single cell
+            ([["A"]], "A", True),
+            ([["A"]], "B", False),
+
+            # Cannot reuse the same cell
+            ([["A", "A"]], "AAA", False),
+
+            # Word longer than the number of cells
+            ([["A", "B"]], "ABC", False),
+
+            # Single row
+            ([["A", "B", "C"]], "ABC", True),
+
+            # Single column
+            ([["A"], ["B"], ["C"]], "ABC", True),
+
+            # No matching path
+            ([["A", "B"], ["C", "D"]], "ABDC", True),
+            ([["A", "B"], ["C", "D"]], "ABCD", False),
+        ]
+
+        for func in self.implementations:
+            for board, word, expected in test_cases:
+                with self.subTest(
+                        function=func.__name__,
+                        board=board,
+                        word=word,
+                ):
+                    self.assertEqual(func(board, word), expected)
+
+
+if __name__ == "__main__":
+    unittest.main()
