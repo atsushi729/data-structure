@@ -2,7 +2,7 @@ import unittest
 
 
 class Solution:
-    def search_insert(self, nums: [int], target: int) -> int:
+    def search_insert(self, nums: list[int], target: int) -> int:
         """
         Time complexity: O(log n)
         Space complexity: O(1)
@@ -21,7 +21,7 @@ class Solution:
 
         return left
 
-    def search_insert_v2(self, nums: [int], target: int) -> int:
+    def search_insert_v2(self, nums: list[int], target: int) -> int:
         """
         Time complexity: O(n)
         Space complexity: O(1)
@@ -31,19 +31,21 @@ class Solution:
                 return i
         return len(nums)
 
-    def search_insert_v3(self, nums: [int], target: int) -> int:
+    def search_insert_v3(self, nums: list[int], target: int) -> int:
         """
-        Time complexity: O(n)
+        Time complexity: O(log n)
         Space complexity: O(1)
         """
         left, right = 0, len(nums)
 
         while left < right:
             mid = (left + right) // 2
+
             if nums[mid] < target:
                 left = mid + 1
             else:
                 right = mid
+
         return left
 
 
@@ -51,27 +53,54 @@ class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.s = Solution()
+        cls.methods = [
+            "search_insert",
+            "search_insert_v2",
+            "search_insert_v3",
+        ]
+
         cls.test_cases = [
+            # Basic cases
             ([1, 3, 5, 6], 5, 2),
             ([1, 3, 5, 6], 2, 1),
             ([1, 3, 5, 6], 7, 4),
             ([1, 3, 5, 6], 0, 0),
+
+            # Empty array
+            ([], 5, 0),
+
+            # Single element
+            ([1], 1, 0),
+            ([1], 0, 0),
+            ([1], 2, 1),
+
+            # Boundary cases
+            ([1, 3, 5, 6], 1, 0),
+            ([1, 3, 5, 6], 6, 3),
+            ([1, 3, 5, 6], 4, 2),
+
+            # Two elements
+            ([1, 3], 2, 1),
+            ([1, 3], 3, 1),
+
+            # Negative numbers
+            ([-5, -3, -1, 0, 2], -2, 2),
+            ([-5, -3, -1, 0, 2], -6, 0),
         ]
 
     def test_search_insert(self):
-        for nums, target, expected in self.test_cases:
-            with self.subTest(nums=nums, target=target):
-                result = self.s.search_insert(nums, target)
-                self.assertEqual(result, expected)
+        for method_name in self.methods:
+            method = getattr(self.s, method_name)
 
-    def test_search_v2(self):
-        for nums, target, expected in self.test_cases:
-            with self.subTest(nums=nums, target=target):
-                result = self.s.search_insert_v2(nums, target)
-                self.assertEqual(result, expected)
+            for nums, target, expected in self.test_cases:
+                with self.subTest(
+                        method=method_name,
+                        nums=nums,
+                        target=target,
+                ):
+                    result = method(nums, target)
+                    self.assertEqual(result, expected)
 
-    def test_search_v3(self):
-        for nums, target, expected in self.test_cases:
-            with self.subTest(nums=nums, target=target):
-                result = self.s.search_insert_v3(nums, target)
-                self.assertEqual(result, expected)
+
+if __name__ == "__main__":
+    unittest.main()
