@@ -68,40 +68,51 @@ class Solution:
         return [1] + digits
 
 
+#################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.solution = Solution()
-        cls.test_cases = [
-            ([1, 2, 3], [1, 2, 4]),
-            ([4, 3, 2, 1], [4, 3, 2, 2]),
-            ([0], [1]),
-            ([9], [1, 0]),
-            ([9, 9], [1, 0, 0]),
-            ([1, 9, 9], [2, 0, 0]),
-            ([9, 9, 9], [1, 0, 0, 0]),
+    def setUp(self):
+        self.solution = Solution()
+        self.implementations = [
+            self.solution.plus_one,
+            self.solution.plus_one2,
+            self.solution.plus_one3,
+            self.solution.plus_one4,
         ]
 
     def test_plus_one(self):
-        for digits, expected in self.test_cases:
-            with self.subTest(digits=digits):
-                result = self.solution.plus_one(digits)
-                self.assertEqual(result, expected)
+        test_cases = [
+            # Basic cases
+            ([1, 2, 3], [1, 2, 4]),
+            ([4, 3, 2, 1], [4, 3, 2, 2]),
 
-    def test_plus_one2(self):
-        for digits, expected in self.test_cases:
-            with self.subTest(digits=digits):
-                result = self.solution.plus_one2(digits)
-                self.assertEqual(result, expected)
+            # Single digit
+            ([0], [1]),
+            ([5], [6]),
+            ([9], [1, 0]),
 
-    def test_plus_one3(self):
-        for digits, expected in self.test_cases:
-            with self.subTest(digits=digits):
-                result = self.solution.plus_one3(digits)
-                self.assertEqual(result, expected)
+            # Carry propagation
+            ([1, 2, 9], [1, 3, 0]),
+            ([1, 9, 9], [2, 0, 0]),
+            ([9, 9], [1, 0, 0]),
+            ([9, 9, 9], [1, 0, 0, 0]),
 
-    def test_plus_one4(self):
-        for digits, expected in self.test_cases:
-            with self.subTest(digits=digits):
-                result = self.solution.plus_one4(digits)
-                self.assertEqual(result, expected)
+            # No carry
+            ([1, 0, 0], [1, 0, 1]),
+            ([9, 0, 0], [9, 0, 1]),
+        ]
+
+        for func in self.implementations:
+            for digits, expected in test_cases:
+                with self.subTest(
+                        function=func.__name__,
+                        digits=digits,
+                ):
+                    original = digits[:]
+                    result = func(digits)
+
+                    self.assertEqual(result, expected)
+                    self.assertEqual(digits, original)
+
+
+if __name__ == "__main__":
+    unittest.main()
