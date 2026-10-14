@@ -65,6 +65,24 @@ class Solution:
         backtrack()
         return result
 
+    def permute_v5(self, nums: List[int]) -> List[List[int]]:
+        permutations = []
+
+        def backtrack(cur):
+            if len(cur) == len(nums):
+                permutations.append(cur.copy())
+                return
+
+            for num in nums:
+                if num in cur:
+                    continue
+                cur.append(num)
+                backtrack(cur)
+                cur.pop()
+
+        backtrack([])
+        return permutations
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -169,5 +187,31 @@ class TestSolution(unittest.TestCase):
         )
         self.assertListEqual(
             sorted(solution.permute_v4([])),
+            sorted([[]])
+        )
+
+    def test_permute_v5(self):
+        solution = Solution()
+        self.assertListEqual(
+            sorted(solution.permute_v5([1, 2, 3])),
+            sorted([
+                [1, 2, 3],
+                [1, 3, 2],
+                [2, 1, 3],
+                [2, 3, 1],
+                [3, 1, 2],
+                [3, 2, 1]
+            ])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v5([0, 1])),
+            sorted([[0, 1], [1, 0]])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v5([1])),
+            sorted([[1]])
+        )
+        self.assertListEqual(
+            sorted(solution.permute_v5([])),
             sorted([[]])
         )
