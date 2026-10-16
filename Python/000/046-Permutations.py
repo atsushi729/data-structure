@@ -86,132 +86,43 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.solution = Solution()
+        self.implementations = [
+            self.solution.permute,
+            self.solution.permute_v2,
+            self.solution.permute_v3,
+            self.solution.permute_v4,
+            self.solution.permute_v5,
+        ]
+
     def test_permute(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.permute([1, 2, 3])),
-            sorted([
+        test_cases = [
+            (
                 [1, 2, 3],
-                [1, 3, 2],
-                [2, 1, 3],
-                [2, 3, 1],
-                [3, 1, 2],
-                [3, 2, 1]
-            ])
-        )
-        self.assertListEqual(
-            sorted(solution.permute([0, 1])),
-            sorted([[0, 1], [1, 0]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute([1])),
-            sorted([[1]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute([])),
-            sorted([[]])
-        )
+                [
+                    [1, 2, 3],
+                    [1, 3, 2],
+                    [2, 1, 3],
+                    [2, 3, 1],
+                    [3, 1, 2],
+                    [3, 2, 1],
+                ],
+            ),
+            ([0, 1], [[0, 1], [1, 0]]),
+            ([1], [[1]]),
+            ([], [[]]),
+        ]
 
-    def test_permute_v2(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.permute_v2([1, 2, 3])),
-            sorted([
-                [1, 2, 3],
-                [1, 3, 2],
-                [2, 1, 3],
-                [2, 3, 1],
-                [3, 2, 1],
-                [3, 1, 2]
-            ])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v2([0, 1])),
-            sorted([[0, 1], [1, 0]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v2([1])),
-            sorted([[1]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v2([])),
-            sorted([[]])
-        )
+        for func in self.implementations:
+            for nums, expected in test_cases:
+                with self.subTest(func=func.__name__, nums=nums):
+                    result = func(nums.copy())
+                    self.assertEqual(
+                        sorted(result),
+                        sorted(expected),
+                    )
 
-    def test_permute_v3(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.permute_v3([1, 2, 3])),
-            sorted([
-                [1, 2, 3],
-                [1, 3, 2],
-                [2, 1, 3],
-                [2, 3, 1],
-                [3, 1, 2],
-                [3, 2, 1]
-            ])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v3([0, 1])),
-            sorted([[0, 1], [1, 0]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v3([1])),
-            sorted([[1]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v3([])),
-            sorted([[]])
-        )
 
-    def test_permute_v4(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.permute_v4([1, 2, 3])),
-            sorted([
-                [1, 2, 3],
-                [1, 3, 2],
-                [2, 1, 3],
-                [2, 3, 1],
-                [3, 1, 2],
-                [3, 2, 1]
-            ])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v4([0, 1])),
-            sorted([[0, 1], [1, 0]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v4([1])),
-            sorted([[1]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v4([])),
-            sorted([[]])
-        )
-
-    def test_permute_v5(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.permute_v5([1, 2, 3])),
-            sorted([
-                [1, 2, 3],
-                [1, 3, 2],
-                [2, 1, 3],
-                [2, 3, 1],
-                [3, 1, 2],
-                [3, 2, 1]
-            ])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v5([0, 1])),
-            sorted([[0, 1], [1, 0]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v5([1])),
-            sorted([[1]])
-        )
-        self.assertListEqual(
-            sorted(solution.permute_v5([])),
-            sorted([[]])
-        )
+if __name__ == "__main__":
+    unittest.main()
