@@ -1,5 +1,5 @@
-from typing import List
 import unittest
+from typing import List
 from collections import deque
 
 
@@ -22,9 +22,9 @@ class Solution:
 
         for r in range(rows):
             if board[r][0] == "O":
-                capture(r, 0, )
+                capture(r, 0)
             if board[r][cols - 1] == "O":
-                capture(r, cols - 1, )
+                capture(r, cols - 1)
 
         for c in range(cols):
             if board[0][c] == "O":
@@ -74,112 +74,108 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def test_solve(self):
-        solution = Solution()
-        board = [
-            ["X", "X", "X", "X"],
-            ["X", "O", "O", "X"],
-            ["X", "X", "O", "X"],
-            ["X", "O", "X", "X"]
+    def setUp(self):
+        self.solution = Solution()
+        self.implementations = [
+            self.solution.solve,
+            self.solution.solve_v2,
         ]
-        solution.solve(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X", "X", "X", "X"],
-                ["X", "X", "X", "X"],
-                ["X", "X", "X", "X"],
-                ["X", "O", "X", "X"]
-            ]
-        )
-        board = [
-            ["X"]
-        ]
-        solution.solve(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X"]
-            ]
-        )
-        board = [
-            ["O"]
-        ]
-        solution.solve(board)
-        self.assertListEqual(
-            board,
-            [
-                ["O"]
-            ]
-        )
-        board = [
-            ["X", "O", "X", "X"],
-            ["X", "O", "O", "X"],
-            ["X", "X", "O", "X"],
-            ["X", "O", "X", "X"]
-        ]
-        solution.solve(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X", "O", "X", "X"],
-                ["X", "O", "O", "X"],
-                ["X", "X", "O", "X"],
-                ["X", "O", "X", "X"]
-            ]
-        )
 
-    def test_solve_v2(self):
-        solution = Solution()
-        board = [
-            ["X", "X", "X", "X"],
-            ["X", "O", "O", "X"],
-            ["X", "X", "O", "X"],
-            ["X", "O", "X", "X"]
+    def test_solve(self):
+        test_cases = [
+            # Basic case
+            (
+                [
+                    ["X", "X", "X", "X"],
+                    ["X", "O", "O", "X"],
+                    ["X", "X", "O", "X"],
+                    ["X", "O", "X", "X"],
+                ],
+                [
+                    ["X", "X", "X", "X"],
+                    ["X", "X", "X", "X"],
+                    ["X", "X", "X", "X"],
+                    ["X", "O", "X", "X"],
+                ],
+            ),
+
+            # Single X
+            (
+                [["X"]],
+                [["X"]],
+            ),
+
+            # Single O
+            (
+                [["O"]],
+                [["O"]],
+            ),
+
+            # Connected to boundary
+            (
+                [
+                    ["X", "O", "X", "X"],
+                    ["X", "O", "O", "X"],
+                    ["X", "X", "O", "X"],
+                    ["X", "O", "X", "X"],
+                ],
+                [
+                    ["X", "O", "X", "X"],
+                    ["X", "O", "O", "X"],
+                    ["X", "X", "O", "X"],
+                    ["X", "O", "X", "X"],
+                ],
+            ),
+
+            # All O
+            (
+                [
+                    ["O", "O"],
+                    ["O", "O"],
+                ],
+                [
+                    ["O", "O"],
+                    ["O", "O"],
+                ],
+            ),
+
+            # All X
+            (
+                [
+                    ["X", "X"],
+                    ["X", "X"],
+                ],
+                [
+                    ["X", "X"],
+                    ["X", "X"],
+                ],
+            ),
+
+            # Multiple surrounded regions
+            (
+                [
+                    ["X", "X", "X", "X", "X"],
+                    ["X", "O", "X", "O", "X"],
+                    ["X", "O", "X", "O", "X"],
+                    ["X", "X", "X", "X", "X"],
+                ],
+                [
+                    ["X", "X", "X", "X", "X"],
+                    ["X", "X", "X", "X", "X"],
+                    ["X", "X", "X", "X", "X"],
+                    ["X", "X", "X", "X", "X"],
+                ],
+            ),
         ]
-        solution.solve_v2(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X", "X", "X", "X"],
-                ["X", "X", "X", "X"],
-                ["X", "X", "X", "X"],
-                ["X", "O", "X", "X"]
-            ]
-        )
-        board = [
-            ["X"]
-        ]
-        solution.solve_v2(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X"]
-            ]
-        )
-        board = [
-            ["O"]
-        ]
-        solution.solve_v2(board)
-        self.assertListEqual(
-            board,
-            [
-                ["O"]
-            ]
-        )
-        board = [
-            ["X", "O", "X", "X"],
-            ["X", "O", "O", "X"],
-            ["X", "X", "O", "X"],
-            ["X", "O", "X", "X"]
-        ]
-        solution.solve_v2(board)
-        self.assertListEqual(
-            board,
-            [
-                ["X", "O", "X", "X"],
-                ["X", "O", "O", "X"],
-                ["X", "X", "O", "X"],
-                ["X", "O", "X", "X"]
-            ]
-        )
+
+        for func in self.implementations:
+            for i, (board, expected) in enumerate(test_cases):
+                with self.subTest(
+                        implementation=func.__name__,
+                        case=i,
+                ):
+                    board_copy = [row[:] for row in board]
+                    result = func(board_copy)
+
+                    self.assertIsNone(result)
+                    self.assertEqual(board_copy, expected)
