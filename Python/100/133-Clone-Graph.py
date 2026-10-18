@@ -48,44 +48,106 @@ class Solution:
 
 
 class TestSolution(unittest.TestCase):
-    def test_cloneGraph(self):
-        solution = Solution()
+    def setUp(self):
+        self.solution = Solution()
+        self.implementations = [
+            self.solution.cloneGraph,
+            self.solution.clone_graph_v2,
+        ]
 
-        node1 = Node(1)
-        node2 = Node(2)
-        node3 = Node(3)
-        node4 = Node(4)
-        node1.neighbors = [node2, node4]
-        node2.neighbors = [node1, node3]
-        node3.neighbors = [node2, node4]
-        node4.neighbors = [node1, node3]
+    def build_graph(self, adj_list):
+        if not adj_list:
+            return None
 
-        copy1 = solution.cloneGraph(node1)
-        self.assertEqual(copy1.val, 1)
-        self.assertEqual(copy1.neighbors[0].val, 2)
-        self.assertEqual(copy1.neighbors[1].val, 4)
-        self.assertEqual(copy1.neighbors[0].neighbors[0].val, 1)
-        self.assertEqual(copy1.neighbors[0].neighbors[1].val, 3)
-        self.assertEqual(copy1.neighbors[1].neighbors[0].val, 1)
-        self.assertEqual(copy1.neighbors[1].neighbors[1].val, 3)
+        nodes = [Node(i + 1) for i in range(len(adj_list))]
 
-    def test_clone_graph_v2(self):
-        solution = Solution()
+        for i, neighbors in enumerate(adj_list):
+            nodes[i].neighbors = [
+                nodes[j - 1] for j in neighbors
+            ]
 
-        node1 = Node(1)
-        node2 = Node(2)
-        node3 = Node(3)
-        node4 = Node(4)
-        node1.neighbors = [node2, node4]
-        node2.neighbors = [node1, node3]
-        node3.neighbors = [node2, node4]
-        node4.neighbors = [node1, node3]
+        return nodes[0]
 
-        copy1 = solution.clone_graph_v2(node1)
-        self.assertEqual(copy1.val, 1)
-        self.assertEqual(copy1.neighbors[0].val, 2)
-        self.assertEqual(copy1.neighbors[1].val, 4)
-        self.assertEqual(copy1.neighbors[0].neighbors[0].val, 1)
-        self.assertEqual(copy1.neighbors[0].neighbors[1].val, 3)
-        self.assertEqual(copy1.neighbors[1].neighbors[0].val, 1)
-        self.assertEqual(copy1.neighbors[1].neighbors[1].val, 3)
+    def assert_deep_copy(self, original, cloned):
+        if original is None:
+            self.assertIsNone(cloned)
+            return
+
+        visited = set()
+        stack = [(original, cloned)]
+
+        while stack:
+            old, new = stack.pop()
+
+            if old in visited:
+                continue
+
+            visited.add(old)
+
+            # Different objects
+            self.assertIsNot(old, new)
+
+            # Same values and structure
+            self.assertEqual(old.val, new.val)
+            self.assertEqual(
+                len(old.neighbors),
+                len(new.neighbors)
+            )
+
+            for old_nei, new_nei in zip(
+                    old.neighbors, new.neighbors
+            ):
+                self.assertEqual(old_nei.val, new_nei.val)
+                self.assertIsNot(old_nei, new_nei)
+                stack.append((old_nei, new_nei))
+
+    def test_clone_graph(self):
+        test_cases = [
+            # Empty graph
+            [],
+
+            # Single node
+            [[]],
+
+            # Two connected nodes
+            [[2], [1]],
+
+            # Four nodes with cycle
+            [[2, 4], [1, 3], [2, 4], [1, 3]],
+
+            # Triangle
+            [[2, 3], [1, 3], [1, 2]],
+
+            # Linear graph
+            [[2], [1, 3], [2, 4], [3]],
+
+            # Self-loop
+            [[1]],
+        ]
+
+        for impl in self.implementations:
+            for adj_list in test_cases:
+                with self.subTest(
+                        impl=impl.__name__,
+                        adj_list=adj_list
+                ):
+                    original = self.build_graph(adj_list)
+                    cloned = impl(original)
+
+                    self.assert_deep_copy(original, cloned)
+
+    def test_independent_copy(self):
+        for impl in self.implementations:
+            with self.subTest(impl=impl.__name__):
+                original = self.build_graph([[2], [1]])
+                cloned = impl(original)
+
+                cloned.val = 100
+                cloned.neighbors[0].val = 200
+
+                self.assertEqual(original.val, 1)
+                self.assertEqual(original.neighbors[0].val, 2)
+
+
+if __name__ == "__main__":
+    unittest.main()
