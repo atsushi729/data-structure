@@ -1,9 +1,9 @@
+from typing import Optional
+import unittest
+
 """
 # Definition for a Node.
 """
-
-from typing import Optional
-import unittest
 
 
 class Node:
@@ -14,14 +14,14 @@ class Node:
 
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        oldToNew = {}
+        old_to_new = {}
 
         def dfs(node):
-            if node in oldToNew:
-                return oldToNew[node]
+            if node in old_to_new:
+                return old_to_new[node]
 
             copy = Node(node.val)
-            oldToNew[node] = copy
+            old_to_new[node] = copy
             for nei in node.neighbors:
                 copy.neighbors.append(dfs(nei))
             return copy
