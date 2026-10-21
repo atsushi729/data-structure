@@ -37,7 +37,46 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
+    def setUp(self):
+        self.solution = Solution()
+
     def test_can_finish(self):
-        self.assertEqual(Solution().can_finish(3, [[1, 0], [2, 1]]), True)
-        self.assertEqual(Solution().can_finish(2, [[1, 0]]), True)
-        self.assertEqual(Solution().can_finish(2, [[1, 0], [0, 1]]), False)
+        test_cases = [
+            # No prerequisites
+            (2, [], True),
+            (1, [], True),
+
+            # Simple dependencies
+            (2, [[1, 0]], True),
+            (3, [[1, 0], [2, 1]], True),
+
+            # Cyclic dependencies
+            (2, [[1, 0], [0, 1]], False),
+            (3, [[1, 0], [2, 1], [0, 2]], False),
+
+            # Self dependency
+            (1, [[0, 0]], False),
+
+            # Multiple prerequisites
+            (4, [[1, 0], [2, 0], [3, 1], [3, 2]], True),
+
+            # Disconnected components
+            (5, [[1, 0], [3, 2]], True),
+
+            # Cycle in one component
+            (5, [[1, 0], [0, 1], [3, 2]], False),
+        ]
+
+        for num_courses, prerequisites, expected in test_cases:
+            with self.subTest(
+                    num_courses=num_courses,
+                    prerequisites=prerequisites,
+            ):
+                self.assertEqual(
+                    self.solution.can_finish(num_courses, prerequisites),
+                    expected,
+                )
+
+
+if __name__ == "__main__":
+    unittest.main()
