@@ -1,4 +1,5 @@
 from typing import List
+from collections import deque
 import unittest
 
 
@@ -34,6 +35,28 @@ class Solution:
                 return False
         return True
 
+    def can_finish2(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        indegree = [0] * numCourses
+        adj = [[] for i in range(numCourses)]
+        for src, dst in prerequisites:
+            indegree[dst] += 1
+            adj[src].append(dst)
+
+        q = deque()
+        for n in range(numCourses):
+            if indegree[n] == 0:
+                q.append(n)
+
+        finish = 0
+        while q:
+            node = q.popleft()
+            finish += 1
+            for nei in adj[node]:
+                indegree[nei] -= 1
+                if indegree[nei] == 0:
+                    q.append(nei)
+        return finish == numCourses
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -65,17 +88,27 @@ class TestSolution(unittest.TestCase):
 
             # Cycle in one component
             (5, [[1, 0], [0, 1], [3, 2]], False),
+
+            # Additional edge cases
+            (1, [], True),
+            (4, [[1, 0], [2, 1], [3, 2]], True),
+            (4, [[1, 0], [2, 1], [3, 2], [1, 3]], False),
         ]
 
-        for num_courses, prerequisites, expected in test_cases:
-            with self.subTest(
-                    num_courses=num_courses,
-                    prerequisites=prerequisites,
-            ):
-                self.assertEqual(
-                    self.solution.can_finish(num_courses, prerequisites),
-                    expected,
-                )
+        for method in [
+            self.solution.can_finish,
+            self.solution.can_finish2,
+        ]:
+            for num_courses, prerequisites, expected in test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        num_courses=num_courses,
+                        prerequisites=prerequisites,
+                ):
+                    self.assertEqual(
+                        method(num_courses, prerequisites),
+                        expected,
+                    )
 
 
 if __name__ == "__main__":
