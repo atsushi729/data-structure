@@ -1,4 +1,5 @@
 from typing import List
+from collections import deque
 import unittest
 
 
@@ -34,6 +35,31 @@ class Solution:
 
         return output
 
+    def find_order2(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        graph = {i: [] for i in range(numCourses)}
+        in_degree = [0] * numCourses
+
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+            in_degree[course] += 1
+
+        queue = deque(
+            i for i in range(numCourses) if in_degree[i] == 0
+        )
+        order = []
+
+        while queue:
+            course = queue.popleft()
+            order.append(course)
+
+            for next_course in graph[course]:
+                in_degree[next_course] -= 1
+
+                if in_degree[next_course] == 0:
+                    queue.append(next_course)
+
+        return order if len(order) == numCourses else []
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -67,33 +93,42 @@ class TestSolution(unittest.TestCase):
             (5, [[1, 0], [0, 1], [3, 2]], False),
         ]
 
-        for num_courses, prerequisites, expected in test_cases:
-            with self.subTest(
-                    num_courses=num_courses,
-                    prerequisites=prerequisites,
-            ):
-                result = self.solution.find_order(
-                    num_courses, prerequisites
-                )
+        methods = [
+            self.solution.find_order,
+            self.solution.find_order2,
+        ]
 
-                if not expected:
-                    self.assertEqual(result, [])
-                    continue
+        for method in methods:
+            for num_courses, prerequisites, expected in test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        num_courses=num_courses,
+                        prerequisites=prerequisites,
+                ):
+                    result = method(num_courses, prerequisites)
 
-                # All courses must appear exactly once
-                self.assertEqual(len(result), num_courses)
-                self.assertEqual(set(result), set(range(num_courses)))
+                    if not expected:
+                        self.assertEqual(result, [])
+                        continue
 
-                # Prerequisites must come before their courses
-                position = {
-                    course: i for i, course in enumerate(result)
-                }
-
-                for course, prerequisite in prerequisites:
-                    self.assertLess(
-                        position[prerequisite],
-                        position[course],
+                    # All courses must appear exactly once
+                    self.assertEqual(len(result), num_courses)
+                    self.assertEqual(
+                        set(result),
+                        set(range(num_courses)),
                     )
+
+                    # Prerequisites must come before their courses
+                    position = {
+                        course: i
+                        for i, course in enumerate(result)
+                    }
+
+                    for course, prerequisite in prerequisites:
+                        self.assertLess(
+                            position[prerequisite],
+                            position[course],
+                        )
 
 
 if __name__ == "__main__":
