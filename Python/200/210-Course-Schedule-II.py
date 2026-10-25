@@ -60,6 +60,39 @@ class Solution:
 
         return order if len(order) == numCourses else []
 
+    def find_order3(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        course_map = {i: [] for i in range(numCourses)}
+        for crs, pre in prerequisites:
+            course_map[crs].append(pre)
+
+        visited = set()
+        order = []  # set → list
+
+        def dfs(crs):
+            if crs in visited:
+                return False
+            if course_map[crs] == []:
+                if crs not in order:
+                    order.append(crs)
+                return True
+
+            visited.add(crs)
+
+            for pre in course_map[crs]:
+                if not dfs(pre):
+                    return False
+
+            visited.remove(crs)
+            course_map[crs] = []
+            order.append(crs)  # DFS完了後に追加
+            return True
+
+        for crs in range(numCourses):
+            if not dfs(crs):
+                return []
+
+        return order
+
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
@@ -96,6 +129,7 @@ class TestSolution(unittest.TestCase):
         methods = [
             self.solution.find_order,
             self.solution.find_order2,
+            self.solution.find_order3,
         ]
 
         for method in methods:
