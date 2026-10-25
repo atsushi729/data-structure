@@ -84,7 +84,7 @@ class Solution:
 
             visited.remove(crs)
             course_map[crs] = []
-            order.append(crs)  # DFS完了後に追加
+            order.append(crs)  # Added after finish dfs
             return True
 
         for crs in range(numCourses):
@@ -163,7 +163,3 @@ class TestSolution(unittest.TestCase):
                             position[prerequisite],
                             position[course],
                         )
-
-
-if __name__ == "__main__":
-    unittest.main()
