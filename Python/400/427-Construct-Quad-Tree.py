@@ -112,10 +112,11 @@ class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.solution = Solution()
-
-        # Helper nodes
-        leaf_1 = Node(1, True)
-        leaf_0 = Node(0, True)
+        cls.methods = [
+            cls.solution.construct,
+            cls.solution.construct_v2,
+            cls.solution.construct_v3,
+        ]
 
         cls.test_cases = [
             (
@@ -129,7 +130,7 @@ class TestSolution(unittest.TestCase):
                 Node(0, True),
             ),
             (
-                "All same values",
+                "All ones",
                 [
                     [1, 1],
                     [1, 1],
@@ -137,14 +138,21 @@ class TestSolution(unittest.TestCase):
                 Node(1, True),
             ),
             (
-                "Split into four leaves",
+                "All zeros",
+                [
+                    [0, 0],
+                    [0, 0],
+                ],
+                Node(0, True),
+            ),
+            (
+                "Four different quadrants",
                 [
                     [1, 0],
                     [0, 1],
                 ],
                 Node(
-                    0,
-                    False,
+                    0, False,
                     Node(1, True),
                     Node(0, True),
                     Node(0, True),
@@ -152,7 +160,7 @@ class TestSolution(unittest.TestCase):
                 ),
             ),
             (
-                "LeetCode example",
+                "4x4 uniform quadrants",
                 [
                     [1, 1, 0, 0],
                     [1, 1, 0, 0],
@@ -160,61 +168,62 @@ class TestSolution(unittest.TestCase):
                     [0, 0, 1, 1],
                 ],
                 Node(
-                    0,
-                    False,
-                    leaf_1,
-                    leaf_0,
-                    leaf_0,
-                    leaf_1,
+                    0, False,
+                    Node(1, True),
+                    Node(0, True),
+                    Node(0, True),
+                    Node(1, True),
+                ),
+            ),
+            (
+                "4x4 mixed quadrant",
+                [
+                    [1, 1, 0, 0],
+                    [1, 1, 0, 0],
+                    [0, 0, 1, 0],
+                    [0, 0, 0, 1],
+                ],
+                Node(
+                    0, False,
+                    Node(1, True),
+                    Node(0, True),
+                    Node(0, True),
+                    Node(
+                        0, False,
+                        Node(1, True),
+                        Node(0, True),
+                        Node(0, True),
+                        Node(1, True),
+                    ),
                 ),
             ),
         ]
 
-    def is_same_tree(self, node1, node2):
-        if not node1 and not node2:
-            return True
+    def serialize(self, node):
+        if node is None:
+            return None
 
-        if not node1 or not node2:
-            return False
-
-        if node1.val != node2.val:
-            return False
-
-        if node1.isLeaf != node2.isLeaf:
-            return False
+        if node.isLeaf:
+            return (True, bool(node.val))
 
         return (
-                self.is_same_tree(node1.topLeft, node2.topLeft)
-                and self.is_same_tree(node1.topRight, node2.topRight)
-                and self.is_same_tree(node1.bottomLeft, node2.bottomLeft)
-                and self.is_same_tree(node1.bottomRight, node2.bottomRight)
+            False,
+            self.serialize(node.topLeft),
+            self.serialize(node.topRight),
+            self.serialize(node.bottomLeft),
+            self.serialize(node.bottomRight),
         )
 
     def test_construct(self):
-        for name, grid, expected in self.test_cases:
-            with self.subTest(name=name):
-                result = self.solution.construct(grid)
+        for method in self.methods:
+            for name, grid, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        case=name,
+                ):
+                    result = method(grid)
 
-                self.assertTrue(
-                    self.is_same_tree(result, expected)
-                )
-
-    def test_construct_v2(self):
-        for name, grid, expected in self.test_cases:
-            with self.subTest(name=name):
-                result = self.solution.construct_v2(grid)
-                self.assertTrue(
-                    self.is_same_tree(result, expected)
-                )
-
-    def test_construct_v3(self):
-        for name, grid, expected in self.test_cases:
-            with self.subTest(name=name):
-                result = self.solution.construct_v3(grid)
-                self.assertTrue(
-                    self.is_same_tree(result, expected)
-                )
-
-
-if __name__ == "__main__":
-    unittest.main()
+                    self.assertEqual(
+                        self.serialize(result),
+                        self.serialize(expected),
+                    )
