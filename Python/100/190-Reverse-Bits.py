@@ -27,23 +27,31 @@ class Solution:
 
 
 class TestSolution(unittest.TestCase):
-    def setUp(self):
-        self.solution = Solution()
-        self.test_cases = [
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.methods = [
+            cls.solution.reverse_bits,
+            cls.solution.reverse_bits_v2,
+        ]
+
+        cls.test_cases = [
             (43261596, 964176192),
             (4294967293, 3221225471),
             (0, 0),
             (1, 2147483648),
             (2, 1073741824),
             (3, 3221225472),
+            (4294967295, 4294967295),
+            (2147483648, 1),
         ]
 
     def test_reverse_bits(self):
-        for n, expected in self.test_cases:
-            result = self.solution.reverse_bits(n)
-            self.assertEqual(result, expected)
-
-    def test_reverse_bits_v2(self):
-        for n, expected in self.test_cases:
-            result = self.solution.reverse_bits_v2(n)
-            self.assertEqual(result, expected)
+        for method in self.methods:
+            for n, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        n=n,
+                ):
+                    result = method(n)
+                    self.assertEqual(result, expected)
