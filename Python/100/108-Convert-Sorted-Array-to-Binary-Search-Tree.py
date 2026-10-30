@@ -1,3 +1,4 @@
+from collections import deque
 import unittest
 
 
@@ -24,6 +25,31 @@ class Solution:
             return root
 
         return dfs(0, len(nums) - 1)
+
+    def sorted_array_to_bst_v2(self, nums: list[int]) -> TreeNode | None:
+        if not nums:
+            return None
+
+        mid = (len(nums) - 1) // 2
+        root = TreeNode(nums[mid])
+
+        queue = deque([(root, 0, len(nums) - 1)])
+
+        while queue:
+            node, left, right = queue.popleft()
+            mid = (left + right) // 2
+
+            if left <= mid - 1:
+                left_mid = (left + mid - 1) // 2
+                node.left = TreeNode(nums[left_mid])
+                queue.append((node.left, left, mid - 1))
+
+            if mid + 1 <= right:
+                right_mid = (mid + 1 + right) // 2
+                node.right = TreeNode(nums[right_mid])
+                queue.append((node.right, mid + 1, right))
+
+        return root
 
 
 class TestSolution(unittest.TestCase):
@@ -67,12 +93,15 @@ class TestSolution(unittest.TestCase):
         return height(root) != -1
 
     def test_sorted_array_to_bst(self):
-        for nums in self.test_cases:
-            with self.subTest(nums=nums):
-                root = self.solution.sorted_array_to_bst(nums)
+        methods = [
+            self.solution.sorted_array_to_bst,
+            self.solution.sorted_array_to_bst_v2,
+        ]
 
-                # Verify BST property
-                self.assertEqual(self.inorder(root), nums)
+        for method in methods:
+            for nums in self.test_cases:
+                with self.subTest(method=method.__name__, nums=nums):
+                    root = method(nums)
 
-                # Verify height-balanced property
-                self.assertTrue(self.is_balanced(root))
+                    self.assertEqual(self.inorder(root), nums)
+                    self.assertTrue(self.is_balanced(root))
