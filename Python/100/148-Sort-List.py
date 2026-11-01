@@ -50,6 +50,56 @@ class Solution:
 
         return dummy.next
 
+    def sort_list_v2(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        length, current = 0, head
+
+        while current:
+            length += 1
+            current = current.next
+
+        dummy = ListNode(0)
+        dummy.next = head
+        width = 1
+
+        while width < length:
+            tail, current = dummy, dummy.next
+
+            while current:
+                left, left_count = current, 0
+
+                for _ in range(width):
+                    if current is None:
+                        break
+                    left_count += 1
+                    current = current.next
+
+                right, right_count = current, 0
+
+                for _ in range(width):
+                    if current is None:
+                        break
+                    right_count += 1
+                    current = current.next
+
+                while left_count or right_count:
+                    if right_count == 0 or (
+                            left_count and left.val <= right.val
+                    ):
+                        chosen, left = left, left.next
+                        left_count -= 1
+                    else:
+                        chosen, right = right, right.next
+                        right_count -= 1
+
+                    tail.next = chosen
+                    tail = chosen
+
+                tail.next = current
+
+            width *= 2
+
+        return dummy.next
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -88,14 +138,21 @@ class TestSolution(unittest.TestCase):
         return result
 
     def test_sort_list(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                head = self.list_to_linked_list(nums)
-                result = self.solution.sortList(head)
-                self.assertEqual(
-                    self.linked_list_to_list(result),
-                    expected
-                )
+        methods = [
+            self.solution.sortList,
+            self.solution.sort_list_v2,
+        ]
+
+        for method in methods:
+            for nums, expected in self.test_cases:
+                with self.subTest(method=method.__name__, nums=nums):
+                    head = self.list_to_linked_list(nums)
+                    result = method(head)
+
+                    self.assertEqual(
+                        self.linked_list_to_list(result),
+                        expected
+                    )
 
 
 if __name__ == "__main__":
