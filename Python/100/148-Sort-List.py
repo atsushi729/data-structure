@@ -9,7 +9,7 @@ class ListNode:
 
 
 class Solution:
-    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def sort_list(self, head: Optional[ListNode]) -> Optional[ListNode]:
         if not head or not head.next:
             return head
 
@@ -26,8 +26,8 @@ class Solution:
         left = head
 
         # 3. Sort recursively
-        left = self.sortList(left)
-        right = self.sortList(right)
+        left = self.sort_list(left)
+        right = self.sort_list(right)
 
         # 4. Merge sorted lists
         return self.merge(left, right)
@@ -139,7 +139,7 @@ class TestSolution(unittest.TestCase):
 
     def test_sort_list(self):
         methods = [
-            self.solution.sortList,
+            self.solution.sort_list,
             self.solution.sort_list_v2,
         ]
 
