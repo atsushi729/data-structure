@@ -1,6 +1,5 @@
 import unittest
 from typing import Optional
-from contextlib import contextmanager
 
 
 #################### Solution ####################
@@ -74,63 +73,64 @@ class AnotherSolution:
 
 #################### Test Case ####################
 class TestMergeKLists(unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        cls.input_values = [
-            [1, 4, 5],
-            [1, 3, 4],
-            [2, 6],
+    def setUp(self):
+        self.solutions = [
+            ("Solution", Solution().merge_k_lists),
+            ("SolutionV2", Solution().merge_k_lists_v2),
+            ("AnotherSolution", AnotherSolution().merge_k_lists),
         ]
-        cls.expected = [1, 1, 2, 3, 4, 4, 5, 6]
 
-    @classmethod
-    def _build(cls, values):
+        self.test_cases = [
+            (
+                [[1, 4, 5], [1, 3, 4], [2, 6]],
+                [1, 1, 2, 3, 4, 4, 5, 6],
+            ),
+            ([], []),
+            ([[]], []),
+            ([[], []], []),
+            ([[1]], [1]),
+            ([[], [1], []], [1]),
+            ([[1, 2, 3]], [1, 2, 3]),
+            ([[-3, -1], [-2, 0, 2]], [-3, -2, -1, 0, 2]),
+            ([[1, 1], [1, 1]], [1, 1, 1, 1]),
+        ]
+
+    @staticmethod
+    def build_linked_list(values):
         dummy = ListNode()
-        cur = dummy
-        for v in values:
-            cur.next = ListNode(v)
-            cur = cur.next
+        current = dummy
+
+        for value in values:
+            current.next = ListNode(value)
+            current = current.next
+
         return dummy.next
 
-    @classmethod
-    def _to_list(cls, node):
-        res = []
-        while node:
-            res.append(node.val)
-            node = node.next
-        return res
+    @staticmethod
+    def linked_list_to_list(head):
+        result = []
 
-    @contextmanager
-    def linked_lists(self):
-        """
-        毎回新しい linked list を生成してスコープ内だけで利用
-        """
-        lists = [self._build(v) for v in self.input_values]
-        try:
-            yield lists
-        finally:
-            # 明示的に参照を切る（GCに任せるが意図を明確にする）
-            lists = None
+        while head:
+            result.append(head.val)
+            head = head.next
 
-    def test_solution(self):
-        solution = Solution()
-        with self.linked_lists() as lists:
-            result = solution.merge_k_lists(lists)
-            self.assertEqual(self._to_list(result), self.expected)
+        return result
 
-    def test_another_solution(self):
-        solution = AnotherSolution()
-        with self.linked_lists() as lists:
-            result = solution.merge_k_lists(lists)
-            self.assertEqual(self._to_list(result), self.expected)
+    def test_merge_k_lists(self):
+        for name, method in self.solutions:
+            for input_values, expected in self.test_cases:
+                with self.subTest(
+                        method=name,
+                        input_values=input_values,
+                ):
+                    lists = [
+                        self.build_linked_list(values)
+                        for values in input_values
+                    ]
 
-    def test_solution_v2(self):
-        solution = Solution()
-        with self.linked_lists() as lists:
-            result = solution.merge_k_lists_v2(lists)
-            self.assertEqual(self._to_list(result), self.expected)
+                    result = method(lists)
 
-
-if __name__ == "__main__":
-    unittest.main()
+                    self.assertEqual(
+                        self.linked_list_to_list(result),
+                        expected,
+                    )
