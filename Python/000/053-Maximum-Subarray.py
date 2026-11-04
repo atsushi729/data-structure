@@ -60,10 +60,18 @@ class Solution:
 
 
 class TestSolution(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        cls.solution = Solution()
-        cls.test_cases = [
+    def setUp(self):
+        self.solution = Solution()
+
+        self.methods = [
+            self.solution.max_sub_array,
+            self.solution.max_sub_array_v2,
+            self.solution.max_sub_array_v3,
+            self.solution.max_sub_array_v4,
+            self.solution.max_sub_array_v5,
+        ]
+
+        self.test_cases = [
             ([-2, 1, -3, 4, -1, 2, 1, -5, 4], 6),
             ([1], 1),
             ([5, 4, -1, 7, 8], 23),
@@ -72,35 +80,23 @@ class TestSolution(unittest.TestCase):
             ([-1, 2, 3, -4, 5], 6),
             ([1, 2, 3], 6),
             ([3, -2, 5], 6),
-            ([-2, -1], -1)
+            ([-2, -1], -1),
+            ([-5], -5),
+            ([0], 0),
+            ([10, -20, 30], 30),
+            ([2, -1, 2, 3, 4, -5], 10),
         ]
 
     def test_max_sub_array(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                result = self.solution.max_sub_array(nums)
-                self.assertEqual(result, expected)
+        for method in self.methods:
+            for nums, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        nums=nums,
+                ):
+                    result = method(nums.copy())
 
-    def test_max_sub_array_v2(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                result = self.solution.max_sub_array_v2(nums)
-                self.assertEqual(result, expected)
-
-    def test_max_sub_array_v3(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                result = self.solution.max_sub_array_v3(nums)
-                self.assertEqual(result, expected)
-
-    def test_max_sub_array_v4(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                result = self.solution.max_sub_array_v4(nums)
-                self.assertEqual(result, expected)
-
-    def test_max_sub_array_v5(self):
-        for nums, expected in self.test_cases:
-            with self.subTest(nums=nums):
-                result = self.solution.max_sub_array_v5(nums)
-                self.assertEqual(result, expected)
+                    self.assertEqual(
+                        result,
+                        expected,
+                    )
