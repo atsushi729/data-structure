@@ -29,6 +29,18 @@ class Solution:
     def add_binary_v2(self, a: str, b: str) -> str:
         return bin(int(a, 2) + int(b, 2))[2:]
 
+    # Approach 3: Bit Manipulation
+    def add_binary_v3(self, a: str, b: str) -> str:
+        x = int(a, 2)
+        y = int(b, 2)
+
+        while y:
+            carry = (x & y) << 1
+            x = x ^ y
+            y = carry
+
+        return bin(x)[2:]
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -37,6 +49,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.solution.add_binary,
             self.solution.add_binary_v2,
+            self.solution.add_binary_v3,
         ]
 
         self.test_cases = [
