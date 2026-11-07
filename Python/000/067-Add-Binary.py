@@ -2,6 +2,7 @@ import unittest
 
 
 class Solution:
+    # Approach 1: Two Pointers + Carry
     def add_binary(self, a: str, b: str) -> str:
         i = len(a) - 1
         j = len(b) - 1
@@ -24,6 +25,10 @@ class Solution:
 
         return "".join(reversed(result))
 
+    # Approach 2: Built-in Conversion
+    def add_binary_v2(self, a: str, b: str) -> str:
+        return bin(int(a, 2) + int(b, 2))[2:]
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -31,6 +36,7 @@ class TestSolution(unittest.TestCase):
 
         self.methods = [
             self.solution.add_binary,
+            self.solution.add_binary_v2,
         ]
 
         self.test_cases = [
