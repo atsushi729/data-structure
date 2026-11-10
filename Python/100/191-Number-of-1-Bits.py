@@ -28,6 +28,22 @@ class Solution:
 
         return res
 
+    def hamming_weight_v3(self, n: int) -> int:
+        """
+        Brian Kernighan's Algorithm
+
+        Time Complexity: O(k)
+        Space Complexity: O(1)
+        k = Number of set bits
+        """
+        res = 0
+
+        while n:
+            n &= n - 1
+            res += 1
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     def setUp(self):
@@ -36,6 +52,7 @@ class TestSolution(unittest.TestCase):
         self.methods = [
             self.solution.hamming_weight,
             self.solution.hamming_weight_v2,
+            self.solution.hamming_weight_v3,
         ]
 
         self.test_cases = [
