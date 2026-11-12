@@ -62,44 +62,55 @@ class Solution:
         m, n = len(s1), len(s2)
         if m + n != len(s3):
             return False
-        if n < m:
+
+        if m < n:
             s1, s2 = s2, s1
             m, n = n, m
 
-        dp = [False for _ in range(n + 1)]
+        dp = [False] * (n + 1)
         dp[n] = True
+
         for i in range(m, -1, -1):
-            nextDp = [False for _ in range(n + 1)]
-            nextDp[n] = True
+            next_dp = [False] * (n + 1)
+
             for j in range(n, -1, -1):
+                if i == m and j == n:
+                    next_dp[j] = True
+                    continue
+
                 if i < m and s1[i] == s3[i + j] and dp[j]:
-                    nextDp[j] = True
-                if j < n and s2[j] == s3[i + j] and nextDp[j + 1]:
-                    nextDp[j] = True
-            dp = nextDp
+                    next_dp[j] = True
+
+                if j < n and s2[j] == s3[i + j] and next_dp[j + 1]:
+                    next_dp[j] = True
+
+            dp = next_dp
+
         return dp[0]
 
     def is_interleave5(self, s1: str, s2: str, s3: str) -> bool:
         m, n = len(s1), len(s2)
         if m + n != len(s3):
             return False
-        if n < m:
+
+        if m < n:
             s1, s2 = s2, s1
             m, n = n, m
 
-        dp = [False for _ in range(n + 1)]
+        dp = [False] * (n + 1)
         dp[n] = True
 
         for i in range(m, -1, -1):
-            next_dp = True
+            if i < m:
+                dp[n] = s1[i] == s3[i + n] and dp[n]
+
             for j in range(n - 1, -1, -1):
-                res = False
-                if i < m and s1[i] == s3[i + j] and dp[j]:
-                    res = True
-                if j < n and s2[j] == s3[i + j] and next_dp:
-                    res = True
-                dp[j] = res
-                next_dp = dp[j]
+                dp[j] = (
+                        (i < m and s1[i] == s3[i + j] and dp[j])
+                        or
+                        (s2[j] == s3[i + j] and dp[j + 1])
+                )
+
         return dp[0]
 
 
@@ -107,42 +118,74 @@ class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.solution = Solution()
+
+        cls.methods = [
+            cls.solution.is_interleave,
+            cls.solution.is_interleave2,
+            cls.solution.is_inter_leave_3,
+            cls.solution.is_interleave4,
+            cls.solution.is_interleave5,
+        ]
+
         cls.test_cases = [
+            # Basic cases
             ("aabcc", "dbbca", "aadbbcbcac", True),
             ("aabcc", "dbbca", "aadbbbaccc", False),
+            ("abc", "def", "abcdef", True),
+            ("abc", "def", "abdecf", True),
+            ("abc", "def", "adbcef", True),
+            ("abc", "def", "abdfec", False),
+
+            # Empty strings
             ("", "", "", True),
             ("a", "", "a", True),
             ("", "b", "b", True),
-            ("abc", "def", "abcdef", True),
-            ("abc", "def", "abdecf", True)
+            ("", "abc", "abc", True),
+            ("abc", "", "abc", True),
+            ("", "abc", "ab", False),
+
+            # Single characters
+            ("a", "b", "ab", True),
+            ("a", "b", "ba", True),
+            ("a", "b", "aa", False),
+            ("a", "a", "aa", True),
+
+            # Length mismatch
+            ("abc", "def", "abc", False),
+            ("abc", "def", "abcdefg", False),
+            ("", "", "a", False),
+
+            # Repeated characters
+            ("aaa", "aaa", "aaaaaa", True),
+            ("aaa", "aaa", "aaaaab", False),
+            ("aa", "ab", "aaba", True),
+
+            # Order preservation
+            ("abc", "def", "adbecf", True),
+            ("abc", "def", "defabc", True),
+            ("abc", "def", "acbdef", False),
+            ("abc", "def", "abcfed", False),
+
+            # Unequal lengths
+            ("a", "bcde", "abcde", True),
+            ("abcd", "e", "abcde", True),
+            ("a", "bcde", "bcdea", True),
+
+            # DP boundary cases
+            ("a", "b", "ba", True),
+            ("ab", "cd", "acbd", True),
+            ("ab", "cd", "cdab", True),
+            ("ab", "cd", "abcd", True),
         ]
 
-    def test_is_interleave(self):
-        for s1, s2, s3, expected in self.test_cases:
-            with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.is_interleave(s1, s2, s3)
-                self.assertEqual(result, expected)
-
-    def test_is_interleave2(self):
-        for s1, s2, s3, expected in self.test_cases:
-            with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.is_interleave2(s1, s2, s3)
-                self.assertEqual(result, expected)
-
-    def test_is_interleave3(self):
-        for s1, s2, s3, expected in self.test_cases:
-            with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.is_inter_leave_3(s1, s2, s3)
-                self.assertEqual(result, expected)
-
-    def test_is_interleave4(self):
-        for s1, s2, s3, expected in self.test_cases:
-            with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.is_interleave4(s1, s2, s3)
-                self.assertEqual(result, expected)
-
-    def test_is_interleave5(self):
-        for s1, s2, s3, expected in self.test_cases:
-            with self.subTest(s1=s1, s2=s2, s3=s3):
-                result = self.solution.is_interleave5(s1, s2, s3)
-                self.assertEqual(result, expected)
+    def test_all_methods(self):
+        for method in self.methods:
+            for s1, s2, s3, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        s1=s1,
+                        s2=s2,
+                        s3=s3,
+                ):
+                    result = method(s1, s2, s3)
+                    self.assertEqual(result, expected)
