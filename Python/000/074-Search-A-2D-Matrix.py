@@ -114,39 +114,62 @@ class TestSearchMatrix(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.s = Solution()
+
+        cls.methods = [
+            cls.s.search_matrix,
+            cls.s.search_matrix_v2,
+            cls.s.search_matrix_v3,
+            cls.s.search_matrix_v4,
+            cls.s.search_matrix_v5,
+            cls.s.search_matrix_v6,
+        ]
+
         cls.test_cases = [
+            # Basic cases
             ([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 3, True),
             ([[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 60]], 13, False),
+
+            # Single element
             ([[1]], 1, True),
             ([[1]], 2, False),
+            ([[1]], 0, False),
+
+            # Single row
+            ([[1, 3, 5, 7, 9]], 5, True),
+            ([[1, 3, 5, 7, 9]], 6, False),
+
+            # Single column
+            ([[1], [3], [5], [7], [9]], 5, True),
+            ([[1], [3], [5], [7], [9]], 6, False),
+
+            # Boundary cases
+            ([[1, 3, 5], [7, 9, 11]], 1, True),
+            ([[1, 3, 5], [7, 9, 11]], 11, True),
+            ([[1, 3, 5], [7, 9, 11]], 0, False),
+            ([[1, 3, 5], [7, 9, 11]], 12, False),
+
+            # Negative numbers
+            ([[-10, -5, -1], [0, 3, 7], [10, 15, 20]], -5, True),
+            ([[-10, -5, -1], [0, 3, 7], [10, 15, 20]], -3, False),
+
+            # Target between rows
+            ([[1, 2, 3], [10, 11, 12]], 5, False),
+
+            # Large values
+            ([[1, 100, 1000], [2000, 3000, 4000]], 3000, True),
+            ([[1, 100, 1000], [2000, 3000, 4000]], 1500, False),
         ]
 
     def test_search_matrix(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix(matrix, target), expected)
-
-    def test_model_search_matrix(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix_v2(matrix, target), expected)
-
-    def test_model_search_matrix_v3(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix_v3(matrix, target), expected)
-
-    def test_model_search_matrix_v4(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix_v4(matrix, target), expected)
-
-    def test_model_search_matrix_v5(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix_v5(matrix, target), expected)
-
-    def test_model_search_matrix_v6(self):
-        for matrix, target, expected in self.test_cases:
-            with self.subTest(matrix=matrix, target=target, expected=expected):
-                self.assertEqual(self.s.search_matrix_v6(matrix, target), expected)
+        for method in self.methods:
+            for matrix, target, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        matrix=matrix,
+                        target=target,
+                        expected=expected,
+                ):
+                    self.assertEqual(
+                        method(matrix, target),
+                        expected,
+                    )
