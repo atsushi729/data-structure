@@ -40,6 +40,28 @@ class Solution:
 
         return r
 
+    def my_sqrt_v3(self, x: int) -> int:
+        """
+        Bit Manipulation
+        Time Complexity: O(log x)
+        Space Complexity: O(1)
+        """
+        if x < 2:
+            return x
+
+        res = 0
+        bit = 1 << ((x.bit_length() - 1) // 2)
+
+        while bit:
+            candidate = res | bit
+
+            if candidate * candidate <= x:
+                res = candidate
+
+            bit >>= 1
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -49,6 +71,7 @@ class TestSolution(unittest.TestCase):
         cls.methods = [
             cls.solution.my_sqrt,
             cls.solution.my_sqrt_v2,
+            cls.solution.my_sqrt_v3,
         ]
 
         cls.test_cases = [
