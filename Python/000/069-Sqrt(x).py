@@ -62,6 +62,22 @@ class Solution:
 
         return res
 
+    def my_sqrt_v4(self, x: int) -> int:
+        """
+        Linear Search
+        Time Complexity: O(sqrt(x))
+        Space Complexity: O(1)
+        """
+        if x < 2:
+            return x
+
+        i = 1
+
+        while i * i <= x:
+            i += 1
+
+        return i - 1
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -72,6 +88,7 @@ class TestSolution(unittest.TestCase):
             cls.solution.my_sqrt,
             cls.solution.my_sqrt_v2,
             cls.solution.my_sqrt_v3,
+            cls.solution.my_sqrt_v4,
         ]
 
         cls.test_cases = [
