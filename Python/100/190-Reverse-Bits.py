@@ -25,6 +25,19 @@ class Solution:
                 res |= (1 << i)
         return res
 
+    def reverse_bits_v3(self, n: int) -> int:
+        """
+        Time Complexity: O(1)
+        Space Complexity: O(1)
+        """
+        res = 0
+
+        for _ in range(32):
+            res = (res << 1) | (n & 1)
+            n >>= 1
+
+        return res
+
 
 class TestSolution(unittest.TestCase):
     @classmethod
@@ -33,6 +46,7 @@ class TestSolution(unittest.TestCase):
         cls.methods = [
             cls.solution.reverse_bits,
             cls.solution.reverse_bits_v2,
+            cls.solution.reverse_bits_v3,
         ]
 
         cls.test_cases = [
