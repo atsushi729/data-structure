@@ -51,24 +51,44 @@ class Solution:
 
 #################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def test_CombinationSum2(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.combination_sum2_v2([10, 1, 2, 7, 6, 1, 5], 8)),
-            sorted([[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]])
-        )
-        self.assertListEqual(
-            sorted(solution.combination_sum2_v2([2, 5, 2, 1, 2], 5)),
-            sorted([[1, 2, 2], [5]])
-        )
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.methods = [
+            cls.solution.combination_sum2,
+            cls.solution.combination_sum2_v2,
+        ]
 
-    def test_combinationSum2_v2(self):
-        solution = Solution()
-        self.assertListEqual(
-            sorted(solution.combination_sum2_v2([10, 1, 2, 7, 6, 1, 5], 8)),
-            sorted([[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]])
-        )
-        self.assertListEqual(
-            sorted(solution.combination_sum2_v2([2, 5, 2, 1, 2], 5)),
-            sorted([[1, 2, 2], [5]])
-        )
+        cls.test_cases = [
+            (
+                [10, 1, 2, 7, 6, 1, 5], 8,
+                [[1, 1, 6], [1, 2, 5], [1, 7], [2, 6]]
+            ),
+            (
+                [2, 5, 2, 1, 2], 5,
+                [[1, 2, 2], [5]]
+            ),
+            ([1, 1, 1, 1], 2, [[1, 1]]),
+            ([1, 2, 3], 7, []),
+            ([1], 1, [[1]]),
+            ([2], 1, []),
+            ([3, 3, 3, 3], 6, [[3, 3]]),
+            ([1, 2, 3, 4, 5], 5, [[1, 4], [2, 3], [5]]),
+        ]
+
+    def test_combination_sum2(self):
+        for method in self.methods:
+            for candidates, target, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        candidates=candidates,
+                        target=target
+                ):
+                    self.assertListEqual(
+                        sorted(method(candidates.copy(), target)),
+                        sorted(expected)
+                    )
+
+
+if __name__ == "__main__":
+    unittest.main()
