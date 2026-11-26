@@ -53,27 +53,43 @@ class Solution:
 
 
 ###################### Test Case ####################
+###################### Test Case ####################
 class TestSolution(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.solution = Solution()
+        cls.methods = [
+            cls.solution.convert,
+            cls.solution.convert_v2,
+            cls.solution.convert_v3,
+        ]
+
         cls.test_cases = [
             ("AAB", 2, "ABA"),
             ("AAAAB", 3, "ABAAA"),
             ("AABAAB", 4, "AABBAA"),
+            ("PAYPALISHIRING", 3, "PAHNAPLSIIGYIR"),
+            ("PAYPALISHIRING", 4, "PINALSIGYAHRPI"),
+            ("ABCDE", 2, "ACEBD"),
+            ("ABCDE", 3, "AEBDC"),
+            ("ABCDE", 1, "ABCDE"),
+            ("ABCDE", 5, "ABCDE"),
+            ("ABCDE", 10, "ABCDE"),
+            ("A", 1, "A"),
+            ("A", 2, "A"),
+            ("", 1, ""),
+            ("", 3, ""),
         ]
 
     def test_convert(self):
-        for s, numRows, expectet in self.test_cases:
-            with self.subTest(s=s, numRows=numRows):
-                self.assertEqual(self.solution.convert(s, numRows), expectet)
-
-    def test_convert_v2(self):
-        for s, numRows, expectet in self.test_cases:
-            with self.subTest(s=s, numRows=numRows):
-                self.assertEqual(self.solution.convert_v2(s, numRows), expectet)
-
-    def test_convert_v3(self):
-        for s, numRows, expectet in self.test_cases:
-            with self.subTest(s=s, numRows=numRows):
-                self.assertEqual(self.solution.convert_v3(s, numRows), expectet)
+        for method in self.methods:
+            for s, numRows, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        s=s,
+                        numRows=numRows
+                ):
+                    self.assertEqual(
+                        method(s, numRows),
+                        expected
+                    )
