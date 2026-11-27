@@ -36,25 +36,43 @@ class Solution:
         return count
 
 
+###################### Test Case ####################
 class TestSolution(unittest.TestCase):
-    def setUp(self):
-        self.solution = Solution()
-        self.test_cases = [
+    @classmethod
+    def setUpClass(cls):
+        cls.solution = Solution()
+        cls.methods = [
+            cls.solution.count_pairs,
+            cls.solution.count_pairs_v2,
+        ]
+
+        cls.test_cases = [
             ([1, 2, 3, 4], 5, 2),
             ([1, 2, 3], 3, 0),
             ([1, 2, 3], 6, 3),
             ([0, -1, -2], -1, 2),
+            ([-1, 1, 2, 3, 1], 2, 3),
+            ([-6, 2, 5, -2, -7, -1, 3], -2, 10),
+            ([1, 1, 1, 1], 3, 6),
+            ([1, 1, 1, 1], 2, 0),
+            ([0, 0, 0], 1, 3),
+            ([-3, -2, -1], 0, 3),
+            ([4, 3, 2, 1], 5, 2),
             ([], 0, 0),
             ([1], 2, 0),
             ([1, 2], 3, 0),
+            ([1, 2], 4, 1),
         ]
 
     def test_count_pairs(self):
-        for nums, target, expected in self.test_cases:
-            result = self.solution.count_pairs(nums, target)
-            self.assertEqual(result, expected)
-
-    def test_count_pairs_v2(self):
-        for nums, target, expected in self.test_cases:
-            result = self.solution.count_pairs_v2(nums, target)
-            self.assertEqual(result, expected)
+        for method in self.methods:
+            for nums, target, expected in self.test_cases:
+                with self.subTest(
+                        method=method.__name__,
+                        nums=nums,
+                        target=target
+                ):
+                    self.assertEqual(
+                        method(nums.copy(), target),
+                        expected
+                    )
